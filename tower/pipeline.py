@@ -178,6 +178,11 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
             store.put_extraction(row["obj_key"], row["hash"], "doc_v1",
                                  cached, config.MODEL_EXTRACT)
             log(f"    read {doc.get('title')}")
+            # Only pace when we actually called out. Cache hits cost nothing
+            # and must stay instant, which is what makes the 60s poll viable.
+            if brain.enabled and config.READ_DELAY_SECONDS:
+                import time as _t
+                _t.sleep(config.READ_DELAY_SECONDS)
         # Date resolution, two independent routes. The reading layer quotes a
         # date if the document states one in prose. If it did not, or if the
         # reading layer is degraded, scan the raw markdown for a structured

@@ -316,7 +316,7 @@ class Brain:
     # ------------------------------------------------------------------
     def _tool_call(self, *, system: str, user: str, schema: dict,
                    tool_name: str, model: str, max_tokens: int = 8000,
-                   retries: int = 3) -> dict | None:
+                   retries: int = 4) -> dict | None:
         """Returns None on failure rather than raising.
 
         This matters more than it looks. If the model API is down, out of
@@ -369,16 +369,24 @@ class Brain:
                         return json.loads(tc.function.arguments)
                     last = RuntimeError("no tool call returned")
             except Exception as e:
+                import time
                 last = e
                 msg = str(e).lower()
                 # Do not burn retries on errors that will never succeed.
                 if any(k in msg for k in ("credit balance", "invalid_api_key",
-                                          "authentication", "permission")):
+                                          "authentication", "permission",
+                                          "not found", "does not exist")):
                     break
-                if attempt == retries - 1:
+                # Rate limits are the normal case on a free tier, not a
+                # failure. Back off properly instead of giving up after four
+                # seconds and silently degrading a whole account.
+                throttled = any(k in msg for k in ("429", "rate limit", "rate_limit",
+                                                   "quota", "resource_exhausted",
+                                                   "overloaded", "503"))
+                budget = retries + 3 if throttled else retries
+                if attempt >= budget - 1:
                     break
-                import time
-                time.sleep(2 * (attempt + 1))
+                time.sleep((8 * (attempt + 1)) if throttled else (2 * (attempt + 1)))
         self.failures += 1
         self.last_error = str(last)[:300]
         print(f"[brain] call failed, degrading this item: {self.last_error}", flush=True)

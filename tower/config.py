@@ -32,7 +32,17 @@ MODEL_SYNTH = os.environ.get("TOWER_MODEL_SYNTH", "claude-sonnet-4-5-20250929")
 # Only the key, the base url and the model name change. No code changes.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "") or None
-OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "gpt-4.1")
+OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "") or (
+    # Sensible default per provider, so a missing model name is not a
+    # silent 404 halfway through a run.
+    "gemini-flash-latest" if "generativelanguage" in (OPENAI_BASE_URL or "")
+    else "llama-3.3-70b-versatile" if "groq" in (OPENAI_BASE_URL or "")
+    else "gpt-4.1"
+)
+
+# Free tiers throttle. Pace document reads so a burst of 130 extractions does
+# not trip a rate limit and degrade half the portfolio.
+READ_DELAY_SECONDS = float(os.environ.get("TOWER_READ_DELAY", "0.7"))
 
 POLL_SECONDS = int(os.environ.get("TOWER_POLL_SECONDS", "60"))
 MAX_RUN_SECONDS = int(os.environ.get("TOWER_MAX_RUN_SECONDS", str(5 * 3600 + 40 * 60)))
