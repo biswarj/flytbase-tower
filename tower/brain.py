@@ -384,9 +384,15 @@ class Brain:
                 last = e
                 msg = str(e).lower()
                 # Do not burn retries on errors that will never succeed.
+                # "Request too large" belongs in this list and not with the
+                # rate limits it superficially resembles: the request is over
+                # the per-minute ceiling on its own, so waiting changes nothing.
                 if any(k in msg for k in ("credit balance", "invalid_api_key",
                                           "authentication", "permission",
-                                          "not found", "does not exist")):
+                                          "not found", "does not exist",
+                                          "413", "request too large",
+                                          "reduce your message size",
+                                          "context_length_exceeded")):
                     break
                 # Rate limits are the normal case on a free tier, not a
                 # failure. Back off properly instead of giving up after four
@@ -404,28 +410,56 @@ class Brain:
         return None
 
     # ------------------------------------------------------------------
+    @staticmethod
+    def _fit(want_output: int) -> tuple[int, int]:
+        """Split the tokens-per-minute ceiling between prompt and answer.
+
+        Returns (max_prompt_characters, max_output_tokens). The provider counts
+        the reserved output against the same ceiling as the prompt, so both
+        halves have to be chosen together. Roughly four characters per token,
+        with 400 tokens held back for the system prompt and the tool schema.
+        """
+        # 90% of the stated ceiling. Token counting is an estimate on this side
+        # and an exact number on theirs, and being 5% under costs nothing while
+        # being 1% over costs the whole request.
+        ceiling = int(max(2000, config.MODEL_TPM_BUDGET) * 0.90)
+        out = max(400, min(want_output, int(ceiling * 0.35)))
+        prompt_tokens = max(500, ceiling - out - 700)
+        # 3.6 characters per token, deliberately below the usual 4, because
+        # going over the ceiling is a hard rejection and going under it only
+        # costs a little context.
+        return int(prompt_tokens * 3.6), out
+
     def read_document(self, *, account_name: str, lifecycle: str, doc_type: str,
                       title: str, content: str) -> dict:
         if not self.enabled:
             return _fallback_doc(content, doc_type)
-        user = (
+        room, out_tokens = self._fit(1600)
+        head = (
             f"ACCOUNT: {account_name}\n"
             f"LIFECYCLE STAGE: {lifecycle}\n"
             f"DOCUMENT TYPE: {doc_type}\n"
             f"DOCUMENT TITLE: {title}\n"
-            f"--- BEGIN DOCUMENT ---\n{content[:60000]}\n--- END DOCUMENT ---"
         )
+        body = content[:max(500, room - len(head) - 60)]
+        user = f"{head}--- BEGIN DOCUMENT ---\n{body}\n--- END DOCUMENT ---"
         out = self._tool_call(system=DOC_SYSTEM, user=user, schema=DOC_SCHEMA,
                               tool_name="record_document_reading",
-                              model=config.MODEL_EXTRACT, max_tokens=8000)
+                              model=config.MODEL_EXTRACT, max_tokens=out_tokens)
         return out if out is not None else _fallback_doc(content, doc_type)
+
+    def dossier_budget_chars(self) -> int:
+        """How much dossier the synthesis call can afford to send."""
+        return self._fit(2600)[0] if self.enabled else 0
 
     def synthesise_account(self, *, dossier: str) -> dict:
         if not self.enabled:
             return _fallback_synth()
-        out = self._tool_call(system=SYNTH_SYSTEM, user=dossier, schema=SYNTH_SCHEMA,
+        room, out_tokens = self._fit(2600)
+        out = self._tool_call(system=SYNTH_SYSTEM, user=dossier[:room],
+                              schema=SYNTH_SCHEMA,
                               tool_name="record_account_truth",
-                              model=config.MODEL_SYNTH, max_tokens=12000)
+                              model=config.MODEL_SYNTH, max_tokens=out_tokens)
         return out if out is not None else _fallback_synth()
 
     def narrate_change(self, *, account: str, before: dict, after: dict,

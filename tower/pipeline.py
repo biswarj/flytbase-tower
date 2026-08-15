@@ -329,7 +329,8 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
     # ---- narrative synthesis -------------------------------------------
     dossier = _dossier(name, account_id, meta, lifecycle, u_hours, u_miss,
                        support, people, doc_index, all_signals, open_commitments,
-                       renewal_date, renewal_src, renewal_conflicts, days_silent, ref)
+                       renewal_date, renewal_src, renewal_conflicts, days_silent, ref,
+                       budget_chars=brain.dossier_budget_chars())
     synth = brain.synthesise_account(dossier=dossier)
 
     # ---- health (deterministic, decomposable) ---------------------------
@@ -438,7 +439,7 @@ def _pick_commercial(readings, fields, ref):
 
 def _dossier(name, aid, meta, lifecycle, uh, um, support, people, docs,
              signals, commitments, renewal_date, renewal_src, conflicts,
-             days_silent, ref) -> str:
+             days_silent, ref, budget_chars: int = 0) -> str:
     """Everything the synthesis layer is allowed to reason over. Computed
     numbers are handed in already computed."""
     L = []
@@ -470,32 +471,54 @@ def _dossier(name, aid, meta, lifecycle, uh, um, support, people, docs,
         A("  CONFLICTING DATES FOUND IN OTHER SOURCES (report these as contradictions):")
         for c in conflicts:
             A(f"    {c['doc']} says {c['value']!r} -> {c['date'].isoformat()}  quote: {c['quote'][:200]}")
-    A("")
-    A("PEOPLE MERGED ACROSS ALL DOCUMENTS:")
-    for p in people[:20]:
-        A(f"  {p['name']} | {p['title'] or 'title unknown'} | {p['org_side']} | "
-          f"role={p['role']} | sentiment={p['sentiment']} | status={p['status']} | "
-          f"seen in {p['mentions']} doc(s)")
-        for q in p["quotes"][:2]:
-            A(f"      quote: {q['quote'][:220]}")
-    A("")
-    A("DOCUMENT INVENTORY (live only):")
-    for d in docs:
-        A(f"  [{d['type']}] {d['title']} | date={d['date']} ({d['date_basis']}, "
-          f"stated {d['date_text']!r}) | {d['summary'][:200]}")
-    A("")
-    A("SIGNALS EXTRACTED (severity ordered):")
-    for s in signals[:45]:
-        A(f"  [{s.get('severity')}] {s.get('kind')} :: {s.get('claim')}")
-        A(f"      from {s.get('doc')} ({s.get('date')}) quote: {(s.get('quote') or '')[:260]}")
-        if s.get("dollar_hint"):
-            A(f"      figure mentioned: {s['dollar_hint']}")
-    A("")
-    A("OPEN COMMITMENTS (nobody has closed these):")
-    for c in commitments[:25]:
-        A(f"  {c['owner_side']} / {c['owner'] or 'unnamed'}: {c['promise']} "
-          f"(due {c['due'] or 'unstated'}) from {c['doc']} quote: {(c['quote'] or '')[:200]}")
-    return "\n".join(L)
+    head = "\n".join(L)
+
+    # The sections below are the elastic part of the dossier. On a small free
+    # tier the whole request has to fit inside a tokens-per-minute ceiling, and
+    # chopping the string at the end would silently drop open commitments
+    # altogether. So the dossier is rebuilt with tighter caps until it fits,
+    # which loses the least severe signals first and keeps every section
+    # present. Signals arrive severity ordered, so the tail is the cheapest
+    # thing to lose.
+    def body(n_sig: int, n_ppl: int, n_com: int, qlen: int) -> str:
+        B: list[str] = []
+        b = B.append
+        b("")
+        b("PEOPLE MERGED ACROSS ALL DOCUMENTS:")
+        for p in people[:n_ppl]:
+            b(f"  {p['name']} | {p['title'] or 'title unknown'} | {p['org_side']} | "
+              f"role={p['role']} | sentiment={p['sentiment']} | status={p['status']} | "
+              f"seen in {p['mentions']} doc(s)")
+            for q in p["quotes"][:2]:
+                b(f"      quote: {q['quote'][:qlen]}")
+        b("")
+        b("DOCUMENT INVENTORY (live only):")
+        for d in docs:
+            b(f"  [{d['type']}] {d['title']} | date={d['date']} ({d['date_basis']}, "
+              f"stated {d['date_text']!r}) | {d['summary'][:200]}")
+        b("")
+        b("SIGNALS EXTRACTED (severity ordered):")
+        for s in signals[:n_sig]:
+            b(f"  [{s.get('severity')}] {s.get('kind')} :: {s.get('claim')}")
+            b(f"      from {s.get('doc')} ({s.get('date')}) quote: {(s.get('quote') or '')[:qlen]}")
+            if s.get("dollar_hint"):
+                b(f"      figure mentioned: {s['dollar_hint']}")
+        b("")
+        b("OPEN COMMITMENTS (nobody has closed these):")
+        for c in commitments[:n_com]:
+            b(f"  {c['owner_side']} / {c['owner'] or 'unnamed'}: {c['promise']} "
+              f"(due {c['due'] or 'unstated'}) from {c['doc']} quote: {(c['quote'] or '')[:200]}")
+        return "\n".join(B)
+
+    steps = [(45, 20, 25, 260), (30, 14, 18, 200), (20, 10, 12, 160),
+             (12, 8, 8, 120), (8, 5, 5, 90)]
+    out = head + body(*steps[0])
+    if budget_chars:
+        for cfg in steps:
+            out = head + body(*cfg)
+            if len(out) <= budget_chars:
+                break
+    return out
 
 
 # --------------------------------------------------------------------------

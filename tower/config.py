@@ -32,6 +32,20 @@ MODEL_SYNTH = os.environ.get("TOWER_MODEL_SYNTH", "claude-sonnet-4-5-20250929")
 # Only the key, the base url and the model name change. No code changes.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "") or None
+
+# Tokens-per-minute ceiling of the model endpoint.
+#
+# Small free tiers enforce this, and they count the RESERVED OUTPUT as part of
+# the request, not just the prompt. Groq's free tier allows 8000 tokens per
+# minute, so asking for 12000 tokens of output is rejected with a 413 before
+# the prompt is even read. A request bigger than the ceiling can never succeed,
+# no matter how long you back off, which makes it a different failure from a
+# rate limit and one that retrying cannot fix.
+#
+# So the reading layer sizes every request to fit the ceiling instead of
+# assuming a large context window. Raise this for a paid endpoint and the
+# requests grow again with no code change.
+MODEL_TPM_BUDGET = int(os.environ.get("TOWER_MODEL_TPM", "8000"))
 OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "") or (
     # Sensible default per provider, so a missing model name is not a
     # silent 404 halfway through a run.
