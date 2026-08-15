@@ -229,6 +229,7 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
             if item[2] is None:
                 item[2] = fresh.get(item[0]["obj_key"])
 
+    readings, doc_index = [], []
     for row, doc, cached in prepared:
         if cached is None:
             cached = _fallback_doc_stub()
