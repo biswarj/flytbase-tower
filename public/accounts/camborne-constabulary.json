@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive (from sales cycle)",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T08:39:21+00:00",
+ "computed_at": "2026-08-15T09:59:48+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 61.0,
@@ -122,8 +122,8 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 7,
+ "last_touch": "2026-08-08",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
@@ -137,38 +137,11 @@
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "02_email_thread_post_signature.md",
-   "title": "Email Thread \u2014 Post-Signature",
-   "type": "email",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
    "file": "03_internal_notes.md",
    "title": "Internal Notes",
    "type": "note",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "05_call_transcript_kickoff_planning.md",
-   "title": "Call Transcript \u2014 Kickoff & Onboarding Planning",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "date": "2026-08-08",
+   "date_basis": "relative-resolved-sniffed",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -176,6 +149,33 @@
    "file": "06_call_transcript_deployment_siting.md",
    "title": "Call Transcript \u2014 Deployment Siting",
    "type": "transcript",
+   "date": "2026-06-16",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_call_transcript_kickoff_planning.md",
+   "title": "Call Transcript \u2014 Kickoff & Onboarding Planning",
+   "type": "transcript",
+   "date": "2026-06-08",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_thread_post_signature.md",
+   "title": "Email Thread \u2014 Post-Signature",
+   "type": "email",
+   "date": "2026-05-18",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -202,8 +202,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T09:59:48+00:00",
+   "sync_id": 7,
+   "input_hash": "0a9a85972bc88d0f170e6400ae026ad8255031b8dc8addb03ecadfc201bbec55"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:39:21+00:00",

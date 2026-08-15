@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T08:38:21+00:00",
+ "computed_at": "2026-08-15T09:51:05+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 61.0,
@@ -122,8 +122,8 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 14,
+ "last_touch": "2026-08-01",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
@@ -137,6 +137,42 @@
  "open_commitments": [],
  "documents": [
   {
+   "file": "06_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-01",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_email_pricing_followup.md",
+   "title": "Email Thread \u2014 Pricing Follow-Up",
+   "type": "email",
+   "date": "2026-07-08",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_field_walkthrough_call.md",
+   "title": "Call Transcript \u2014 Field Implementation Walkthrough",
+   "type": "transcript",
+   "date": "2026-06-23",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_alarm_integration_call.md",
+   "title": "Call Transcript \u2014 Alarm Sensor Integration",
+   "type": "transcript",
+   "date": "2026-05-19",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
    "file": "01_account_profile.md",
    "title": "Account Profile",
    "type": "profile",
@@ -146,44 +182,8 @@
    "summary": "[degraded mode: no model key, document not read]"
   },
   {
-   "file": "02_transcript_alarm_integration_call.md",
-   "title": "Call Transcript \u2014 Alarm Sensor Integration",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "03_transcript_field_walkthrough_call.md",
-   "title": "Call Transcript \u2014 Field Implementation Walkthrough",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "04_email_pricing_followup.md",
-   "title": "Email Thread \u2014 Pricing Follow-Up",
-   "type": "email",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
    "file": "05_deal_and_pricing_notes.md",
    "title": "Deal & Pricing Notes",
-   "type": "note",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "06_internal_notes.md",
-   "title": "Internal Notes",
    "type": "note",
    "date": null,
    "date_basis": "none",
@@ -211,8 +211,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T09:51:05+00:00",
+   "sync_id": 7,
+   "input_hash": "9cc1285ea8d2e1795db4be1750d6df754e8ee3646617c087a9f41e65b9ad534c"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:38:21+00:00",
