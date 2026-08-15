@@ -1,636 +1,2846 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOWER · FlytBase GTM Control Tower</title>
-<style>
-:root{
-  --bg:#0c0e12; --panel:#14171d; --panel2:#1a1e26; --line:#252a34;
-  --ink:#e8eaee; --dim:#9aa3b2; --dimmer:#69707d;
-  --accent:#4da3ff; --good:#3fbf7f; --warn:#e0a33c; --bad:#e0603c; --crit:#d6455b;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
-a{color:var(--accent);text-decoration:none}
-header{position:sticky;top:0;z-index:20;background:rgba(12,14,18,.94);
-  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.hwrap{display:flex;align-items:center;gap:18px;padding:10px 20px;flex-wrap:wrap}
-.brand{font-weight:700;letter-spacing:.14em;font-size:15px}
-.brand span{color:var(--accent)}
-.sub{color:var(--dimmer);font-size:12px}
-nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
-nav button{background:transparent;border:1px solid transparent;color:var(--dim);
-  padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500}
-nav button:hover{color:var(--ink);background:var(--panel)}
-nav button.on{background:var(--panel2);color:var(--ink);border-color:var(--line)}
-.live{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);
-  font-family:var(--mono);padding:5px 10px;background:var(--panel);
-  border:1px solid var(--line);border-radius:7px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--good);
-  box-shadow:0 0 0 0 rgba(63,191,127,.6);animation:p 2.4s infinite}
-@keyframes p{0%{box-shadow:0 0 0 0 rgba(63,191,127,.55)}70%{box-shadow:0 0 0 9px rgba(63,191,127,0)}100%{box-shadow:0 0 0 0 rgba(63,191,127,0)}}
-main{padding:20px;max-width:1520px;margin:0 auto}
-h2{font-size:16px;margin:0 0 4px}
-.lede{color:var(--dim);font-size:13px;margin:0 0 16px;max-width:900px}
-.grid{display:grid;gap:14px}
-.k4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-.k2{grid-template-columns:repeat(auto-fit,minmax(420px,1fr))}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px}
-.kpi .lab{color:var(--dimmer);font-size:11px;text-transform:uppercase;letter-spacing:.09em}
-.kpi .val{font-size:27px;font-weight:650;margin-top:5px;font-variant-numeric:tabular-nums}
-.kpi .note{color:var(--dim);font-size:12px;margin-top:5px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;color:var(--dimmer);font-weight:600;font-size:10.5px;
-  text-transform:uppercase;letter-spacing:.08em;padding:8px 9px;border-bottom:1px solid var(--line)}
-td{padding:9px;border-bottom:1px solid #1c2029;vertical-align:top}
-tr.click{cursor:pointer}
-tr.click:hover td{background:var(--panel2)}
-.num{font-variant-numeric:tabular-nums;text-align:right;font-family:var(--mono)}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;
-  font-weight:600;border:1px solid}
-.b-Strong,.b-Secure{color:#7ee0aa;border-color:#1f4d36;background:#12241b}
-.b-Healthy,.b-Likely{color:#8fd6b0;border-color:#1d4231;background:#111f18}
-.b-Watch{color:#e9c579;border-color:#4d3d1a;background:#221c10}
-.b-AtRisk,.b-Risk{color:#f0a184;border-color:#54301f;background:#241610}
-.b-Critical,.b-Lost,.b-HighRisk{color:#f08497;border-color:#54202c;background:#240f15}
-.b-none{color:var(--dim);border-color:var(--line);background:var(--panel2)}
-.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:10.5px;
-  background:var(--panel2);border:1px solid var(--line);color:var(--dim);margin:1px 3px 1px 0}
-.spark{display:block}
-.bar{height:5px;border-radius:3px;background:#22262f;overflow:hidden;margin-top:5px}
-.bar>i{display:block;height:100%;border-radius:3px}
-.q{border-left:2px solid #2f3542;padding:5px 0 5px 11px;margin:6px 0;color:var(--dim);
-  font-size:12.5px;font-style:italic}
-.q b{color:var(--ink);font-style:normal}
-.src{color:var(--dimmer);font-size:11px;font-family:var(--mono)}
-.warnbox{background:#241610;border:1px solid #54301f;border-radius:9px;padding:11px 13px;
-  color:#f0a184;font-size:12.5px;margin-bottom:12px}
-.okbox{background:#12241b;border:1px solid #1f4d36;border-radius:9px;padding:11px 13px;
-  color:#7ee0aa;font-size:12.5px;margin-bottom:12px}
-.feed{font-family:var(--mono);font-size:12px}
-.feed .row{display:flex;gap:11px;padding:7px 0;border-bottom:1px solid #1c2029}
-.ct{font-weight:700;min-width:88px}
-.ADDED{color:var(--good)} .MODIFIED{color:var(--warn)}
-.WITHDRAWN{color:var(--crit)} .RESTORED{color:var(--accent)}
-.back{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
-  padding:5px 11px;border-radius:7px;cursor:pointer;font-size:12px;margin-bottom:13px}
-.sec{margin:22px 0 9px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--dimmer);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
-.fac{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;
-  padding:7px 0;border-bottom:1px solid #1c2029;font-size:12.5px}
-.muted{color:var(--dim)}
-.small{font-size:12px}
-details{margin:5px 0}
-summary{cursor:pointer;color:var(--accent);font-size:12px;outline:none}
-.rank{font-family:var(--mono);color:var(--dimmer);font-size:11px}
-.err{padding:40px;text-align:center;color:var(--dim)}
-code{font-family:var(--mono);font-size:12px;background:var(--panel2);padding:1px 5px;border-radius:4px}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+// GENERATED from dc-runtime/src/*.ts — do not edit. Rebuild with `cd dc-runtime && bun run build`.
+"use strict";
+(() => {
+  var __defProp = Object.defineProperty;
+  var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+  var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+
+  // src/react.ts
+  function getReact() {
+    const R = window.React;
+    if (!R) throw new Error("dc-runtime: window.React is not available yet");
+    return R;
+  }
+  function getReactDOM() {
+    const RD = window.ReactDOM;
+    if (!RD) throw new Error("dc-runtime: window.ReactDOM is not available yet");
+    return RD;
+  }
+  var h = ((...args) => getReact().createElement(
+    ...args
+  ));
+
+  // src/parse.ts
+  function parseDcDocument(doc) {
+    const dc = doc.querySelector("x-dc");
+    if (!dc) return null;
+    const scriptEl = doc.querySelector("script[data-dc-script]");
+    const { props, preview } = parseDataProps(
+      scriptEl?.getAttribute("data-props") ?? null
+    );
+    return {
+      template: dc.innerHTML,
+      js: scriptEl ? scriptEl.textContent || "" : "",
+      props,
+      preview
+    };
+  }
+  function parseDcText(src) {
+    const openMatch = /<x-dc(?:\s[^>]*)?>/.exec(src);
+    if (!openMatch) return null;
+    const close = src.lastIndexOf("</x-dc>");
+    if (close === -1 || close < openMatch.index) return null;
+    const template = src.slice(openMatch.index + openMatch[0].length, close);
+    const doc = new DOMParser().parseFromString(src, "text/html");
+    const scriptEl = doc.querySelector("script[data-dc-script]");
+    const { props, preview } = parseDataProps(
+      scriptEl?.getAttribute("data-props") ?? null
+    );
+    return {
+      template,
+      js: scriptEl ? scriptEl.textContent || "" : "",
+      props,
+      preview
+    };
+  }
+  function parseDataProps(raw) {
+    if (!raw) return { props: null, preview: null };
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return { props: null, preview: null };
+    }
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return { props: null, preview: null };
+    }
+    const obj = parsed;
+    const preview = obj.$preview && typeof obj.$preview === "object" ? obj.$preview : null;
+    const rest = {};
+    for (const k of Object.keys(obj)) {
+      if (k[0] !== "$") rest[k] = obj[k];
+    }
+    return { props: Object.keys(rest).length ? rest : null, preview };
+  }
+  function dcNameFromPath(pathname) {
+    let p = pathname || "";
+    try {
+      p = decodeURIComponent(p);
+    } catch {
+    }
+    const base = p.split("/").pop() || "Root";
+    return base.replace(/\.dc\.html$/, "").replace(/\.html?$/, "") || "Root";
+  }
+
+  // src/boot.ts
+  var BASE_CSS = `
+    .sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
+      border:1px solid color-mix(in srgb,currentColor 50%,transparent);
+      border-radius:2px;box-sizing:border-box;overflow:hidden}
+    @keyframes sc-shine{0%{background-position:100% 50%}100%{background-position:0% 50%}}
+    html.sc-dc-streaming .sc-placeholder,
+    html.sc-dc-streaming .sc-interp.sc-missing{position:relative;
+      background:color-mix(in srgb,currentColor 5%,transparent);
+      border-color:transparent}
+    html.sc-dc-streaming .sc-placeholder::before,
+    html.sc-dc-streaming .sc-interp.sc-missing::before{content:'';
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(90deg,rgba(217,119,87,0) 25%,rgba(247,225,211,.95) 37%,rgba(217,119,87,0) 63%);
+      background-size:400% 100%;animation:sc-shine 1.4s ease infinite}
+    html.sc-dc-streaming .sc-placeholder:nth-child(n+9 of .sc-placeholder)::before,
+    html.sc-dc-streaming .sc-interp.sc-missing:nth-child(n+9 of .sc-interp.sc-missing)::before{animation:none;
+      background:color-mix(in srgb,currentColor 8%,transparent)}
+    .sc-placeholder-error{padding:4px 8px;font:11px/1.4 ui-monospace,monospace;
+      color:color-mix(in srgb,currentColor 70%,transparent);word-break:break-word}
+    .sc-interp.sc-missing{display:inline-block;width:2em;height:1em;overflow:hidden;
+      vertical-align:text-bottom;background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
+      border-radius:2px;box-sizing:border-box;color:transparent;
+      user-select:none}
+    .sc-interp.sc-unresolved{font-family:ui-monospace,monospace;font-size:.85em;
+      color:color-mix(in srgb,currentColor 50%,transparent);
+      background:color-mix(in srgb,currentColor 10%,transparent);border-radius:3px;
+      padding:0 3px}
+    .sc-host.sc-has-error{position:relative}
+    .sc-logic-error{position:absolute;top:8px;left:8px;z-index:2147483647;max-width:60ch;
+      padding:6px 10px;background:#b00020;color:#fff;font:12px/1.4 ui-monospace,monospace;
+      border-radius:4px;white-space:pre-wrap;pointer-events:none}
+    /* Mirrors PRINT_BASELINE_CSS in apps/web deck-stage-export.ts \u2014 keep both
+       in sync until dc-runtime regains a build step. */
+    @media print {
+      @page { margin: 0.5cm; }
+      figure, table { break-inside: avoid; }
+      #dc-root, #dc-root > .sc-host { height: auto; }
+      *, *::before, *::after {
+        print-color-adjust: exact; -webkit-print-color-adjust: exact;
+        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        animation-delay: -99s !important; animation-duration: .001s !important;
+        animation-iteration-count: 1 !important; animation-fill-mode: both !important;
+        animation-play-state: running !important; transition-duration: 0s !important;
+      }
+    }
+  `;
+  var FULL_PAGE_CSS = "html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}";
+  function rootNameForDocument(doc, loc) {
+    let bootPath = loc.pathname || "";
+    if (!/\.dc\.html?$/i.test(safeDecode(bootPath))) {
+      try {
+        bootPath = new URL(doc.baseURI || "/").pathname;
+      } catch {
+      }
+    }
+    return dcNameFromPath(bootPath);
+  }
+  function safeDecode(s) {
+    try {
+      return decodeURIComponent(s);
+    } catch {
+      return s;
+    }
+  }
+  function boot(runtime, doc = document) {
+    const parsed = parseDcDocument(doc);
+    if (!parsed) return null;
+    const React = getReact();
+    const rootName = rootNameForDocument(doc, location);
+    runtime.markFetched(rootName);
+    runtime.setRootName(rootName);
+    runtime.adoptParsed(rootName, parsed);
+    if (!window.__resources) {
+      fetch(location.href).then((res) => res.ok ? res.text() : "").then((t) => {
+        const raw = t ? parseDcText(t) : null;
+        if (raw?.template) runtime.updateHtml(rootName, raw.template);
+      }).catch(() => {
+      });
+    }
+    const dc = doc.querySelector("x-dc");
+    const hostEl = doc.createElement("div");
+    hostEl.id = "dc-root";
+    dc.replaceWith(hostEl);
+    if (!parsed.preview) {
+      const s = doc.createElement("style");
+      s.textContent = FULL_PAGE_CSS;
+      doc.head.appendChild(s);
+    }
+    const Root = runtime.getDC(rootName);
+    const entry = runtime.registry.get(rootName);
+    function StandaloneRoot() {
+      const [, setTick] = React.useState(0);
+      React.useEffect(() => {
+        const sub = () => setTick((n) => n + 1);
+        entry.subs.add(sub);
+        return () => {
+          entry.subs.delete(sub);
+        };
+      }, []);
+      const defaults = React.useMemo(() => {
+        const d = {};
+        for (const k in entry.propsMeta || {}) {
+          const v = entry.propsMeta?.[k]?.default;
+          if (v !== void 0) d[k] = v;
+        }
+        return d;
+      }, [entry.propsMeta]);
+      return h(Root, { ...defaults, ...entry.propOverrides || {} });
+    }
+    const ReactDOM = getReactDOM();
+    if (ReactDOM.createRoot)
+      ReactDOM.createRoot(hostEl).render(h(StandaloneRoot));
+    else ReactDOM.render(h(StandaloneRoot), hostEl);
+    return rootName;
+  }
+
+  // src/expr.ts
+  var IDENT_RE = /^[A-Za-z_$][A-Za-z0-9_$]*/;
+  var NUMBER_RE = /^-?\d+(\.\d+)?$/;
+  function resolve(vals, src) {
+    const expr = String(src).trim();
+    if (!expr) return void 0;
+    if (expr[0] === "(" && expr[expr.length - 1] === ")" && parensWrapWhole(expr)) {
+      return resolve(vals, expr.slice(1, -1));
+    }
+    const eq = findTopLevelEquality(expr);
+    if (eq) {
+      const lv = resolve(vals, expr.slice(0, eq.index));
+      const rv = resolve(vals, expr.slice(eq.index + eq.op.length));
+      switch (eq.op) {
+        case "===":
+          return lv === rv;
+        case "!==":
+          return lv !== rv;
+        case "==":
+          return lv == rv;
+        default:
+          return lv != rv;
+      }
+    }
+    if (expr[0] === "!") return !resolve(vals, expr.slice(1));
+    if (expr === "true") return true;
+    if (expr === "false") return false;
+    if (expr === "null") return null;
+    if (expr === "undefined") return void 0;
+    if (NUMBER_RE.test(expr)) return Number(expr);
+    if (expr.length >= 2 && (expr[0] === '"' || expr[0] === "'") && expr[expr.length - 1] === expr[0]) {
+      return expr.slice(1, -1);
+    }
+    return resolvePath(vals, expr);
+  }
+  function parensWrapWhole(expr) {
+    let depth = 0;
+    for (let i = 0; i < expr.length - 1; i++) {
+      if (expr[i] === "(") depth++;
+      else if (expr[i] === ")") {
+        depth--;
+        if (depth === 0) return false;
+      }
+    }
+    return true;
+  }
+  function findTopLevelEquality(expr) {
+    let depth = 0;
+    for (let i = 0; i < expr.length; i++) {
+      const c = expr[i];
+      if (c === "[" || c === "(") depth++;
+      else if (c === "]" || c === ")") depth--;
+      else if (depth === 0 && (c === "=" || c === "!") && expr[i + 1] === "=") {
+        if (i > 0 && (expr[i - 1] === "=" || expr[i - 1] === "!")) continue;
+        if (!expr.slice(0, i).trim()) continue;
+        const op = expr[i + 2] === "=" ? c + "==" : c + "=";
+        return { index: i, op };
+      }
+    }
+    return null;
+  }
+  function resolvePath(vals, expr) {
+    const head = expr.match(IDENT_RE);
+    if (!head) return void 0;
+    let cur = vals == null ? void 0 : vals[head[0]];
+    let i = head[0].length;
+    while (i < expr.length) {
+      if (expr[i] === ".") {
+        const m = expr.slice(i + 1).match(IDENT_RE) || expr.slice(i + 1).match(/^\d+/);
+        if (!m) return void 0;
+        cur = cur == null ? void 0 : cur[m[0]];
+        i += 1 + m[0].length;
+      } else if (expr[i] === "[") {
+        let depth = 1;
+        let j = i + 1;
+        while (j < expr.length && depth > 0) {
+          if (expr[j] === "[") depth++;
+          else if (expr[j] === "]") {
+            depth--;
+            if (depth === 0) break;
+          }
+          j++;
+        }
+        if (depth !== 0) return void 0;
+        const key = resolve(vals, expr.slice(i + 1, j));
+        cur = cur == null ? void 0 : cur[key];
+        i = j + 1;
+      } else {
+        return void 0;
+      }
+    }
+    return cur;
+  }
+
+  // src/encode.ts
+  var CAMEL_ATTR = "sc-camel-";
+  var INLINE_TEXT_TAGS = new Set(
+    "a abbr b bdi bdo br cite code del dfn em i ins kbd mark q s samp small span strike strong sub sup u var wbr".split(
+      " "
+    )
+  );
+  var RAW_WRAP = {
+    select: "sc-raw-select",
+    table: "sc-raw-table",
+    tbody: "sc-raw-tbody",
+    thead: "sc-raw-thead",
+    tfoot: "sc-raw-tfoot",
+    tr: "sc-raw-tr",
+    td: "sc-raw-td",
+    th: "sc-raw-th",
+    caption: "sc-raw-caption"
+  };
+  var RAW_UNWRAP = Object.fromEntries(
+    Object.entries(RAW_WRAP).map(([k, v]) => [v, k])
+  );
+  var EVENT_MAP = {
+    onclick: "onClick",
+    onchange: "onChange",
+    oninput: "onInput",
+    onsubmit: "onSubmit",
+    onkeydown: "onKeyDown",
+    onkeyup: "onKeyUp",
+    onkeypress: "onKeyPress",
+    onmousedown: "onMouseDown",
+    onmouseup: "onMouseUp",
+    onmouseenter: "onMouseEnter",
+    onmouseleave: "onMouseLeave",
+    onfocus: "onFocus",
+    onblur: "onBlur",
+    ondoubleclick: "onDoubleClick",
+    oncontextmenu: "onContextMenu",
+    onmousemove: "onMouseMove",
+    onmouseover: "onMouseOver",
+    onmouseout: "onMouseOut",
+    onpointerdown: "onPointerDown",
+    onpointerup: "onPointerUp",
+    onpointermove: "onPointerMove",
+    onpointerenter: "onPointerEnter",
+    onpointerleave: "onPointerLeave",
+    onpointercancel: "onPointerCancel",
+    onpointerover: "onPointerOver",
+    onpointerout: "onPointerOut",
+    ongotpointercapture: "onGotPointerCapture",
+    onlostpointercapture: "onLostPointerCapture",
+    ontouchstart: "onTouchStart",
+    ontouchend: "onTouchEnd",
+    ontouchmove: "onTouchMove",
+    ontouchcancel: "onTouchCancel",
+    ondragstart: "onDragStart",
+    ondragend: "onDragEnd",
+    ondragenter: "onDragEnter",
+    ondragleave: "onDragLeave",
+    ondragover: "onDragOver",
+    onanimationstart: "onAnimationStart",
+    onanimationend: "onAnimationEnd",
+    onanimationiteration: "onAnimationIteration",
+    ontransitionend: "onTransitionEnd"
+  };
+  var ATTRS = `(?:[^>"']|"[^"]*"|'[^']*')*`;
+  var IMPORT_SELF_CLOSE_RE = new RegExp(
+    "<(x-import|dc-import)(" + ATTRS + ")/>",
+    "gi"
+  );
+  var CAMEL_ATTR_RE = /(\s)([a-z]+[A-Z][A-Za-z0-9]*)(\s*=)/g;
+  function encodeCamelAttrs(html) {
+    return html.replace(
+      CAMEL_ATTR_RE,
+      (_, sp, name, eq) => sp + CAMEL_ATTR + name.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase()) + eq
+    );
+  }
+  function encodeCase(html) {
+    html = html.replace(
+      IMPORT_SELF_CLOSE_RE,
+      (_, t, a) => "<" + t + a + "></" + t + ">"
+    );
+    html = html.replace(/<helmet(\s|>)/gi, "<sc-helmet$1");
+    html = html.replace(/<\/helmet\s*>/gi, "</sc-helmet>");
+    html = encodeCamelAttrs(html);
+    for (const [real, alias] of Object.entries(RAW_WRAP)) {
+      html = html.replace(
+        new RegExp("(</?)" + real + "(?=[\\s>])", "gi"),
+        "$1" + alias
+      );
+    }
+    return html;
+  }
+  function kebabToCamel(s) {
+    return s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  }
+  function cssToObj(css) {
+    const o = {};
+    for (const decl of css.split(";")) {
+      const i = decl.indexOf(":");
+      if (i < 0) continue;
+      const prop = decl.slice(0, i).trim();
+      o[prop.startsWith("--") ? prop : kebabToCamel(prop)] = decl.slice(i + 1).trim();
+    }
+    return o;
+  }
+  function compileAttr(raw) {
+    const whole = raw.match(/^\s*\{\{([\s\S]+?)\}\}\s*$/);
+    if (whole) {
+      const path = whole[1];
+      return (vals) => resolve(vals, path);
+    }
+    if (raw.includes("{{")) {
+      const parts = raw.split(/\{\{([\s\S]+?)\}\}/g);
+      return (vals) => parts.map((s, i) => i & 1 ? resolve(vals, s) ?? "" : s).join("");
+    }
+    return () => raw;
+  }
+
+  // src/compile.ts
+  function collectProps(node, kind, host) {
+    const propGetters = [];
+    const pseudoClasses = [];
+    let hintSize = null;
+    for (const { name, value } of [...node.attributes]) {
+      if (name === "sc-name" || name === "data-dc-tpl") continue;
+      let key = name;
+      if (key.startsWith(CAMEL_ATTR))
+        key = kebabToCamel(key.slice(CAMEL_ATTR.length));
+      if (key === "hint-size") {
+        hintSize = value;
+        continue;
+      }
+      if (key.startsWith("style-")) {
+        pseudoClasses.push(host.pseudoClass(key.slice(6), value));
+        continue;
+      }
+      if (kind !== "dom") {
+        if (key.includes("-") && !(kind === "x-import" && (key.startsWith("aria-") || key.startsWith("data-"))))
+          key = kebabToCamel(key);
+      } else {
+        if (key === "class") key = "className";
+        else if (key === "for") key = "htmlFor";
+        else if (key.startsWith("on"))
+          key = EVENT_MAP[key] || "on" + key[2].toUpperCase() + key.slice(3);
+      }
+      propGetters.push([key, compileAttr(value)]);
+    }
+    return { propGetters, pseudoClasses, hintSize };
+  }
+  var HOST_STYLE_PROPS = /* @__PURE__ */ new Set([
+    "position",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "inset",
+    "width",
+    "height",
+    "z-index",
+    "transform"
+  ]);
+  function hostPositionStyle(style) {
+    const all = typeof style === "string" ? cssToObj(style) : style != null && typeof style === "object" ? style : null;
+    if (!all) return void 0;
+    const out = {};
+    for (const [k, v] of Object.entries(all)) {
+      const kebab = k.replace(/[A-Z]/g, (c) => "-" + c.toLowerCase());
+      if (HOST_STYLE_PROPS.has(kebab)) out[k] = v;
+    }
+    return Object.keys(out).length ? out : void 0;
+  }
+  function compileTemplate(html, host) {
+    const tpl = document.createElement("template");
+    //! nosemgrep: direct-inner-html-assignment
+    tpl.innerHTML = encodeCase(html);
+    let tplN = 0;
+    (function stamp(node) {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        node.setAttribute("data-dc-tpl", String(tplN++));
+      }
+      for (const c of node.childNodes) stamp(c);
+    })(tpl.content);
+    const builders = walkChildren(tpl.content, host);
+    const render = ((vals, ctx) => builders.map((b, i) => b(vals || {}, ctx, i)));
+    render.__annotated = tpl.innerHTML;
+    return render;
+  }
+  function walkChildren(node, host) {
+    return [...node.childNodes].map((c) => walk(c, host)).filter((b) => b != null);
+  }
+  var SLIDE_ID_VALUE_RE = /^[0-9a-f]{8}$/;
+  var DECK_CONTROL_FLOW_RE = /^(sc-if|sc-for|sc-else|dc-import|x-import)$/;
+  var DECK_AUX_RE = /^(template|script|style|sc-helmet|helmet)$/;
+  function isDeckMountTag(el) {
+    if (el.localName === "deck-stage") return true;
+    return el.localName === "x-import" && (el.getAttribute("component-from-global-scope") || "") === "deck-stage";
+  }
+  function walkDeckChildren(el, host) {
+    const pairs = [...el.childNodes].map((c) => ({ c, b: walk(c, host) })).filter((p) => p.b !== null);
+    const kids = pairs.map((p) => p.b);
+    const seen = /* @__PURE__ */ new Set();
+    const wsSeen = /* @__PURE__ */ new Map();
+    const keys = [];
+    const nextSlideId = new Array(pairs.length);
+    {
+      let upcoming = null;
+      for (let j = pairs.length - 1; j >= 0; j--) {
+        const n = pairs[j].c;
+        if (n.nodeType === Node.ELEMENT_NODE) {
+          const t = n.localName;
+          upcoming = !DECK_AUX_RE.test(t) && !DECK_CONTROL_FLOW_RE.test(t) ? n.getAttribute("data-om-slide-id") : null;
+        }
+        nextSlideId[j] = upcoming;
+      }
+    }
+    for (let j = 0; j < pairs.length; j++) {
+      const { c } = pairs[j];
+      if (c.nodeType === Node.TEXT_NODE) {
+        if ((c.nodeValue ?? "").trim() === "") {
+          const base = nextSlideId[j] ? "omid-ws:" + nextSlideId[j] : "omid-ws:aux";
+          const n = wsSeen.get(base) ?? 0;
+          wsSeen.set(base, n + 1);
+          keys.push(n === 0 ? base : base + ":" + n);
+          continue;
+        }
+        return { kids, keys: null };
+      }
+      if (c.nodeType !== Node.ELEMENT_NODE) {
+        keys.push(j);
+        continue;
+      }
+      const child = c;
+      const tag = child.localName;
+      if (DECK_AUX_RE.test(tag)) {
+        keys.push(j);
+        continue;
+      }
+      if (DECK_CONTROL_FLOW_RE.test(tag)) return { kids, keys: null };
+      const v = child.getAttribute("data-om-slide-id");
+      if (!v || !SLIDE_ID_VALUE_RE.test(v) || seen.has(v)) {
+        return { kids, keys: null };
+      }
+      seen.add(v);
+      keys.push("omid:" + v);
+    }
+    return { kids, keys };
+  }
+  function renderDeckKids(kids, kidKeys, vals, ctx) {
+    return kids.map((b, j) => {
+      const k = kidKeys ? kidKeys[j] : j;
+      const out = b(vals, ctx, k);
+      return kidKeys != null && typeof out === "string" ? h(getReact().Fragment, { key: k }, out) : out;
+    });
+  }
+  function walk(node, host) {
+    if (node.nodeType === Node.TEXT_NODE) return walkText(node);
+    if (node.nodeType !== Node.ELEMENT_NODE) return null;
+    const el = node;
+    const tag = el.tagName.toLowerCase();
+    if (tag === "sc-for") return walkFor(el, host);
+    if (tag === "sc-if") return walkIf(el, host);
+    if (tag === "x-import") return walkXImport(el, host);
+    if (tag === "sc-helmet") return host.helmet(el);
+    if (tag === "dc-import") return walkComponent(el, host);
+    return walkElement(el, host);
+  }
+  var warnedHoles = /* @__PURE__ */ new Set();
+  function warnUnresolved(ctx, what) {
+    const key = (ctx?.__name || "?") + "\0" + what;
+    if (warnedHoles.has(key)) return;
+    warnedHoles.add(key);
+    console.warn("[dc-runtime] " + (ctx?.__name || "template") + ": " + what);
+  }
+  function walkText(node) {
+    const txt = node.nodeValue ?? "";
+    if (!txt.includes("{{")) {
+      if (!txt.trim() && !txt.includes(" ")) return null;
+      return () => txt;
+    }
+    const parts = txt.split(/\{\{([\s\S]+?)\}\}/g);
+    return (vals, ctx, key) => h(
+      getReact().Fragment,
+      { key },
+      ...parts.map((p, i) => {
+        if (!(i & 1)) return p;
+        const v = resolve(vals, p);
+        if (v === void 0) {
+          if (!ctx?.__streamingNow) {
+            if (document.body?.hasAttribute("data-dc-editor-on")) {
+              return h(
+                "span",
+                { key: i, className: "sc-interp sc-unresolved" },
+                "{{ " + p.trim() + " }}"
+              );
+            }
+            warnUnresolved(
+              ctx,
+              "{{ " + p.trim() + " }} never resolved \u2014 rendered as empty"
+            );
+            return null;
+          }
+          return h(
+            "span",
+            { key: i, className: "sc-interp sc-missing" },
+            p.trim()
+          );
+        }
+        if (getReact().isValidElement(v) || Array.isArray(v)) {
+          return h(getReact().Fragment, { key: i }, v);
+        }
+        if (v === null || typeof v === "boolean") return null;
+        return h("span", { key: i, className: "sc-interp" }, String(v));
+      })
+    );
+  }
+  function walkFor(el, host) {
+    const listGet = compileAttr(el.getAttribute("list") || "");
+    const asName = el.getAttribute("as") || "item";
+    const hintN = parseInt(el.getAttribute("hint-placeholder-count") || "0", 10);
+    const kids = walkChildren(el, host);
+    const listSrc = el.getAttribute("list") || "";
+    return (vals, ctx, key) => {
+      let list = listGet(vals);
+      if (!Array.isArray(list)) {
+        if (!ctx?.__streamingNow) {
+          if (list !== void 0 && list !== null) {
+            warnUnresolved(
+              ctx,
+              'sc-for list="' + listSrc + '" is not an array (' + typeof list + ")"
+            );
+          }
+          list = [];
+        } else {
+          list = hintN > 0 ? Array(hintN).fill(void 0) : [];
+        }
+      }
+      return h(
+        getReact().Fragment,
+        { key },
+        list.map((item, i) => {
+          const sub = { ...vals, [asName]: item, $index: i };
+          return h(
+            getReact().Fragment,
+            { key: i },
+            kids.map((b, j) => b(sub, ctx, j))
+          );
+        })
+      );
+    };
+  }
+  function walkIf(el, host) {
+    const valGet = compileAttr(el.getAttribute("value") || "");
+    const hintRaw = el.getAttribute("hint-placeholder-val");
+    const hintGet = hintRaw != null ? compileAttr(hintRaw) : null;
+    const kids = walkChildren(el, host);
+    return (vals, ctx, key) => {
+      let v = valGet(vals);
+      if (v === void 0 && hintGet && ctx?.__streamingNow) v = hintGet(vals);
+      return v ? h(
+        getReact().Fragment,
+        { key },
+        kids.map((b, j) => b(vals, ctx, j))
+      ) : null;
+    };
+  }
+  function walkComponent(el, host) {
+    const name = el.getAttribute("name") || el.getAttribute("component") || "";
+    el.removeAttribute("name");
+    el.removeAttribute("component");
+    const tplId = el.getAttribute("data-dc-tpl");
+    const styleRaw = el.getAttribute("style");
+    el.removeAttribute("style");
+    const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
+    const { propGetters, hintSize } = collectProps(el, "dc-import", host);
+    const kids = walkChildren(el, host);
+    return (vals, ctx, key) => {
+      const props = {
+        key,
+        __hintSize: hintSize,
+        __tplId: tplId,
+        __hostStyle: styleGet ? hostPositionStyle(styleGet(vals)) : void 0
+      };
+      for (const [k, g] of propGetters) {
+        const v = g(vals);
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
+        props[k] = v;
+      }
+      if (kids.length) props.children = kids.map((b, j) => b(vals, ctx, j));
+      return h(host.component(name), props);
+    };
+  }
+  function walkXImport(el, host) {
+    const globalNameGet = compileAttr(
+      el.getAttribute("component-from-global-scope") || ""
+    );
+    const exportNameGet = compileAttr(
+      el.getAttribute("component") || el.getAttribute("name") || ""
+    );
+    const fromRaw = el.getAttribute("from") || (el.getAttribute("component-from-global-scope") ? "" : el.getAttribute("src") || el.getAttribute("import") || "");
+    const urls = fromRaw.trim() ? fromRaw.trim().split(/\s+/) : [];
+    const url = urls.length ? urls[urls.length - 1] : "";
+    const kindOf = (u) => /\.(jsx|tsx)(\?|#|$)/i.test(u) ? "jsx" : "js";
+    const tplId = el.getAttribute("data-dc-tpl");
+    const styleRaw = el.getAttribute("style");
+    el.removeAttribute("style");
+    const styleGet = styleRaw != null ? compileAttr(styleRaw) : null;
+    const wrap = tplId != null || styleGet != null;
+    const { propGetters, hintSize } = collectProps(el, "x-import", host);
+    const hasContent = el.children.length > 0 || !!(el.textContent || "").trim();
+    const deckKeyed = hasContent && isDeckMountTag(el) ? walkDeckChildren(el, host) : null;
+    const kids = deckKeyed ? deckKeyed.kids : hasContent ? walkChildren(el, host) : [];
+    const kidKeys = deckKeyed?.keys ?? null;
+    const urlBindable = fromRaw.includes("{{");
+    if (urls.length && !urlBindable) {
+      let prev;
+      for (const u of urls) prev = host.loadExternal(kindOf(u), u, prev);
+    }
+    const evalName = (g, vals) => {
+      const v = g(vals);
+      const s = v == null ? "" : String(v);
+      return s.includes("{{") ? "" : s;
+    };
+    return (vals, ctx, key) => {
+      const globalName = evalName(globalNameGet, vals);
+      const name = globalName || evalName(exportNameGet, vals);
+      const C = !name || urlBindable ? null : globalName ? host.resolveExternalGlobal(url, globalName) : host.resolveExternal(url, name);
+      const hostStyle = styleGet ? hostPositionStyle(styleGet(vals)) : void 0;
+      const wrapper = wrap ? {
+        key,
+        className: "sc-host-x",
+        "data-dc-tpl": tplId,
+        style: hostStyle || { display: "contents" }
+      } : null;
+      if (!C) {
+        const error = urlBindable ? "x-import `from` cannot contain {{ \u2026 }} \u2014 module URLs are resolved at parse time; use a literal URL" : host.resolveExternalError(url, name);
+        const ph = host.placeholder({
+          key: wrapper ? void 0 : key,
+          name,
+          hintSize,
+          error
+        });
+        return wrapper ? h("div", wrapper, ph) : ph;
+      }
+      const props = wrapper ? {} : { key };
+      let unresolvedHole = false;
+      for (const [k, g] of propGetters) {
+        if (k === "component" || k === "componentFromGlobalScope" || k === "from") {
+          continue;
+        }
+        const v = g(vals);
+        if (v === void 0) unresolvedHole = true;
+        if (k === "dcProps") {
+          if (v && typeof v === "object") Object.assign(props, v);
+          continue;
+        }
+        props[k] = v;
+      }
+      if (unresolvedHole && ctx?.__htmlStreamingNow) {
+        const ph = host.placeholder({
+          key: wrapper ? void 0 : key,
+          name,
+          hintSize,
+          error: null
+        });
+        return wrapper ? h("div", wrapper, ph) : ph;
+      }
+      if (kids.length) {
+        props.children = renderDeckKids(kids, kidKeys, vals, ctx);
+      }
+      return wrapper ? h("div", wrapper, h(C, props)) : h(C, props);
+    };
+  }
+  function contentKey(el) {
+    const clone = el.cloneNode(true);
+    for (const d of clone.querySelectorAll("*")) {
+      while (d.attributes.length) d.removeAttribute(d.attributes[0].name);
+    }
+    const s = clone.innerHTML;
+    let h2 = 5381;
+    for (let i = 0; i < s.length; i++) h2 = (h2 << 5) + h2 + s.charCodeAt(i) | 0;
+    return s.length + "." + (h2 >>> 0).toString(36);
+  }
+  var NEVER_CONTENT_KEYED = new Set(
+    "script style textarea option title select canvas iframe video audio".split(
+      " "
+    )
+  );
+  var NOT_INLINE_SELECTOR = ":not(" + [...INLINE_TEXT_TAGS].join(",") + ")";
+  function walkElement(el, host) {
+    const realTag = RAW_UNWRAP[el.localName] || el.localName;
+    const tplId = el.getAttribute("data-dc-tpl");
+    const inlineOnly = el.childNodes.length > 0 && !NEVER_CONTENT_KEYED.has(realTag) && el.querySelector(NOT_INLINE_SELECTOR) === null;
+    const keySuffix = inlineOnly ? "|" + contentKey(el) : "";
+    const { propGetters, pseudoClasses } = collectProps(el, "dom", host);
+    const deckKeyed = isDeckMountTag(el) ? walkDeckChildren(el, host) : null;
+    const kids = deckKeyed ? deckKeyed.kids : walkChildren(el, host);
+    const kidKeys = deckKeyed?.keys ?? null;
+    return (vals, ctx, key) => {
+      const props = {
+        key: key + keySuffix,
+        "data-dc-tpl": tplId
+      };
+      for (const [k, g] of propGetters) {
+        let v = g(vals);
+        if (k === "style" && typeof v === "string") v = cssToObj(v);
+        if ((k === "value" || k === "checked") && v === void 0) {
+          v = k === "checked" ? false : "";
+        }
+        props[k] = v;
+      }
+      if (pseudoClasses.length) {
+        props.className = [props.className, ...pseudoClasses].filter(Boolean).join(" ");
+      }
+      return h(realTag, props, ...renderDeckKids(kids, kidKeys, vals, ctx));
+    };
+  }
+
+  // src/logic.ts
+  var StreamableLogic = class {
+    constructor(props) {
+      __publicField(this, "props");
+      __publicField(this, "state", {});
+      /** Back-pointer to the wrapper component, installed after construction. */
+      __publicField(this, "__host");
+      this.props = props || {};
+    }
+    setState(update, cb) {
+      this.__host && this.__host.__setLogicState(update, cb);
+    }
+    forceUpdate() {
+      this.__host && this.__host.forceUpdate();
+    }
+    componentDidMount() {
+    }
+    componentDidUpdate(_prevProps) {
+    }
+    componentWillUnmount() {
+    }
+    /** The flat object the template renders against (merged over props). */
+    renderVals() {
+      return {};
+    }
+  };
+  function evalDcLogic(src) {
+    //! nosemgrep: eval-and-function-constructor
+    const fn = new Function(
+      "DCLogic",
+      "StreamableLogic",
+      "React",
+      src + '\n;return (typeof Component!=="undefined"&&Component)||undefined;'
+    );
+    return fn(StreamableLogic, StreamableLogic, getReact());
+  }
+
+  // src/component.ts
+  function shallowEqual(a, b) {
+    if (!b) return false;
+    const ak = Object.keys(a).filter((k) => k !== "children");
+    const bk = Object.keys(b).filter((k) => k !== "children");
+    if (ak.length !== bk.length) return false;
+    for (const k of ak) if (a[k] !== b[k]) return false;
+    return true;
+  }
+  function Placeholder({
+    name,
+    hintSize,
+    streaming,
+    error
+  }) {
+    const [w, hgt] = (hintSize || "100%,60px").split(",");
+    return h(
+      "div",
+      {
+        className: "sc-placeholder" + (streaming ? " sc-streaming" : ""),
+        style: { width: w.trim(), height: hgt && hgt.trim() },
+        title: name
+      },
+      error ? h(
+        "div",
+        { className: "sc-placeholder-error" },
+        (name ? name + ": " : "") + error
+      ) : null
+    );
+  }
+  function hintToMin(hint) {
+    if (!hint) return void 0;
+    const [w, hgt] = hint.split(",");
+    return { minWidth: w.trim(), minHeight: hgt && hgt.trim() };
+  }
+  function createComponentFactory(registry, ensureFetched) {
+    const React = getReact();
+    const AncestorContext = React.createContext([]);
+    class StreamableComponent extends React.Component {
+      constructor(props) {
+        super(props);
+        __publicField(this, "__name");
+        __publicField(this, "__sub");
+        __publicField(this, "__needsDidMount", false);
+        /** Snapshot of the registry's streaming flags taken at render time —
+         *  builders read it off the RenderCtx (this) to pick placeholder vs
+         *  render-nothing for unresolved values. */
+        __publicField(this, "__streamingNow", false);
+        __publicField(this, "__htmlStreamingNow", false);
+        /** When a construct throws, remember the (class, registry.ver, props)
+         *  triple so render-time reconcile doesn't re-attempt it on every parent
+         *  re-render. A registry bump (new class, template, external module
+         *  resolving via bumpAll) changes `ver` and breaks the memo so an
+         *  env-dependent constructor can self-heal. */
+        __publicField(this, "__failedLogic", null);
+        __publicField(this, "__failedUserProps", null);
+        __publicField(this, "__failedVer", -1);
+        /** Per-instance constructor error — kept here (not on the registry entry)
+         *  so one instance's successful construct can't hide a sibling's failure,
+         *  and a construct can never wipe an eval error `updateJs` recorded on
+         *  `r.logicError`. */
+        __publicField(this, "__ctorError", null);
+        __publicField(this, "logic");
+        this.__name = props.__name;
+        this.state = { __v: 0, __err: null };
+        this.__sub = () => {
+          if (this.state.__err) this.setState({ __err: null });
+          this.forceUpdate();
+        };
+        this.__makeLogic(registry.get(this.__name).Logic, null);
+        ensureFetched(this.__name);
+      }
+      /** Error-boundary hook: a render crash anywhere in this DC's subtree
+       *  (its own template, an x-import'd component, a child DC without its
+       *  own deeper boundary) lands here instead of unmounting the page. */
+      static getDerivedStateFromError(e) {
+        return { __err: e instanceof Error && e.message ? e.message : String(e) };
+      }
+      componentDidCatch(e, info) {
+        console.error(
+          "[dc-runtime] render error in <" + this.__name + ">:",
+          e,
+          info?.componentStack || ""
+        );
+      }
+      /** Instantiate the logic class (or the no-op base) and adopt `prevState`
+       *  over its initial state — used both at mount and on hot-swap. */
+      __makeLogic(Logic, prevState) {
+        const L = Logic || StreamableLogic;
+        try {
+          this.logic = new L(this.__userProps());
+          this.__failedLogic = null;
+          this.__failedUserProps = null;
+          this.__ctorError = null;
+        } catch (e) {
+          console.error(e);
+          this.__failedLogic = Logic;
+          this.__failedUserProps = this.__userProps();
+          this.__failedVer = registry.get(this.__name).ver;
+          this.__ctorError = this.__name + ": " + (e instanceof Error && e.message ? e.message : String(e));
+          this.logic = new StreamableLogic(
+            this.__userProps()
+          );
+        }
+        this.logic.__host = this;
+        if (prevState)
+          this.logic.state = { ...this.logic.state || {}, ...prevState };
+      }
+      /** The props the author's logic + template see — internal __-prefixed
+       *  wiring stripped. */
+      __userProps() {
+        const { __name, __hintSize, __tplId, __hostStyle, ...rest } = this.props;
+        return rest;
+      }
+      __setLogicState(update, cb) {
+        const prev = this.logic.state;
+        const patch = typeof update === "function" ? update(prev) : update;
+        this.logic.state = { ...prev, ...patch };
+        this.setState((s) => ({ __v: s.__v + 1 }), cb);
+      }
+      /** Swap the logic instance when the registry's Logic class changed
+       *  (streaming completion, hot reload). State carries over; didMount
+       *  re-fires after the swap commits so refs exist. */
+      __reconcileLogic() {
+        const r = registry.get(this.__name);
+        const Next = r.Logic;
+        const Cur = this.logic.constructor;
+        if (Next === Cur || !Next && Cur === StreamableLogic || Next === this.__failedLogic && r.ver === this.__failedVer && shallowEqual(this.__userProps(), this.__failedUserProps)) {
+          return;
+        }
+        if (!this.__needsDidMount) {
+          try {
+            this.logic.componentWillUnmount();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+        this.__makeLogic(Next, this.logic.state);
+        this.__needsDidMount = true;
+      }
+      componentDidMount() {
+        registry.get(this.__name).subs.add(this.__sub);
+        try {
+          this.logic.componentDidMount();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      componentDidUpdate(prevProps) {
+        this.logic.props = this.__userProps();
+        if (this.__needsDidMount) {
+          if (this.state.__err || !registry.get(this.__name).tpl) return;
+          this.__needsDidMount = false;
+          try {
+            this.logic.componentDidMount();
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          try {
+            this.logic.componentDidUpdate(prevProps);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+      componentWillUnmount() {
+        registry.get(this.__name).subs.delete(this.__sub);
+        if (!this.__needsDidMount) {
+          try {
+            this.logic.componentWillUnmount();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+      render() {
+        const r = registry.get(this.__name);
+        const cls = "sc-host" + (r.htmlStreaming ? " sc-streaming-html" : "") + (r.jsStreaming ? " sc-streaming-js" : "");
+        const hintStyle = r.htmlStreaming ? hintToMin(this.props.__hintSize) : void 0;
+        const hostStyle = this.props.__hostStyle || hintStyle ? { ...hintStyle || {}, ...this.props.__hostStyle || {} } : void 0;
+        const hostBase = {
+          className: cls,
+          style: hostStyle,
+          "data-sc-name": this.__name,
+          "data-dc-tpl": this.props.__tplId
+        };
+        const chain = Array.isArray(this.context) ? this.context : [];
+        if (chain.includes(this.__name)) {
+          const cycle = [
+            ...chain.slice(chain.indexOf(this.__name)),
+            this.__name
+          ].join(" \u2192 ");
+          return h(
+            "div",
+            { ...hostBase, className: cls + " sc-has-error" },
+            h(Placeholder, {
+              name: this.__name,
+              hintSize: this.props.__hintSize,
+              error: "circular import: " + cycle
+            })
+          );
+        }
+        if (this.state.__err) {
+          return h(
+            "div",
+            { ...hostBase, className: cls + " sc-has-error" },
+            h(
+              "div",
+              { className: "sc-logic-error", "data-omelette-chrome": "" },
+              this.__name + ": " + this.state.__err
+            ),
+            h(Placeholder, {
+              name: this.__name,
+              hintSize: this.props.__hintSize,
+              error: this.state.__err
+            })
+          );
+        }
+        this.__reconcileLogic();
+        if (!r.tpl) {
+          return h(
+            "div",
+            hostBase,
+            h(Placeholder, { name: this.__name, hintSize: this.props.__hintSize })
+          );
+        }
+        const userProps = this.__userProps();
+        this.logic.props = userProps;
+        let vals = userProps;
+        let renderErr = r.logicError || this.__ctorError;
+        try {
+          vals = { ...userProps, ...this.logic.renderVals() || {} };
+        } catch (e) {
+          console.error(e);
+          renderErr = this.__name + ".renderVals(): " + (e instanceof Error && e.message ? e.message : String(e));
+        }
+        this.__streamingNow = !!(r.htmlStreaming || r.jsStreaming);
+        this.__htmlStreamingNow = !!r.htmlStreaming;
+        return h(
+          "div",
+          { ...hostBase, className: cls + (renderErr ? " sc-has-error" : "") },
+          renderErr && h(
+            "div",
+            { className: "sc-logic-error", "data-omelette-chrome": "" },
+            renderErr
+          ),
+          h(
+            AncestorContext.Provider,
+            { value: [...chain, this.__name] },
+            r.tpl(vals, this)
+          )
+        );
+      }
+    }
+    __publicField(StreamableComponent, "contextType", AncestorContext);
+    const named = /* @__PURE__ */ new Map();
+    function getDC(name) {
+      const hit = named.get(name);
+      if (hit) return hit;
+      function Dispatcher(p) {
+        const [, setTick] = React.useState(0);
+        React.useEffect(() => {
+          const sub = () => setTick((n) => n + 1);
+          registry.get(name).subs.add(sub);
+          return () => {
+            registry.get(name).subs.delete(sub);
+          };
+        }, []);
+        ensureFetched(name);
+        return h(StreamableComponent, { ...p, __name: name });
+      }
+      Dispatcher.displayName = name;
+      named.set(name, Dispatcher);
+      return Dispatcher;
+    }
+    return {
+      getDC,
+      StreamableComponent
+    };
+  }
+
+  // src/bundled.ts
+  function bundledBlob(url) {
+    const blobs = window.__resourceBlobs;
+    const b = blobs ? blobs[url.split("#")[0]] : void 0;
+    return b instanceof Blob ? b : null;
+  }
+
+  // src/cdn.ts
+  var REACT_URL = "https://unpkg.com/react@18.3.1/umd/react.production.min.js";
+  var REACT_SRI = "sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z";
+  var REACT_DOM_URL = "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js";
+  var REACT_DOM_SRI = "sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1";
+  var BABEL_URL = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
+  var BABEL_SRI = "sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y";
+  function cdnScriptFor(url, sri) {
+    const res = window.__resources;
+    const v = res ? res[url] : void 0;
+    return typeof v === "string" && v ? { src: v } : { src: url, integrity: sri };
+  }
+
+  // src/external.ts
+  var isCustomElementName = (n) => !n.includes(".") && n.includes("-");
+  function isRenderableType(g) {
+    if (typeof g === "function") return !isElementClass(g);
+    return typeof g === "object" && g !== null && typeof g.$$typeof === "symbol";
+  }
+  function resolveDottedPath(root, name) {
+    let cur = root;
+    for (const seg of name.split(".")) {
+      if (cur == null) return void 0;
+      cur = cur[seg];
+    }
+    return cur;
+  }
+  var GLOBAL_POLL_INTERVAL_MS = 50;
+  var GLOBAL_POLL_TIMEOUT_MS = 3e4;
+  function createExternalModules(onResolved) {
+    const cache = /* @__PURE__ */ new Map();
+    let babelLoading = null;
+    const reportedMissing = /* @__PURE__ */ new Map();
+    const polling = /* @__PURE__ */ new Set();
+    function ensureBabel() {
+      if (window.Babel) return Promise.resolve();
+      if (babelLoading) return babelLoading;
+      const babel = cdnScriptFor(BABEL_URL, BABEL_SRI);
+      babelLoading = new Promise((res, rej) => {
+        const s = document.createElement("script");
+        s.src = babel.src;
+        if (babel.integrity) {
+          s.integrity = babel.integrity;
+          s.crossOrigin = "anonymous";
+        }
+        s.onload = () => res();
+        s.onerror = rej;
+        document.head.appendChild(s);
+      });
+      return babelLoading;
+    }
+    const pending = /* @__PURE__ */ new Map();
+    function load(kind, url, after) {
+      const existing = pending.get(url);
+      if (existing) return existing;
+      cache.set(url, null);
+      console.info("[dc-runtime] x-import: loading", url, "(" + kind + ")");
+      const ready = Promise.all([
+        kind === "jsx" ? ensureBabel() : Promise.resolve(),
+        after ?? Promise.resolve()
+      ]);
+      const p = ready.then(() => {
+        const pre = bundledBlob(url);
+        if (pre) return pre.text();
+        return fetch(url).then((r) => {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.text();
+        });
+      }).then((src) => {
+        const code = kind === "jsx" ? window.Babel.transform(src, {
+          filename: url,
+          presets: ["react", "typescript"]
+        }).code : src;
+        const module = { exports: {} };
+        const before = new Set(Object.keys(window));
+        //! nosemgrep: eval-and-function-constructor
+        new Function("React", "module", "exports", "require", code)(
+          getReact(),
+          module,
+          module.exports,
+          () => ({})
+        );
+        const globals = {};
+        for (const k of Object.keys(window)) {
+          if (!before.has(k) && typeof window[k] === "function") {
+            globals[k] = window[k];
+          }
+        }
+        cache.set(url, { mod: module.exports, globals });
+        console.info(
+          "[dc-runtime] x-import: loaded",
+          url,
+          "\u2014 exports:",
+          Object.keys(module.exports),
+          "window globals:",
+          Object.keys(globals)
+        );
+        onResolved();
+      }).catch((e) => {
+        cache.set(url, {
+          mod: {},
+          globals: {},
+          error: "failed to load: " + (e instanceof Error && e.message ? e.message : String(e))
+        });
+        console.error(
+          "[dc-runtime] x-import: FAILED to load",
+          url,
+          "(" + kind + ")",
+          e
+        );
+        onResolved();
+      });
+      pending.set(url, p);
+      return p;
+    }
+    function resolve2(url, name) {
+      const entry = cache.get(url);
+      if (!entry) return null;
+      const { mod, globals } = entry;
+      const C = mod && mod[name] || globals && globals[name] || typeof window !== "undefined" && window[name] || mod && mod.default;
+      if (typeof C === "function") return C;
+      const key = url + "\0" + name;
+      if (!reportedMissing.has(key)) {
+        reportedMissing.set(
+          key,
+          entry.error || 'no export named "' + name + '" (has: ' + Object.keys(mod).join(", ") + ")"
+        );
+        console.error(
+          "[dc-runtime] x-import: module",
+          url,
+          "loaded but has no component named",
+          JSON.stringify(name),
+          "\u2014 available exports:",
+          Object.keys(mod),
+          "window globals:",
+          Object.keys(globals),
+          ". The module must `module.exports = {" + name + "}` or set `window." + name + "`."
+        );
+      }
+      return null;
+    }
+    function waitForGlobal(name) {
+      if (polling.has(name)) return;
+      polling.add(name);
+      const started = Date.now();
+      const isCE = isCustomElementName(name);
+      const tick = () => {
+        const found = isCE ? customElements.get(name) : isRenderableType(resolveDottedPath(window, name));
+        if (found) {
+          polling.delete(name);
+          onResolved();
+          return;
+        }
+        if (Date.now() - started >= GLOBAL_POLL_TIMEOUT_MS) {
+          console.warn(
+            "[dc-runtime] x-import: global",
+            JSON.stringify(name),
+            "never appeared on window after " + GLOBAL_POLL_TIMEOUT_MS + "ms"
+          );
+          return;
+        }
+        setTimeout(tick, GLOBAL_POLL_INTERVAL_MS);
+      };
+      setTimeout(tick, GLOBAL_POLL_INTERVAL_MS);
+    }
+    function resolveGlobal(url, name) {
+      const isCE = isCustomElementName(name);
+      if (!url) {
+        if (isCE) {
+          if (customElements.get(name)) return name;
+          waitForGlobal(name);
+          return null;
+        }
+        const g2 = resolveDottedPath(window, name);
+        if (isRenderableType(g2)) return g2;
+        waitForGlobal(name);
+        return null;
+      }
+      const entry = cache.get(url);
+      if (!entry) return null;
+      if (isCE && customElements.get(name)) return name;
+      const g = entry.globals[name] ?? resolveDottedPath(window, name);
+      if (isRenderableType(g)) return g;
+      if (name.includes(".")) return null;
+      const key = url + "\0global\0" + name;
+      if (!reportedMissing.has(key)) {
+        reportedMissing.set(key, null);
+        if (isCE && !customElements.get(name)) {
+          console.warn(
+            "[dc-runtime] x-import:",
+            url,
+            "loaded but no custom element",
+            JSON.stringify(name),
+            "is registered and window." + name + " is not a function \u2014 rendering <" + name + "> as an unknown element."
+          );
+        }
+      }
+      return name;
+    }
+    function getError(url, name) {
+      const entry = cache.get(url);
+      if (entry?.error) return entry.error;
+      return reportedMissing.get(url + "\0" + name) || null;
+    }
+    return { load, resolve: resolve2, resolveGlobal, getError };
+  }
+  function isElementClass(g) {
+    try {
+      return typeof g === "function" && typeof HTMLElement !== "undefined" && g.prototype instanceof HTMLElement;
+    } catch {
+      return false;
+    }
+  }
+
+  // src/atomics.ts
+  var ATOMIC_CSS = (
+    // layout
+    ".fx{display:flex}.col{display:flex;flex-direction:column}.grid{display:grid}.ac{align-items:center}.jc{justify-content:center}.jb{justify-content:space-between}.f1{flex:1}.noshrink{flex-shrink:0}.wrap{flex-wrap:wrap}.fw5{font-weight:500}.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}.fs11{font-size:11px}.fs12{font-size:12px}.fs13{font-size:13px}.fs14{font-size:14px}.fs15{font-size:15px}.fs16{font-size:16px}.fs20{font-size:20px}.fs22{font-size:22px}.upper{text-transform:uppercase}.tc{text-align:center}.nowrap{white-space:nowrap}.gap8{gap:8px}.gap10{gap:10px}.gap12{gap:12px}.gap16{gap:16px}.gap24{gap:24px}.m0{margin:0}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.posrel{position:relative}.posabs{position:absolute}.round{border-radius:50%}.ohide{overflow:hidden}.bbox{box-sizing:border-box}.pointer{cursor:pointer}.w100{width:100%}.b0{border:none}"
+  );
+
+  // src/helmet.ts
+  var DESIGN_DOC_MODE_RE = /<meta\b[^>]*\bname\s*=\s*["']design_doc_mode["'][^>]*\b(?:content|value)\s*=\s*["'](\w+)["']/i;
+  var CANVAS_BG_LIGHT = "#f0eee6";
+  var CANVAS_BG_DARK = "#2e2c26";
+  function createHelmetManager(doc, isStreaming) {
+    const mounted = /* @__PURE__ */ new Set();
+    const live = /* @__PURE__ */ new Map();
+    let designDocMode = null;
+    let canvasStyleEl = null;
+    let appTheme = "light";
+    try {
+      const ds = doc.documentElement.dataset.theme;
+      appTheme = ds === "dark" || ds === "light" ? ds : new URLSearchParams(doc.defaultView?.location.search ?? "").get(
+        "theme"
+      ) === "dark" ? "dark" : "light";
+    } catch {
+    }
+    function applyCanvasBg() {
+      if (!canvasStyleEl) return;
+      const bg = appTheme === "dark" ? CANVAS_BG_DARK : CANVAS_BG_LIGHT;
+      canvasStyleEl.textContent = `html,body{background:${bg}}#dc-root>.sc-host{position:relative}`;
+    }
+    function postDesignMode(mode) {
+      if (window.parent === window) return;
+      try {
+        window.parent.postMessage({ type: "__dc_design_mode", mode }, "*");
+      } catch {
+      }
+    }
+    function setDesignDocMode(mode) {
+      if (mode === designDocMode) return;
+      designDocMode = mode;
+      postDesignMode(mode);
+      if (mode === "canvas") {
+        doc.documentElement.setAttribute("data-dc-canvas", "");
+        canvasStyleEl = doc.createElement("style");
+        canvasStyleEl.setAttribute("data-dc-canvas", "");
+        applyCanvasBg();
+        doc.head.appendChild(canvasStyleEl);
+      } else {
+        doc.documentElement.removeAttribute("data-dc-canvas");
+        canvasStyleEl?.remove();
+        canvasStyleEl = null;
+      }
+    }
+    window.addEventListener("message", (e) => {
+      const type = e.data && e.data.type;
+      if (type === "__dc_theme") {
+        const t = e.data.theme;
+        if (t === "light" || t === "dark") {
+          appTheme = t;
+          applyCanvasBg();
+        }
+        return;
+      }
+      if (!designDocMode || type !== "__dc_probe") return;
+      postDesignMode(designDocMode);
+    });
+    function compile(node) {
+      const raw = [...node.children];
+      const helmetClosed = node.nextSibling != null || node.parentNode?.nextSibling != null;
+      if (node.hasAttribute("data-dc-atomics") && !mounted.has("__dc-atomics")) {
+        mounted.add("__dc-atomics");
+        const el = doc.createElement("style");
+        el.id = "__dc-atomics";
+        el.textContent = ATOMIC_CSS;
+        doc.head.appendChild(el);
+      }
+      return (_vals, ctx) => {
+        const name = ctx && ctx.__name || "";
+        const streaming = !!(name && isStreaming(name));
+        for (let i = 0; i < raw.length; i++) {
+          const child = raw[i];
+          const tag = child.tagName;
+          const mayBePartial = streaming && !helmetClosed && i === raw.length - 1;
+          if (tag === "SCRIPT") {
+            if (mayBePartial) continue;
+            const key = "SCRIPT|" + (child.getAttribute("src") || child.textContent || "");
+            if (mounted.has(key)) continue;
+            mounted.add(key);
+            const el = doc.createElement("script");
+            for (const { name: an, value } of [...child.attributes])
+              el.setAttribute(an, value);
+            if (child.textContent) el.textContent = child.textContent;
+            doc.head.appendChild(el);
+          } else if (tag === "LINK" || tag === "META") {
+            if (mayBePartial) continue;
+            const key = tag + "|" + (child.getAttribute("href") || child.getAttribute("src") || child.outerHTML);
+            if (mounted.has(key)) continue;
+            mounted.add(key);
+            if (tag === "LINK") {
+              const rel = (child.getAttribute("rel") || "").toLowerCase().split(/\s+/);
+              const href = (child.getAttribute("href") || "").trim();
+              const res = window.__resources;
+              const pre = res && rel.includes("stylesheet") && !rel.includes("alternate") ? res[href] : void 0;
+              const blob = typeof pre === "string" && pre ? bundledBlob(pre) : null;
+              if (blob) {
+                const el = doc.createElement("style");
+                if (child.hasAttribute("disabled")) {
+                  el.setAttribute("media", "not all");
+                } else if (child.getAttribute("media")) {
+                  el.setAttribute("media", child.getAttribute("media"));
+                }
+                if (child.getAttribute("title"))
+                  el.setAttribute("title", child.getAttribute("title"));
+                void blob.text().then((css) => {
+                  el.textContent = css;
+                });
+                doc.head.appendChild(el);
+                continue;
+              }
+            }
+            doc.head.appendChild(child.cloneNode(true));
+          } else {
+            const key = name + "|" + i;
+            let el = live.get(key);
+            if (!el || el.tagName !== tag) {
+              if (el) el.remove();
+              el = doc.createElement(tag.toLowerCase());
+              live.set(key, el);
+              doc.head.appendChild(el);
+            }
+            for (const { name: an, value } of [...child.attributes]) {
+              if (el.getAttribute(an) !== value) el.setAttribute(an, value);
+            }
+            if (el.textContent !== child.textContent)
+              el.textContent = child.textContent;
+          }
+        }
+        return null;
+      };
+    }
+    return { compile, setDesignDocMode };
+  }
+
+  // src/pseudo.ts
+  function scanUnquotedUrl(css, i) {
+    if (css[i] !== "u" && css[i] !== "U" || css.slice(i, i + 4).toLowerCase() !== "url(" || /[a-z0-9_-]/i.test(css[i - 1] ?? "")) {
+      return -1;
+    }
+    let j = i + 4;
+    while (j < css.length && /\s/.test(css[j])) j++;
+    if (css[j] === '"' || css[j] === "'") return -1;
+    while (j < css.length && css[j] !== ")") {
+      if (css[j] === "\\") j++;
+      j++;
+    }
+    return j < css.length ? j + 1 : css.length;
+  }
+  function stripComments(css) {
+    let out = "";
+    let quote = "";
+    for (let i = 0; i < css.length; i++) {
+      const c = css[i];
+      if (quote) {
+        if (c === "\\") {
+          out += c + (css[i + 1] ?? "");
+          i++;
+          continue;
+        }
+        if (c === quote) quote = "";
+        out += c;
+      } else if (c === "'" || c === '"') {
+        quote = c;
+        out += c;
+      } else if (c === "/" && css[i + 1] === "*") {
+        const end = css.indexOf("*/", i + 2);
+        i = end === -1 ? css.length : end + 1;
+        out += " ";
+      } else {
+        const end = scanUnquotedUrl(css, i);
+        if (end === -1) out += c;
+        else {
+          out += css.slice(i, end);
+          i = end - 1;
+        }
+      }
+    }
+    return out;
+  }
+  function importantify(css) {
+    css = stripComments(css);
+    const decls = [];
+    let start = 0;
+    let depth = 0;
+    let quote = "";
+    for (let i = 0; i < css.length; i++) {
+      const c = css[i];
+      if (quote) {
+        if (c === "\\") i++;
+        else if (c === quote) quote = "";
+      } else if (c === "'" || c === '"') quote = c;
+      else if (c === "(") depth++;
+      else if (c === ")") depth = Math.max(0, depth - 1);
+      else if (c === ";" && depth === 0) {
+        decls.push(css.slice(start, i));
+        start = i + 1;
+      } else {
+        const end = scanUnquotedUrl(css, i);
+        if (end !== -1) i = end - 1;
+      }
+    }
+    decls.push(css.slice(start));
+    return decls.map((d) => d.trim()).filter(Boolean).map((d) => /!\s*important$/i.test(d) ? d : d + " !important").join(";");
+  }
+  function createPseudoSheet(doc) {
+    let el = null;
+    const cache = /* @__PURE__ */ new Map();
+    let n = 0;
+    return (pseudo, css) => {
+      const k = pseudo + "|" + css;
+      const hit = cache.get(k);
+      if (hit) return hit;
+      if (!el) {
+        el = doc.createElement("style");
+        doc.head.appendChild(el);
+      }
+      const cls = "scp" + (n++).toString(36);
+      const isPseudoElement = pseudo === "before" || pseudo === "after";
+      const sel = isPseudoElement ? "." + cls + "::" + pseudo : "." + cls + ":" + pseudo;
+      el.sheet.insertRule(
+        sel + "{" + (isPseudoElement ? css : importantify(css)) + "}",
+        el.sheet.cssRules.length
+      );
+      cache.set(k, cls);
+      return cls;
+    };
+  }
+
+  // src/registry.ts
+  function createRegistry() {
+    const entries = /* @__PURE__ */ Object.create(null);
+    function get(name) {
+      return entries[name] || (entries[name] = {
+        html: "",
+        tpl: null,
+        Logic: null,
+        jsStreaming: false,
+        htmlStreaming: false,
+        ver: 0,
+        subs: /* @__PURE__ */ new Set(),
+        fetched: false
+      });
+    }
+    function bump(name) {
+      const r = get(name);
+      r.ver++;
+      for (const fn of r.subs) fn();
+    }
+    return {
+      entries,
+      get,
+      bump,
+      bumpAll() {
+        for (const n in entries) bump(n);
+      }
+    };
+  }
+
+  // src/runtime.ts
+  var COMPONENT_DIR = ".";
+  function createRuntime(doc = document) {
+    const registry = createRegistry();
+    const pseudoClass = createPseudoSheet(doc);
+    const helmet = createHelmetManager(
+      doc,
+      (name) => registry.get(name).htmlStreaming
+    );
+    const external = createExternalModules(() => registry.bumpAll());
+    const factory = createComponentFactory(registry, ensureFetched);
+    const host = {
+      component: (name) => factory.getDC(name),
+      placeholder: (props) => h(Placeholder, props),
+      helmet: (node) => helmet.compile(node),
+      loadExternal: (kind, url, after) => external.load(kind, url, after),
+      resolveExternal: (url, name) => external.resolve(url, name),
+      resolveExternalGlobal: (url, name) => external.resolveGlobal(url, name),
+      resolveExternalError: (url, name) => external.getError(url, name),
+      pseudoClass
+    };
+    function ensureFetched(name) {
+      const r = registry.get(name);
+      if (r.fetched) return;
+      r.fetched = true;
+      const url = COMPONENT_DIR + "/" + encodeURIComponent(name) + ".dc.html";
+      const res = window.__resources;
+      const pre = res ? res[url] : void 0;
+      const target = typeof pre === "string" && pre ? pre : url;
+      const blob = bundledBlob(target);
+      (blob ? blob.text() : fetch(target).then((res2) => {
+        if (!res2.ok) {
+          console.error(
+            '[dc-runtime] sibling fetch for "' + name + '" failed:',
+            url,
+            "returned",
+            res2.status,
+            "\u2014 the reference renders as an empty placeholder."
+          );
+          return "";
+        }
+        return res2.text();
+      })).then((t) => {
+        if (!t) return;
+        const parsed = parseDcText(t);
+        if (!parsed) {
+          console.error(
+            '[dc-runtime] sibling fetch for "' + name + '":',
+            url,
+            "has no <x-dc> block \u2014 not a Design Component."
+          );
+          return;
+        }
+        if (parsed.props) r.propsMeta = parsed.props;
+        if (parsed.preview) r.preview = parsed.preview;
+        if (parsed.template && !r.html) updateHtml(name, parsed.template);
+        if (parsed.js && !r.Logic) updateJs(name, parsed.js);
+      }).catch(
+        (e) => console.error(
+          '[dc-runtime] sibling fetch for "' + name + '" threw:',
+          url,
+          e
+        )
+      );
+    }
+    let rootName = null;
+    function updateHtml(name, html) {
+      const r = registry.get(name);
+      r.html = html;
+      if (name === rootName) {
+        const mode = DESIGN_DOC_MODE_RE.exec(html)?.[1] ?? null;
+        if (mode || !r.htmlStreaming) helmet.setDesignDocMode(mode);
+      }
+      try {
+        r.tpl = compileTemplate(html, host);
+      } catch (e) {
+        console.error("[dc-runtime] template compile FAILED for", name, e);
+      }
+      registry.bump(name);
+    }
+    function updateJs(name, src) {
+      const r = registry.get(name);
+      const seq = r.jsSeq = (r.jsSeq || 0) + 1;
+      try {
+        const Cls = evalDcLogic(src);
+        if (r.jsSeq !== seq) return;
+        if (typeof Cls !== "function") {
+          r.logicError = name + ".dc.html: <script data-dc-script> must define `class Component extends DCLogic`";
+        } else {
+          r.logicError = null;
+          r.Logic = Cls;
+        }
+      } catch (e) {
+        if (r.jsSeq !== seq) return;
+        console.error(
+          "[dc-runtime] logic class eval FAILED for",
+          name,
+          "\u2014 the template renders with props only.",
+          e
+        );
+        r.logicError = name + ": " + (e instanceof Error && e.message ? e.message : String(e));
+      }
+      registry.bump(name);
+    }
+    function setStreaming(name, kind, on) {
+      const r = registry.get(name);
+      if (kind === "html") r.htmlStreaming = !!on;
+      else r.jsStreaming = !!on;
+      let any = false;
+      for (const n in registry.entries) {
+        const e = registry.entries[n];
+        if (e && (e.htmlStreaming || e.jsStreaming)) {
+          any = true;
+          break;
+        }
+      }
+      doc.documentElement.classList.toggle("sc-dc-streaming", any);
+      registry.bump(name);
+    }
+    function dcUpdate(name, kind, content, streaming) {
+      if (streaming) registry.get(name).fetched = true;
+      if (kind === "html") {
+        setStreaming(name, "html", !!streaming);
+        updateHtml(name, content);
+      } else if (kind === "js") {
+        setStreaming(name, "js", !!streaming);
+        if (!streaming) updateJs(name, content);
+      } else if (kind === "props") {
+        const { props, preview } = parseDataProps(content);
+        const r = registry.get(name);
+        r.propsMeta = props ?? void 0;
+        r.preview = preview;
+        registry.bump(name);
+      }
+    }
+    function setProps(name, overrides) {
+      registry.get(name).propOverrides = overrides && typeof overrides === "object" ? { ...overrides } : null;
+      registry.bump(name);
+    }
+    function adoptParsed(name, parsed) {
+      if (!parsed) return;
+      const r = registry.get(name);
+      if (parsed.props) r.propsMeta = parsed.props;
+      if (parsed.preview) r.preview = parsed.preview;
+      if (parsed.template) updateHtml(name, parsed.template);
+      if (parsed.js) updateJs(name, parsed.js);
+    }
+    return {
+      registry,
+      getDC: factory.getDC,
+      updateHtml,
+      updateJs,
+      dcUpdate,
+      setProps,
+      adoptParsed,
+      setRootName: (name) => {
+        rootName = name;
+      },
+      markFetched: (name) => {
+        registry.get(name).fetched = true;
+      },
+      annotatedTemplate: (name) => {
+        const r = registry.get(name);
+        return r.tpl && r.tpl.__annotated || null;
+      },
+      templateSource: (name) => registry.get(name).html || null,
+      StreamableLogic
+    };
+  }
+
+  // src/stream-state.ts
+  function createStreamTracker(staleMs = 6e4, now = Date.now) {
+    const since = /* @__PURE__ */ new Map();
+    const liveOne = (n) => {
+      const t = since.get(n);
+      if (t === void 0) return false;
+      if (now() - t > staleMs) {
+        since.delete(n);
+        return false;
+      }
+      return true;
+    };
+    return {
+      push(name, streaming, viewportKey) {
+        if (viewportKey === "dc-model") return;
+        if (streaming) since.set(name, now());
+        else since.delete(name);
+      },
+      live(name) {
+        if (name !== void 0) return liveOne(name);
+        for (const n of [...since.keys()]) if (liveOne(n)) return true;
+        return false;
+      }
+    };
+  }
+
+  // src/index.ts
+  function hideRawTemplate() {
+    const s = document.createElement("style");
+    s.textContent = "x-dc{display:none!important}";
+    document.head.appendChild(s);
+  }
+  function loadScript(src, integrity) {
+    return new Promise((resolve2, reject) => {
+      //! nosemgrep: create-script-element
+      const s = document.createElement("script");
+      s.src = src;
+      if (integrity) {
+        s.integrity = integrity;
+        s.crossOrigin = "anonymous";
+      }
+      s.async = false;
+      s.onload = () => resolve2();
+      s.onerror = () => reject(new Error(`failed to load ${src}`));
+      document.head.appendChild(s);
+    });
+  }
+  function loadReactUmd() {
+    const w = window;
+    if (w.React && w.ReactDOM) return Promise.resolve();
+    const react = cdnScriptFor(REACT_URL, REACT_SRI);
+    const reactDom = cdnScriptFor(REACT_DOM_URL, REACT_DOM_SRI);
+    return Promise.all([
+      loadScript(react.src, react.integrity),
+      loadScript(reactDom.src, reactDom.integrity)
+    ]).then(() => void 0);
+  }
+  function init() {
+    const runtime = createRuntime(document);
+    let rootName = "Root";
+    const baseCss = document.createElement("style");
+    baseCss.textContent = BASE_CSS;
+    document.head.prepend(baseCss);
+    const notifyHost = () => {
+      if (window.parent === window) return;
+      const r = runtime.registry.entries[rootName];
+      try {
+        window.parent.postMessage(
+          {
+            type: "__dc_booted",
+            rootName,
+            propsMeta: r && r.propsMeta || null,
+            preview: r && r.preview || null
+          },
+          "*"
+        );
+      } catch {
+      }
+    };
+    const streams = createStreamTracker();
+    const api = {
+      __dcUpdate: (name, kind, content, streaming, viewportKey) => {
+        streams.push(name, streaming, viewportKey);
+        runtime.dcUpdate(name, kind, content, streaming);
+        if (name === rootName && !streaming && kind === "props") notifyHost();
+      },
+      __dcStreaming: (name) => streams.live(name),
+      __dcSetProps: (name, overrides) => runtime.setProps(name, overrides),
+      /** Name of the component currently mounted as the page root — DC tools
+       *  push their template-stream here when targeting "the open page". */
+      __dcRootName: () => rootName,
+      /** Editor bridge — the encoded, `data-dc-tpl`-annotated template source.
+       *  The host editor parses this into its own template DOM so it can map a
+       *  rendered node (carrying the same `data-dc-tpl`) back to the source
+       *  node that emitted it. Returns the encoded form (`sc-camel-*` attrs,
+       *  `<sc-raw-*>`/`<sc-helmet>` tags); the editor decodes on serialize. */
+      __dcAnnotatedTemplate: (name) => runtime.annotatedTemplate(name),
+      /** Editor bridge — the *original* (decoded) template source. */
+      __dcTemplateSource: (name) => runtime.templateSource(name),
+      __dcBoot: () => {
+        rootName = boot(runtime, document) ?? rootName;
+        notifyHost();
+      },
+      __dcRegistry: runtime.registry.entries,
+      getDC: (name) => runtime.getDC(name),
+      // `DCLogic` is the documented base class name; `StreamableLogic` is the
+      // implementation alias kept for any project that already references it.
+      DCLogic: runtime.StreamableLogic,
+      StreamableLogic: runtime.StreamableLogic
+    };
+    Object.assign(window, api);
+    window.__dcContentKeyed = true;
+    if (document.readyState !== "loading") api.__dcBoot();
+    else document.addEventListener("DOMContentLoaded", () => api.__dcBoot());
+  }
+  hideRawTemplate();
+  loadReactUmd().then(init).catch((err) => {
+    console.error("[dc] failed to load React or boot:", err);
+    throw err;
+  });
+})();
+
+</script>
 </head>
 <body>
-<header><div class="hwrap">
-  <div><div class="brand">TOWER<span>.</span></div>
-       <div class="sub">FlytBase GTM control tower · book of business</div></div>
-  <nav id="nav"></nav>
-  <div class="live"><span class="dot"></span><span id="livetxt">connecting</span></div>
-</div></header>
-<main id="app"><div class="err">loading portfolio…</div></main>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0}
+body{background:#1A1A1A;color:#D6D6D6;font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#EC7D42;text-decoration:none}
+a:hover{color:#F4B896}
+button{font-family:inherit}
+::selection{background:#D95B28;color:#fff}
+@keyframes tw-pulse{0%{box-shadow:0 0 0 0 rgba(114,168,153,.55)}70%{box-shadow:0 0 0 7px rgba(114,168,153,0)}100%{box-shadow:0 0 0 0 rgba(114,168,153,0)}}
+@media (max-width:920px){
+[data-shell]{grid-template-columns:1fr !important}
+[data-rail]{position:static !important;height:auto !important;border-right:none !important;border-bottom:1px solid #2A2A2A !important;padding-bottom:0 !important}
+[data-railnav]{flex-direction:row !important;overflow-x:auto;gap:0 !important;padding:0 !important;border-top:1px solid #2A2A2A}
+[data-navgroup]{margin:0 !important;display:flex;align-items:center;border-right:1px solid #2A2A2A}
+[data-navlabel]{display:none !important}
+[data-railfoot]{display:none !important}
+[data-pad]{padding-left:16px !important;padding-right:16px !important}
+}
+</style>
+</helmet>
 
-<script>
-const $ = (s,r=document)=>r.querySelector(s);
-const money = n => n==null ? "—" : "$" + Math.round(n).toLocaleString();
-const pct = n => n==null ? "—" : (n>0?"+":"") + n.toFixed(0) + "%";
-const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const cls = s => "b-" + String(s??"none").replace(/[^A-Za-z]/g,"");
-let PF=null, VIEW="triage", ACC=null, CACHE={};
+<div data-shell style="min-height:100vh;display:grid;grid-template-columns:236px minmax(0,1fr);background:#1A1A1A">
 
-const VIEWS = [
-  ["triage","Triage"],["accounts","Accounts"],["renewals","Renewals"],
-  ["expansion","Expansion & Traps"],["gaps","Reality Gap"],
-  ["contradictions","Contradictions"],["winback","Win-back"],
-  ["flight","Flight Activity"],["feed","Change Feed"]
+<aside data-rail style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#1A1A1A;border-right:1px solid #2A2A2A;z-index:30">
+<div style="padding:22px 20px 18px;border-bottom:1px solid #2A2A2A">
+<div style="display:flex;align-items:center;gap:9px">
+<span style="width:7px;height:7px;background:#D95B28;display:block"></span>
+<span style="font:600 15px/1 Geist,sans-serif;letter-spacing:.24em;color:#F0F0F0">TOWER</span>
+</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;letter-spacing:.06em;color:#999999;margin-top:9px">FlytBase GTM control tower</div>
+</div>
+
+<div data-railnav style="flex:1;display:flex;flex-direction:column;padding:18px 0;overflow-y:auto">
+<sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="4">
+<div data-navgroup style="margin-bottom:20px">
+<div data-navlabel style="font:500 9px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#999999;padding:0 20px 9px">{{ g.label }}</div>
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+<button onClick="{{ it.go }}" style-hover="background:#242424;color:#F0F0F0" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:{{ it.bg }};border:0;border-left:2px solid {{ it.edge }};padding:8px 20px 8px 18px;cursor:pointer;font:400 13.5px/1.3 Geist,sans-serif;color:{{ it.fg }};white-space:nowrap;transition:background 200ms cubic-bezier(.22,1,.36,1),color 200ms cubic-bezier(.22,1,.36,1)">
+<span style="font:500 9px/1 'Geist Mono',monospace;color:{{ it.num }};letter-spacing:.06em">{{ it.n }}</span>
+<span>{{ it.label }}</span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+
+<div data-railfoot style="border-top:1px solid #2A2A2A;padding:14px 20px">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="width:6px;height:6px;border-radius:50%;background:#72A899;display:block;animation:tw-pulse 2.6s infinite"></span>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.04em">{{ syncLabel }}</span>
+</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;color:#999999;margin-top:7px">{{ syncStamp }}</div>
+</div>
+</aside>
+
+<div style="min-width:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px">
+
+<header data-pad style="background:#1A1A1A;border-bottom:1px solid #2A2A2A;padding:26px 32px 22px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D95B28">{{ viewEyebrow }}</div>
+<h1 style="font:500 28px/1.15 Lora,Georgia,serif;color:#F0F0F0;margin:11px 0 0;letter-spacing:-.005em">{{ viewTitle }}</h1>
+<p style="font:400 13.5px/1.6 Geist,sans-serif;color:#999999;margin:10px 0 0;max-width:740px;text-wrap:pretty">{{ viewLede }}</p>
+</header>
+
+<div data-pad style="padding:24px 32px 80px">
+
+<sc-if value="{{ degraded }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #6E1E30;border-left:3px solid #F43F5E;background:#241016;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:flex-start">
+<span style="font:500 9.5px/1.6 'Geist Mono',monospace;letter-spacing:.14em;color:#F43F5E;white-space:nowrap">DEGRADED</span>
+<div>
+<div style="font:500 14px/1.5 Geist,sans-serif;color:#F0F0F0">This page is incomplete. The part that reads documents is not running.</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:6px;max-width:900px;text-wrap:pretty">Everything shown is still true. Account health, usage, the Reality Gap and the ranking are all calculated directly from the data and do not need a model. What is missing is anything read out of a document: people, risks, opportunities, Traps and recommended actions.</div>
+<div style="font:400 11px/1.6 'Geist Mono',monospace;color:#999999;margin-top:8px">{{ degradedDetail }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTriage }}" hint-placeholder-val="{{ true }}">
+<div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid #2E2E2E;background:#1E1E1E">
+<sc-for list="{{ moneyTiles }}" as="t" hint-placeholder-count="4">
+<div style="padding:18px 20px 20px;border-right:1px solid #2A2A2A">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">{{ t.lab }}</div>
+<div style="font:500 31px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;margin-top:12px;letter-spacing:-.015em;color:{{ t.color }}">{{ t.val }}</div>
+<div style="font:400 12px/1.5 Geist,sans-serif;color:#999999;margin-top:9px;text-wrap:pretty">{{ t.note }}</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasMisread }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #4A3A16;border-left:3px solid #D9A441;background:#211B10;padding:13px 18px;margin-top:18px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap">
+<span style="font:500 9.5px/1.6 'Geist Mono',monospace;letter-spacing:.14em;color:#D9A441;white-space:nowrap">REALITY GAP</span>
+<span style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6">{{ misreadLine }}</span>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:38px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Do these first</h2>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.08em">{{ queueCount }}</span>
+</div>
+
+<sc-for list="{{ queue }}" as="a" hint-placeholder-count="6">
+<div>
+<sc-if value="{{ a.showCut }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:14px;margin:26px 0 4px">
+<span style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999;white-space:nowrap">Below the line</span>
+<span style="flex:1;height:1px;background:#2E2E2E;display:block"></span>
+<span style="font:400 11px/1 Geist,sans-serif;color:#999999">worth doing, not worth doing first</span>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:56px minmax(0,1fr) 210px;gap:0;border-bottom:1px solid #262626;padding:20px 0;align-items:start;opacity:{{ a.dim }}">
+<div style="font:500 26px/1 'Geist Mono',monospace;color:{{ a.rankColor }};letter-spacing:-.03em;padding-top:1px">{{ a.rankLabel }}</div>
+<div style="min-width:0;padding-right:28px">
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ a.account_name }}</span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;color:{{ a.bandFg }};background:{{ a.bandBg }};border:1px solid {{ a.bandBd }}">{{ a.health_band }}</span>
+</div>
+<div style="font:400 14.5px/1.5 Geist,sans-serif;color:#D6D6D6;margin-top:9px;text-wrap:pretty">{{ a.action }}</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#999999;margin-top:6px;text-wrap:pretty">{{ a.why_now }}</div>
+<sc-if value="{{ a.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ a.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px;letter-spacing:.03em">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px;border-left:1px solid #262626;padding-left:20px">
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">ARR</span><span style="font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ a.arrLabel }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Renews</span><span style="font:500 13px/1.4 'Geist Mono',monospace;color:{{ a.renewColor }}">{{ a.renewLabel }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Owner</span><span style="font:400 12px/1.4 Geist,sans-serif;color:#D6D6D6">{{ a.owner_function }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Call</span><span style="font:400 12px/1.4 Geist,sans-serif;color:#D6D6D6;text-align:right">{{ a.target_person }}</span></div>
+<div style="margin-top:3px">
+<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:5px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Priority</span><span style="font:500 11px/1.4 'Geist Mono',monospace;color:#999999">{{ a.value_score }}</span></div>
+<div style="height:3px;background:#2A2A2A"><span style="display:block;height:3px;width:{{ a.scoreW }};background:{{ a.scoreColor }}"></span></div>
+</div>
+</div>
+</div>
+</div>
+</sc-for>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:22px;margin-top:44px">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 18px;border-bottom:1px solid #2A2A2A;display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:500 12.5px/1 Geist,sans-serif;color:#F0F0F0">Gone quiet</span>
+<span style="font:400 10px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.08em">NO CONTACT 45 DAYS+</span>
+</div>
+<sc-for list="{{ stale }}" as="s" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:1px solid #262626">
+<span style="font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ s.name }}</span>
+<span style="display:flex;align-items:center;gap:14px">
+<span style="font:500 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.arrLabel }}</span>
+<span style="font:500 12.5px/1.4 'Geist Mono',monospace;color:#D9A441">{{ s.silentLabel }}</span>
+</span>
+</div>
+</sc-for>
+</div>
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 18px;border-bottom:1px solid #2A2A2A;display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:500 12.5px/1 Geist,sans-serif;color:#F0F0F0">Promises we made and never closed</span>
+</div>
+<sc-for list="{{ loops }}" as="l" hint-placeholder-count="3">
+<div style="padding:13px 18px;border-bottom:1px solid #262626">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px">
+<span style="font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ l.promise }}</span>
+<span style="font:400 11px/1.4 'Geist Mono',monospace;color:{{ l.dueColor }};white-space:nowrap">{{ l.dueLabel }}</span>
+</div>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:5px">{{ l.srcLabel }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isAccounts }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Account</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Stage</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">ARR</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">What the evidence says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;background:#232323;white-space:nowrap">What the CRM says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Flying</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Renewal</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;min-width:280px">Read this first</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ accountRows }}" as="a" hint-placeholder-count="10">
+<tr style-hover="background:#232323">
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0;white-space:nowrap">{{ a.name }}</div>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ a.vertical }}</div>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top"><span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px solid #3D3D3D;padding:2px 7px;white-space:nowrap">{{ a.lifecycle }}</span></td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0;white-space:nowrap">{{ a.arrLabel }}</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;color:{{ a.bandFg }};background:{{ a.bandBg }};border:1px solid {{ a.bandBd }}">{{ a.health_band }}</span>
+<span style="font:400 11px/1.4 'Geist Mono',monospace;color:#999999;margin-left:7px">{{ a.health_score }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;background:#232323;white-space:nowrap">
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:{{ a.crmColor }}">{{ a.crmLabel }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap">
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ a.usage_trajectory }}</span>
+<span style="font:500 11.5px/1.4 'Geist Mono',monospace;color:{{ a.usageColor }};margin-left:7px">{{ a.usageLabel }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap;font:400 12px/1.4 'Geist Mono',monospace;color:#999999">{{ a.renewLabel }}</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ a.one_line }}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGaps }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:0;border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="display:grid;grid-template-columns:minmax(140px,1.1fr) 118px minmax(210px,1.4fr) minmax(0,1.7fr);gap:0;border-bottom:1px solid #3D3D3D">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">Account</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px;text-align:right">ARR</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">CRM label against behaviour</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">What the flying shows</div>
+</div>
+<sc-for list="{{ gapRows }}" as="g" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:minmax(140px,1.1fr) 118px minmax(210px,1.4fr) minmax(0,1.7fr);gap:0;border-bottom:1px solid #262626;border-left:3px solid {{ g.edge }};align-items:center">
+<div style="padding:15px 18px">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0">{{ g.name }}</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:{{ g.edge }};margin-top:5px">{{ g.verdict }}</div>
+</div>
+<div style="padding:15px 18px;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ g.arrLabel }}</div>
+<div style="padding:15px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<span style="font:400 11.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px dashed #3D3D3D;padding:3px 9px;white-space:nowrap">{{ g.stated }}</span>
+<span style="font:400 13px/1 'Geist Mono',monospace;color:{{ g.edge }}">{{ g.arrow }}</span>
+<span style="font:500 11.5px/1.5 'Geist Mono',monospace;letter-spacing:.06em;padding:3px 9px;white-space:nowrap;color:{{ g.bandFg }};background:{{ g.bandBg }};border:1px solid {{ g.bandBd }}">{{ g.derived }}</span>
+</div>
+<div style="padding:15px 18px;font:400 12.5px/1.55 Geist,sans-serif;color:#999999;text-wrap:pretty">{{ g.usage_headline }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRenewals }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;padding:26px 28px 28px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px">
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">What the CRM implies</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#999999;margin-top:12px;letter-spacing:-.015em">{{ naiveLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">if every live account renews in full</div>
+</div>
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#D95B28">Honest forecast</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F0F0F0;margin-top:12px;letter-spacing:-.015em">{{ honestLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">each account weighted by how likely it is to renew</div>
+</div>
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">The difference</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F43F5E;margin-top:12px;letter-spacing:-.015em">{{ gapLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">{{ gapPctLabel }}</div>
+</div>
+</div>
+<div style="margin-top:28px">
+<div style="height:22px;background:#2A2A2A;display:flex">
+<span style="display:block;height:22px;width:{{ honestW }};background:#3A7A65"></span>
+<span style="display:block;height:22px;width:{{ gapW }};background:repeating-linear-gradient(135deg,#4A1420 0 6px,#2C1017 6px 12px)"></span>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:9px">
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#72A899;letter-spacing:.08em">EXPECTED TO RENEW</span>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#F43F5E;letter-spacing:.08em">AT RISK OF NOT RENEWING</span>
+</div>
+</div>
+</div>
+
+<sc-for list="{{ buckets }}" as="b" hint-placeholder-count="3">
+<div style="margin-top:32px">
+<div style="display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<span style="font:500 11px/1.5 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;color:{{ b.bandFg }};background:{{ b.bandBg }};border:1px solid {{ b.bandBd }}">{{ b.label }}</span>
+<span style="font:500 14px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ b.arrLabel }}</span>
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:#999999">{{ b.countLabel }}</span>
+</div>
+<sc-for list="{{ b.accounts }}" as="r" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 130px 120px 150px;gap:0;border-bottom:1px solid #262626;align-items:center">
+<div style="padding:12px 0;font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ r.name }}</div>
+<div style="padding:12px 0;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ r.arrLabel }}</div>
+<div style="padding:12px 0;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ r.daysLabel }}</div>
+<div style="padding:12px 0 12px 22px;display:flex;align-items:center;gap:10px">
+<span style="flex:1;height:3px;background:#2A2A2A;display:block"><span style="display:block;height:3px;width:{{ r.probW }};background:{{ r.probColor }}"></span></span>
+<span style="font:500 11.5px/1.4 'Geist Mono',monospace;color:#999999;width:36px;text-align:right">{{ r.probLabel }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExpansion }}" hint-placeholder-val="{{ false }}">
+<div>
+
+<div style="display:flex;align-items:baseline;gap:14px;padding-bottom:12px;border-bottom:1px solid #2E2E2E">
+<span style="width:7px;height:7px;background:#3A7A65;display:block;margin-bottom:2px"></span>
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0;white-space:nowrap">Worth selling</h2>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;letter-spacing:.06em;white-space:nowrap">{{ oppCount }}</span>
+</div>
+
+<sc-for list="{{ oppRows }}" as="o" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:24px 0;align-items:start">
+<div style="padding-right:28px">
+<div style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ o.account_name }}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<span style="width:6px;height:6px;background:#3A7A65;display:block"></span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#8FC9B4">{{ o.confidence }} confidence</span>
+</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:9px">{{ o.arrLabel }} today</div>
+</div>
+<div style="min-width:0;border-left:1px solid #2B5A4A;padding-left:26px">
+<div style="font:400 16.5px/1.5 Geist,sans-serif;color:#F0F0F0;letter-spacing:-.005em;max-width:640px;text-wrap:pretty">{{ o.opportunity }}</div>
+<sc-if value="{{ o.hasBasis }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 11.5px/1.6 'Geist Mono',monospace;color:#999999;margin-top:10px;max-width:620px">{{ o.estimated_value_basis }}</div>
+</sc-if>
+<sc-if value="{{ o.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;max-width:640px">
+<sc-for list="{{ o.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noOpps }}" hint-placeholder-val="{{ false }}">
+<div style="padding:34px 0;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+
+<div style="display:flex;align-items:baseline;gap:14px;margin-top:52px;padding-bottom:12px;border-bottom:1px solid #58202F">
+<span style="width:7px;height:7px;background:#F43F5E;display:block;margin-bottom:2px"></span>
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0;white-space:nowrap">Traps</h2>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;letter-spacing:.06em;white-space:nowrap">{{ trapCount }}</span>
+</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#999999;margin-top:14px;max-width:700px;text-wrap:pretty">Things the customer has asked for that we could sell today and should not. Each one says why, and what would have to be true before it becomes a real deal.</div>
+
+<sc-for list="{{ trapRows }}" as="o" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:24px 0;align-items:start">
+<div style="padding-right:28px">
+<div style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ o.account_name }}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<span style="width:6px;height:6px;background:#F43F5E;display:block"></span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.16em;color:#F43F5E">TRAP</span>
+</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:9px">{{ o.arrLabel }} today</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">flying {{ o.usage_trajectory }}</div>
+</div>
+<div style="min-width:0;border-left:1px solid #58202F;padding-left:26px">
+<div style="font:400 16.5px/1.5 Geist,sans-serif;color:#999999;letter-spacing:-.005em;max-width:640px;text-wrap:pretty">{{ o.opportunity }}</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#F0768D;margin-top:14px;max-width:640px;text-wrap:pretty">{{ o.trap_reason }}</div>
+<sc-if value="{{ o.hasDisq }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 11.5px/1.6 'Geist Mono',monospace;color:#999999;margin-top:10px;max-width:620px">{{ o.disqLine }}</div>
+</sc-if>
+<sc-if value="{{ o.hasUnblock }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:13px 16px;border-left:2px solid #D95B28;background:#231A15;max-width:640px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D95B28">Sell it once this is true</div>
+<div style="font:400 13.5px/1.55 Geist,sans-serif;color:#D6D6D6;margin-top:8px;text-wrap:pretty">{{ o.unblock_condition }}</div>
+</div>
+</sc-if>
+<sc-if value="{{ o.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;max-width:640px">
+<sc-for list="{{ o.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noTraps }}" hint-placeholder-val="{{ false }}">
+<div style="padding:34px 0;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isContra }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ contraRows }}" as="c" hint-placeholder-count="3">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 20px;border-bottom:1px solid #2E2E2E;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<span style="font:500 14px/1.3 Geist,sans-serif;color:#F0F0F0">{{ c.account_name }}</span>
+<span style="font:400 11.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.topic }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+<div style="padding:18px 20px;border-right:1px solid #2E2E2E">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px/1 'Geist Mono',monospace;color:#999999">A</span>
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.source_a }}</span>
+</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#999999;margin-top:10px;text-wrap:pretty;text-decoration:{{ c.strikeA }}">{{ c.claim_a }}</div>
+</div>
+<div style="padding:18px 20px">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px/1 'Geist Mono',monospace;color:#D95B28">B</span>
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.source_b }}</span>
+</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#F0F0F0;margin-top:10px;text-wrap:pretty;text-decoration:{{ c.strikeB }}">{{ c.claim_b }}</div>
+</div>
+</div>
+<div style="border-top:1px solid #2E2E2E;padding:15px 20px;border-left:3px solid {{ c.resColor }}">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:{{ c.resColor }}">{{ c.resLabel }}</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:8px;text-wrap:pretty">{{ c.resolution }}</div>
+<sc-if value="{{ c.hasMatters }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#999999;margin-top:8px;text-wrap:pretty">{{ c.matters_because }}</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noContra }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px dashed #3D3D3D;padding:46px;text-align:center;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWinback }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ winbackCards }}" as="w" hint-placeholder-count="2">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:18px 22px;border-bottom:1px solid #2E2E2E;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<span style="font:500 17px/1.25 Lora,Georgia,serif;color:#F0F0F0">{{ w.name }}</span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;color:{{ w.vFg }};background:{{ w.vBg }};border:1px solid {{ w.vBd }}">{{ w.vLabel }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:22px">
+<div style="text-align:right">
+<div style="font:400 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999">Lost</div>
+<div style="font:500 16px/1.3 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F0768D;margin-top:5px">{{ w.lostLabel }}</div>
+</div>
+<div style="width:110px">
+<div style="font:400 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999">Worth chasing</div>
+<div style="height:3px;background:#2A2A2A;margin-top:9px"><span style="display:block;height:3px;width:{{ w.scoreW }};background:{{ w.scoreColor }}"></span></div>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+<div style="padding:20px 22px;border-right:1px solid #2E2E2E">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">Why they left</div>
+<div style="display:flex;align-items:center;gap:9px;margin-top:11px;flex-wrap:wrap">
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px solid #3D3D3D;padding:2px 8px">{{ w.cause_category }}</span>
+<span style="font:400 12px/1.5 Geist,sans-serif;color:{{ w.reversibleColor }}">{{ w.reversibleLabel }}</span>
+</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:11px;text-wrap:pretty">{{ w.root_cause }}</div>
+<sc-if value="{{ w.hasChanged }}" hint-placeholder-val="{{ false }}">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999;margin-top:20px">What has changed since</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:9px;text-wrap:pretty">{{ w.what_changed_since }}</div>
+</sc-if>
+</div>
+<div style="padding:20px 22px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">The verdict</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:11px;text-wrap:pretty">{{ w.reasoning }}</div>
+<sc-if value="{{ w.hasResidual }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#999999;margin-top:10px;text-wrap:pretty">{{ w.residual_relationship }}</div>
+</sc-if>
+<sc-if value="{{ w.hasFirst }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:11px 14px;border-left:2px solid #D95B28;background:#231A15">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D95B28">First move</div>
+<div style="font:400 13.5px/1.55 Geist,sans-serif;color:#F0F0F0;margin-top:7px;text-wrap:pretty">{{ w.first_move }}</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noWinbacks }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px dashed #3D3D3D;padding:46px;text-align:center;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFlight }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Account</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">ARR</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Flight hours by month</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Last 3 vs prior 3</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Latest</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Peak</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;background:#232323;white-space:nowrap">CRM says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Does the flying agree</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ flightRows }}" as="f" hint-placeholder-count="8">
+<tr style-hover="background:#232323">
+<td style="padding:13px 16px;border-bottom:1px solid #262626">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0;white-space:nowrap">{{ f.name }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px;white-space:nowrap">{{ f.trajectory }}</div>
+</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0;white-space:nowrap">{{ f.arrLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626">
+<svg width="130" height="32" viewBox="0 0 130 32" style="display:block">
+<path d="{{ f.sparkD }}" fill="none" stroke="{{ f.sparkColor }}" strokeWidth="1.4" strokeLinejoin="round"></path>
+<circle cx="{{ f.sparkCx }}" cy="{{ f.sparkCy }}" r="2.3" fill="{{ f.sparkColor }}"></circle>
+</svg>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:3px">{{ f.monthsLabel }}</div>
+</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:{{ f.pctColor }};white-space:nowrap">{{ f.pctLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:400 13px/1.4 'Geist Mono',monospace;color:#D6D6D6">{{ f.latest }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:400 13px/1.4 'Geist Mono',monospace;color:#999999">{{ f.peak }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;background:#232323;font:400 12.5px/1.4 Geist,sans-serif;color:#999999;white-space:nowrap">{{ f.crmLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;white-space:nowrap">
+<span style="display:inline-flex;align-items:center;gap:8px">
+<span style="width:9px;height:9px;display:block;background:{{ f.agreeColor }}"></span>
+<span style="font:500 12.5px/1.4 Geist,sans-serif;color:{{ f.agreeColor }}">{{ f.agreeLabel }}</span>
+</span>
+</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFeed }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid #2E2E2E;background:#1E1E1E">
+<sc-for list="{{ feedTiles }}" as="t" hint-placeholder-count="4">
+<div style="padding:18px 20px 20px;border-right:1px solid #2A2A2A">
+<div style="font:500 10px/1.4 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">{{ t.lab }}</div>
+<div style="font:500 31px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;margin-top:12px;letter-spacing:-.015em;color:{{ t.color }}">{{ t.val }}</div>
+<div style="font:400 12px/1.5 Geist,sans-serif;color:#999999;margin-top:9px;text-wrap:pretty">{{ t.note }}</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasWithdrawn }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #6E1E30;border-left:3px solid #F43F5E;background:#221016;margin-top:26px">
+<div style="padding:15px 20px;border-bottom:1px solid #4A1420">
+<div style="font:500 13px/1.3 Geist,sans-serif;color:#F43F5E">Withdrawn from the source</div>
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:6px;max-width:780px;text-wrap:pretty">These documents existed at the last check and are gone now. They have been dropped from everything on this page and kept only for the record. If a claim rested on one of them, it no longer stands.</div>
+</div>
+<sc-for list="{{ withdrawn }}" as="w" hint-placeholder-count="2">
+<div style="display:flex;align-items:baseline;gap:16px;padding:12px 20px;border-bottom:1px solid #3A141C;flex-wrap:wrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;color:#F43F5E">WITHDRAWN</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#D6D6D6;text-decoration:line-through">{{ w.obj_key }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999">{{ w.scope }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-left:auto">{{ w.stamp }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">What we changed our mind about</h2>
+</div>
+<sc-for list="{{ beliefs }}" as="b" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:170px minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:14px 0;align-items:start">
+<div style="font:400 11px/1.6 'Geist Mono',monospace;color:#999999">{{ b.stamp }}</div>
+<div>
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font:500 13px/1.4 Geist,sans-serif;color:#F0F0F0">{{ b.account_id }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999">{{ b.field }}</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#999999;text-decoration:line-through">{{ b.old_value }}</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#D95B28">{{ b.new_value }}</span>
+</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#999999;margin-top:6px;text-wrap:pretty">{{ b.narrative }}</div>
+</div>
+</div>
+</sc-for>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E;display:flex;align-items:baseline;justify-content:space-between">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Source changes picked up</h2>
+<span style="font:400 10px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.1em">{{ changeCount }}</span>
+</div>
+<div style="max-height:420px;overflow-y:auto">
+<sc-for list="{{ changes }}" as="c" hint-placeholder-count="8">
+<div style="display:flex;align-items:baseline;gap:16px;padding:9px 0;border-bottom:1px solid #232323;flex-wrap:wrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;color:{{ c.ctColor }};min-width:82px">{{ c.change_type }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;min-width:150px">{{ c.stamp }}</span>
+<span style="font:400 12.5px/1.5 Geist,sans-serif;color:#D6D6D6">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Every check it has run</h2>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px 13px 0;border-bottom:1px solid #2E2E2E">Run</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Started</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Trigger</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Files checked</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">New</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Changed</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Withdrawn</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Result</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ syncRows }}" as="s" hint-placeholder-count="5">
+<tr>
+<td style="padding:12px 14px 12px 0;border-bottom:1px solid #262626;font:400 12px/1.4 'Geist Mono',monospace;color:#999999">{{ s.id }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12px/1.4 'Geist Mono',monospace;color:#999999;white-space:nowrap">{{ s.stamp }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12px/1.4 Geist,sans-serif;color:#999999">{{ s.trigger }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#D6D6D6">{{ s.objects_seen }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.added }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.modified }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:500 12.5px/1.4 'Geist Mono',monospace;color:{{ s.wdColor }}">{{ s.withdrawn }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12.5px/1.4 Geist,sans-serif;color:{{ s.statusColor }}">{{ s.status }}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;previewDegraded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;showEvidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;triageRows&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:8,&quot;min&quot;:3,&quot;max&quot;:8,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Triage&quot;},&quot;railGroups&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Navigation&quot;}}">
+const GROUPS = [
+  {label:"Act", items:[["triage","Triage","01"],["expansion","Expansion & Traps","02"]]},
+  {label:"Money", items:[["renewals","Renewals","03"],["winback","Win-back","04"]]},
+  {label:"Check", items:[["accounts","Accounts","05"],["gaps","Reality Gap","06"],["contradictions","Contradictions","07"],["flight","Flight Activity","08"]]},
+  {label:"System", items:[["feed","Change Feed","09"]]}
 ];
 
-function spark(vals, w=104, h=26){
-  if(!vals || vals.length<2) return "";
-  const mx=Math.max(...vals,1), mn=Math.min(...vals,0), rng=(mx-mn)||1;
-  const pts=vals.map((v,i)=>[i/(vals.length-1)*w, h-((v-mn)/rng)*(h-4)-2]);
-  const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  const last=vals[vals.length-1], first=vals[0];
-  const col = last>=first? "var(--good)":"var(--bad)";
-  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.6"/>
-    <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.4" fill="${col}"/>
-  </svg>`;
-}
+const META = {
+  triage:["01 / Act","Triage","What to do first this morning, ranked by how much money moves for the effort it takes. Every line shows the evidence behind it."],
+  accounts:["05 / Check","Accounts","Health here is calculated from what the account actually does. The CRM label sits beside it so a wrong record is visible at a glance."],
+  renewals:["03 / Money","Renewals","One number assumes every account renews. The other weighs each one by how likely it is. The difference is what this screen is for."],
+  expansion:["02 / Act","Expansion & Traps","What is genuinely worth selling, and what only looks like it. A Trap is something the customer has asked for that would make the account worse if we sold it."],
+  gaps:["06 / Check","Reality Gap","Where the CRM label disagrees with how the account behaves. Red means the record is more optimistic than the evidence supports."],
+  contradictions:["07 / Check","Contradictions","Two sources say different things. Both claims are kept, and the one we believe is stated with the reason."],
+  winback:["04 / Money","Win-back","One card per lost account, with a verdict on whether it is worth chasing."],
+  flight:["08 / Check","Flight Activity","Monthly flight hours per account, and whether that trend agrees with the health label on the record."],
+  feed:["09 / System","Change Feed","Proof the page updates itself. Every source document is checked each cycle, including the ones that disappear."]
+};
 
-async function boot(){
-  try{
-    PF = await (await fetch("portfolio.json?t="+Date.now())).json();
-  }catch(e){
-    $("#app").innerHTML = `<div class="err">Could not load <code>portfolio.json</code>.<br>
-      The daemon has not published state yet. This page refreshes itself every 30 seconds.</div>`;
-    return;
+const BANDS = {
+  Healthy:["#8FC9B4","#16211D","#2B5A4A"], Strong:["#8FC9B4","#16211D","#2B5A4A"],
+  Secure:["#8FC9B4","#16211D","#2B5A4A"], Likely:["#72A899","#141E1B","#25443A"],
+  Watch:["#E0B45C","#231E11","#4A3A16"], "At Risk":["#F0768D","#271219","#58202F"],
+  "High Risk":["#F43F5E","#2C1017","#6E1E30"], Critical:["#F43F5E","#2C1017","#6E1E30"],
+  Lost:["#F43F5E","#2C1017","#6E1E30"], "Not Applicable":["#999999","#242424","#3D3D3D"]
+};
+
+const VERD = {
+  "pursue-now":["#8FC9B4","#16211D","#2B5A4A","Pursue now"],
+  "pursue-later":["#E0B45C","#231E11","#4A3A16","Pursue later"],
+  "do-not-pursue":["#F0768D","#271219","#58202F","Do not pursue"],
+  "not-applicable":["#999999","#242424","#3D3D3D","Nothing to chase"]
+};
+
+class Component extends DCLogic {
+  state = {view:"triage", data:null};
+
+  async componentDidMount(){
+    this.loadLiveData();
+    this._liveTimer = setInterval(() => this.loadLiveData(true), 30000);
   }
-  renderNav(); render(); tickLive();
-}
 
-function renderNav(){
-  $("#nav").innerHTML = VIEWS.map(([k,l])=>
-    `<button class="${k===VIEW?'on':''}" onclick="go('${k}')">${l}</button>`).join("");
-}
-window.go = k => { VIEW=k; ACC=null; renderNav(); render(); window.scrollTo(0,0); };
-window.open_acc = id => { ACC=id; render(); window.scrollTo(0,0); };
-
-function tickLive(){
-  const s = PF?.system?.last_sync;
-  const gen = PF?.generated_at;
-  $("#livetxt").textContent = s
-    ? `sync #${s.id} · ${(gen||"").replace("T"," ").replace("+00:00","")}Z`
-    : "no sync yet";
-}
-
-setInterval(async ()=>{
-  try{
-    const fresh = await (await fetch("portfolio.json?t="+Date.now())).json();
-    if(JSON.stringify(fresh.generated_at)!==JSON.stringify(PF?.generated_at)){
-      PF = fresh; CACHE={}; render(); tickLive();
+  async loadLiveData(silent=false){
+    try{
+      const response = await fetch("portfolio.json?t=" + Date.now(), {cache:"no-store"});
+      if(!response.ok) throw new Error("HTTP " + response.status);
+      const data = await response.json();
+      this.setState({data});
+    }catch(error){
+      console.error("[TOWER] Could not load portfolio.json", error);
+      if(!silent) this.setState({data:null});
     }
-  }catch(e){}
-}, 30000);
-
-function render(){
-  if(ACC) return renderAccount(ACC);
-  const fn = {triage:vTriage,accounts:vAccounts,renewals:vRenewals,expansion:vExpansion,
-    gaps:vGaps,contradictions:vContra,winback:vWinback,flight:vFlight,feed:vFeed}[VIEW];
-  $("#app").innerHTML = fn ? fn() : "";
-}
-
-/* ---------------------------------------------------------------- triage */
-function vTriage(){
-  const m = PF.money, c = PF.counts;
-  const degraded = (PF.accounts||[]).some(a=>a.degraded);
-  const misread = (PF.reality_gaps||[]).filter(g=>g.direction==="overstated"&&Math.abs(g.gap)>=1);
-  const misARR = misread.reduce((s,g)=>s+(g.arr||0),0);
-  return `
-  <h2>Portfolio triage</h2>
-  <p class="lede">Ranked by expected dollars moved per unit of human effort, not by
-  who shouted loudest. Every row opens the evidence behind it.</p>
-  ${degraded?`<div class="warnbox"><b>Degraded mode: the reading layer is not running.</b>
-    Provider <code>${esc((PF.reading||{}).provider||"none")}</code>${(PF.reading||{}).last_error
-      ? `, last error: ${esc(PF.reading.last_error)}` : ", no model key configured"}.
-    <br>Everything on this page is still true. Ingestion, full-inventory change detection,
-    usage analytics, health scoring, the reality gap and the ranking are all computed in
-    Python and do not depend on a model. What is missing is document reading: people,
-    risks, opportunities, traps and recommended actions.</div>`:""}
-  ${misARR>0?`<div class="warnbox"><b>${misread.length} of ${c.accounts} accounts carry a CRM
-    health label more optimistic than their own behaviour supports</b>, covering
-    ${money(misARR)} of ARR. See Reality Gap.</div>`:""}
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">Live ARR</div><div class="val">${money(m.live_arr)}</div>
-      <div class="note">${c.live} live accounts · ${c.presale} pre-sale · ${c.churned} churned</div></div>
-    <div class="card kpi"><div class="lab">Honest forecast</div>
-      <div class="val">${money(m.weighted_forecast)}</div>
-      <div class="note">probability weighted, not the ${money(m.naive_forecast)} the CRM implies</div></div>
-    <div class="card kpi"><div class="lab">Forecast gap</div>
-      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
-      <div class="note">the difference between believing the labels and reading the evidence</div></div>
-    <div class="card kpi"><div class="lab">Already lost</div>
-      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
-      <div class="note">${(PF.winbacks||[]).filter(w=>w.verdict!=="do-not-pursue"&&w.verdict!=="not-applicable").length} judged worth a win-back attempt</div></div>
-  </div>
-
-  <div class="sec">Do these first</div>
-  <div class="card"><table><thead><tr>
-    <th>#</th><th>Account</th><th>Action</th><th>Why now</th><th>Owner</th>
-    <th class="num">ARR</th><th class="num">Renewal</th><th class="num">Value score</th>
-  </tr></thead><tbody>
-  ${(PF.action_queue||[]).slice(0,14).map(a=>`
-    <tr class="click" onclick="open_acc('${a.account_id}')">
-      <td class="rank">${a.rank}</td>
-      <td><b>${esc(a.account_name)}</b><br>
-        <span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span></td>
-      <td>${esc(a.action)}${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}</td>
-      <td class="muted small">${esc(a.why_now)}</td>
-      <td><span class="tag">${esc(a.owner_function)}</span></td>
-      <td class="num">${money(a.arr)}</td>
-      <td class="num">${a.days_to_renewal==null?"—":a.days_to_renewal+"d"}</td>
-      <td class="num"><b>${a.value_score}</b></td>
-    </tr>`).join("")}
-  </tbody></table></div>
-
-  <div class="grid k2" style="margin-top:16px">
-    <div class="card"><div class="sec" style="margin-top:0">Gone quiet</div>
-      ${(PF.stale_accounts||[]).length===0?'<div class="muted small">No account has gone quiet for more than 45 days.</div>':
-      `<table><tbody>${PF.stale_accounts.map(s=>`<tr class="click" onclick="open_acc('${s.account_id}')">
-        <td><b>${esc(s.name)}</b></td><td class="num">${money(s.arr)}</td>
-        <td class="num" style="color:var(--warn)">${s.days_silent}d silent</td>
-        <td><span class="pill ${cls(s.health)}">${esc(s.health)}</span></td></tr>`).join("")}
-      </tbody></table>`}</div>
-    <div class="card"><div class="sec" style="margin-top:0">Promises we made and never closed</div>
-      ${(PF.open_loops||[]).length===0?'<div class="muted small">No open FlytBase-side commitments detected.</div>':
-      `<table><tbody>${PF.open_loops.slice(0,8).map(l=>`<tr class="click" onclick="open_acc('${l.account_id}')">
-        <td><b>${esc(l.account_name)}</b><br><span class="src">${esc(l.doc||"")}</span></td>
-        <td>${esc(l.promise)}${l.due?`<br><span class="src">due: ${esc(l.due)}</span>`:""}</td></tr>`).join("")}
-      </tbody></table>`}</div>
-  </div>`;
-}
-
-/* -------------------------------------------------------------- accounts */
-function vAccounts(){
-  return `<h2>All accounts</h2>
-  <p class="lede">Health is computed from behaviour, not copied from the CRM. The
-  <i>CRM says</i> column is shown next to it so you can see where the record lies.</p>
-  <div class="card"><table><thead><tr>
-    <th>Account</th><th>Stage</th><th class="num">ARR</th>
-    <th>Derived health</th><th>CRM says</th><th>Usage</th><th>Renewal</th>
-    <th>Biggest drag</th><th>Read this first</th>
-  </tr></thead><tbody>
-  ${(PF.accounts||[]).map(a=>`
-    <tr class="click" onclick="open_acc('${a.account_id}')">
-      <td><b>${esc(a.name)}</b><br><span class="src">${esc(a.vertical||"")}</span></td>
-      <td><span class="tag">${esc(a.lifecycle)}</span></td>
-      <td class="num">${money(a.arr)}</td>
-      <td><span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span>
-        <span class="src"> ${a.health_score}</span></td>
-      <td>${a.reality_gap.direction==="overstated"
-            ? `<span style="color:var(--bad)">${esc(a.crm_health||"—")} ⚠</span>`
-            : `<span class="muted">${esc(a.crm_health||"—")}</span>`}</td>
-      <td><span class="tag">${esc(a.usage_trajectory)}</span>
-        ${a.usage_pct!=null?`<span class="src"> ${pct(a.usage_pct)}</span>`:""}</td>
-      <td>${a.renewal.days_to_renewal==null?'<span class="muted">—</span>':
-          `<span class="pill ${cls(a.renewal.bucket)}">${esc(a.renewal.bucket)}</span>
-           <span class="src"> ${a.renewal.days_to_renewal}d</span>`}</td>
-      <td class="muted small">${esc(a.biggest_drag||"")}</td>
-      <td class="small">${esc(a.one_line)}</td>
-    </tr>`).join("")}
-  </tbody></table></div>`;
-}
-
-/* ------------------------------------------------------- account detail */
-async function renderAccount(id){
-  if(!CACHE[id]){
-    try{ CACHE[id] = await (await fetch(`accounts/${id}.json?t=`+Date.now())).json(); }
-    catch(e){ $("#app").innerHTML = `<button class="back" onclick="go('${VIEW}')">← back</button>
-      <div class="err">No detail file for ${esc(id)} yet.</div>`; return; }
   }
-  const s = CACHE[id], u = s.usage.flightHours, g = s.reality_gap, sy = s.synthesis||{};
-  $("#app").innerHTML = `
-  <button class="back" onclick="go('${VIEW}')">← back</button>
-  <h2>${esc(s.name)} <span class="pill ${cls(s.health.band)}">${esc(s.health.band)} ${s.health.score}</span>
-    <span class="tag">${esc(s.lifecycle)}</span>
-    <span class="tag">${money(s.arr)} ARR</span>
-    ${s.tier?`<span class="tag">${esc(s.tier)}</span>`:""}</h2>
-  <p class="lede"><b>${esc(sy.one_line||"")}</b></p>
-  ${g.direction==="overstated"?`<div class="warnbox"><b>Reality gap (${esc(g.severity)}).</b> ${esc(g.note)}</div>`:
-    g.direction==="aligned"?`<div class="okbox">${esc(g.note)}</div>`:
-    `<div class="card small muted" style="margin-bottom:12px">${esc(g.note)}</div>`}
 
-  <div class="grid k2">
-    <div class="card"><div class="sec" style="margin-top:0">Why this health score</div>
-      ${(s.health.factors||[]).map(f=>`<div class="fac">
-        <div><b>${esc(f.factor.replace(/_/g," "))}</b><br><span class="src">weight ${f.weight}</span></div>
-        <div>${esc(f.reason)}<div class="bar"><i style="width:${(f.quality*100).toFixed(0)}%;
-          background:${f.quality>.7?'var(--good)':f.quality>.45?'var(--warn)':'var(--bad)'}"></i></div></div>
-        <div class="num" style="color:${f.points_lost>8?'var(--bad)':'var(--dim)'}">−${f.points_lost}</div>
-      </div>`).join("")}
-      <div class="small muted" style="margin-top:9px">Weighted sum of five factors.
-      Every point lost is attributable to a named factor and a stated reason.</div>
-    </div>
+  componentWillUnmount(){
+    if(this._liveTimer) clearInterval(this._liveTimer);
+  }
 
-    <div class="card"><div class="sec" style="margin-top:0">Flight activity</div>
-      ${s.usage.has_usage?`
-        <div style="display:flex;align-items:center;gap:14px">
-          ${spark(u.values,220,54)}
-          <div><div class="kpi"><div class="val">${u.latest}</div>
-            <div class="note">flight hours in ${esc(u.months[u.months.length-1])}</div></div></div>
-        </div>
-        <p class="small" style="margin:9px 0 0">${esc(u.headline)}</p>
-        <div class="small muted" style="margin-top:7px">
-          trajectory <b>${esc(u.trajectory)}</b> ·
-          3v3 ${pct(u.pct_3v3)} · peak ${u.peak} in ${esc(u.peak_month)} ·
-          missions latest ${s.usage.missions.latest}
-        </div>`:'<div class="muted small">No usage telemetry for this account. For a pre-sale or non-flying account that is expected, not a red flag.</div>'}
-      <div class="sec">Renewal</div>
-      ${s.renewal.date?`<div class="small">
-        <b>${esc(s.renewal.date)}</b> · ${s.renewal.days_to_renewal} days away ·
-        <span class="pill ${cls(s.renewal.bucket)}">${esc(s.renewal.bucket)}</span>
-        ${s.renewal.probability!=null?` · renewal probability ${(s.renewal.probability*100).toFixed(0)}%`:""}
-        <div class="src" style="margin-top:6px">${esc(s.renewal.basis)}</div>
-        ${s.renewal.source?`<div class="q">${esc(s.renewal.source.quote||"")}
-          <br><b>${esc(s.renewal.source.doc||"")}</b></div>`:""}
-      </div>`:'<div class="muted small">No renewal or contract date stated anywhere in the source material.</div>'}
-    </div>
-  </div>
+  money(n){ return n == null ? "\u2014" : "$" + Math.round(n).toLocaleString(); }
+  pct(n){ return n == null ? "\u2014" : (n > 0 ? "+" : "") + Math.round(n) + "%"; }
+  band(b){ 
+    if (BANDS[b]) return BANDS[b];
+    const k = Object.keys(BANDS).find(x => String(b||"").indexOf(x) === 0);
+    return BANDS[k] || BANDS["Not Applicable"];
+  }
+  spark(values, w, h){
+    const v = values || [];
+    if (v.length < 2) return {d:"", cx:"0", cy:"0", color:"#999999"};
+    const mx = Math.max(...v, 1), mn = Math.min(...v, 0), rng = (mx - mn) || 1;
+    const pts = v.map((x,i) => [i/(v.length-1)*w, h - ((x-mn)/rng)*(h-5) - 2.5]);
+    return {
+      d:pts.map((p,i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" "),
+      cx:pts[pts.length-1][0].toFixed(1), cy:pts[pts.length-1][1].toFixed(1),
+      color:v[v.length-1] >= v[0] ? "#72A899" : "#F0768D"
+    };
+  }
+  quotes(list){
+    return (list||[]).map(q => {
+      const i = String(q).lastIndexOf("|");
+      return i < 0 ? {text:"\u201c" + q + "\u201d", src:""} : {text:"\u201c" + q.slice(0,i) + "\u201d", src:q.slice(i+1)};
+    });
+  }
 
-  <div class="sec">The situation</div>
-  <div class="card"><p style="margin:0">${esc(sy.situation||"")}</p>
-    <div class="small muted" style="margin-top:9px">
-      sentiment <b>${esc(sy.sentiment_label||"")}</b> and ${esc(sy.sentiment_trend||"")} ·
-      champion <b>${esc(sy.champion_status||"")}</b> ·
-      economic buyer ${sy.economic_buyer_identified?"identified":"<span style='color:var(--bad)'>not identified</span>"}
-      ${sy.competitor_present?` · <span style="color:var(--bad)">competitor present: ${esc((sy.competitor_names||[]).join(", "))}</span>`:""}
-      ${s.days_silent!=null?` · last dated contact ${s.days_silent} days ago`:""}
-    </div></div>
+  renderVals(){
+    const d = this.state.data;
+    const view = this.state.view;
+    const degradedPreview = this.props.previewDegraded ?? false;
+    const showEvidence = this.props.showEvidence ?? true;
+    const rowLimit = this.props.triageRows ?? 8;
+    const grouped = this.props.railGroups ?? true;
+    const meta = META[view] || ["",""," "];
 
-  <div class="sec">Do this next</div>
-  <div class="card"><table><thead><tr><th>#</th><th>Action</th><th>Why now</th>
-    <th>Owner</th><th class="num">Effort</th><th class="num">Value</th></tr></thead><tbody>
-  ${(s.actions||[]).map((a,i)=>`<tr>
-    <td class="rank">${i+1}</td>
-    <td><b>${esc(a.action)}</b>${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}
-      ${(a.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}</td>
-    <td class="muted small">${esc(a.why_now)}</td>
-    <td><span class="tag">${esc(a.owner_function)}</span></td>
-    <td class="num">${a.effort}</td><td class="num"><b>${a.value_score}</b></td></tr>`).join("")}
-  </tbody></table></div>
+    const navGroups = (grouped ? GROUPS : [{label:"Views", items:GROUPS.flatMap(g=>g.items)}]).map(g => ({
+      label:g.label,
+      items:g.items.map(([key,label,n]) => {
+        const on = key === view;
+        return {key, label, n, go:() => this.setState({view:key}),
+          fg:on ? "#F0F0F0" : "#999999", bg:on ? "#242424" : "transparent",
+          edge:on ? "#D95B28" : "transparent", num:on ? "#D95B28" : "#999999"};
+      })
+    }));
 
-  <div class="grid k2">
-    <div class="card"><div class="sec" style="margin-top:0">Risks</div>
-      ${(sy.top_risks||[]).length?(sy.top_risks||[]).map(r=>`<div style="margin-bottom:13px">
-        <span class="pill ${r.severity==="critical"?"b-Critical":r.severity==="high"?"b-AtRisk":"b-Watch"}">${esc(r.severity)}</span>
-        <b> ${esc(r.risk)}</b>
-        <div class="small muted" style="margin:4px 0">${esc(r.why_it_matters)}</div>
-        ${(r.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-      </div>`).join(""):'<div class="muted small">No material risks surfaced in the evidence.</div>'}</div>
-    <div class="card"><div class="sec" style="margin-top:0">Opportunities</div>
-      ${(sy.opportunities||[]).length?(sy.opportunities||[]).map(o=>`<div style="margin-bottom:13px">
-        <span class="pill ${o.is_trap?"b-AtRisk":"b-Healthy"}">${o.is_trap?"TRAP":esc(o.confidence)}</span>
-        <b> ${esc(o.opportunity)}</b>
-        ${o.is_trap?`<div class="small" style="color:var(--bad);margin:4px 0">Disqualified: ${esc(o.trap_reason)}</div>`:""}
-        ${o.unblock_condition?`<div class="small muted">Unblock: ${esc(o.unblock_condition)}</div>`:""}
-        ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
-        ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-      </div>`).join(""):'<div class="muted small">No expansion signals in the evidence.</div>'}</div>
-  </div>
+    const base = {
+      navGroups, viewEyebrow:meta[0], viewTitle:meta[1], viewLede:meta[2],
+      isTriage:view==="triage", isAccounts:view==="accounts", isGaps:view==="gaps",
+      isRenewals:view==="renewals",
+      isExpansion:view==="expansion", isContra:view==="contradictions",
+      isWinback:view==="winback", isFlight:view==="flight", isFeed:view==="feed",
+      syncLabel:"connecting", syncStamp:"", degraded:false, degradedDetail:"",
+      moneyTiles:[], queue:[], queueCount:"", stale:[], loops:[], accountRows:[], gapRows:[],
+      hasMisread:false, misreadLine:"", buckets:[],
+      oppRows:[], trapRows:[], contraRows:[], winbackCards:[], flightRows:[],
+      feedTiles:[], withdrawn:[], hasWithdrawn:false, beliefs:[], changes:[], syncRows:[],
+      oppCount:"", trapCount:"", changeCount:"", emptyMsg:"",
+      noOpps:false, noTraps:false, noContra:false, noWinbacks:false,
+      naiveLabel:"\u2014", honestLabel:"\u2014", gapLabel:"\u2014", gapPctLabel:"",
+      honestW:"0%", gapW:"0%"
+    };
+    if (!d) return base;
 
-  <div class="sec">Who matters here</div>
-  <div class="card"><table><thead><tr><th>Person</th><th>Title</th><th>Role</th>
-    <th>Side</th><th>Sentiment</th><th>Status</th><th>Seen in</th></tr></thead><tbody>
-  ${(s.people||[]).map(p=>`<tr><td><b>${esc(p.name)}</b>
-      ${(p.quotes||[]).slice(0,1).map(q=>`<div class="q">${esc(q.quote)}</div>`).join("")}</td>
-    <td class="small">${esc(p.title||"—")}</td>
-    <td><span class="tag">${esc(p.role)}</span></td>
-    <td class="small muted">${esc(p.org_side)}</td>
-    <td class="small">${esc(p.sentiment)}</td>
-    <td class="small ${p.status!=="active"?'style="color:var(--bad)"':''}">${esc(p.status)}</td>
-    <td class="src">${esc((p.documents||[]).join(", "))}</td></tr>`).join("")}
-  </tbody></table></div>
+    const m = d.money, c = d.counts;
+    const degraded = degradedPreview || d.reading?.enabled === false || (d.accounts||[]).some(a => a.degraded);
 
-  ${(sy.contradictions||[]).length?`<div class="sec">Where the sources disagree</div>
-  <div class="card">${sy.contradictions.map(c=>`<div style="margin-bottom:14px">
-    <b>${esc(c.topic)}</b>
-    <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
-    <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
-    <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
-    ${c.matters_because?`<div class="small muted">${esc(c.matters_because)}</div>`:""}
-  </div>`).join("")}</div>`:""}
+    const misread = (d.reality_gaps||[]).filter(g => g.direction === "overstated" && Math.abs(g.gap) >= 1);
+    const misARR = misread.reduce((s,g) => s + (g.arr||0), 0);
 
-  ${(s.open_commitments||[]).length?`<div class="sec">Open commitments</div>
-  <div class="card"><table><tbody>${s.open_commitments.map(c=>`<tr>
-    <td><span class="tag">${esc(c.owner_side)}</span> ${esc(c.owner||"")}</td>
-    <td>${esc(c.promise)}<div class="q">${esc(c.quote||"")}</div></td>
-    <td class="src">${esc(c.doc||"")}${c.due?` · due ${esc(c.due)}`:""}</td></tr>`).join("")}
-  </tbody></table></div>`:""}
+    const queue = (degradedPreview ? [] : (d.action_queue||[])).slice(0, rowLimit).map((a,i,arr) => {
+      const bd = this.band(a.health_band);
+      const below = a.value_score < 70;
+      const prevAbove = i > 0 && arr[i-1].value_score >= 70;
+      const qs = showEvidence ? this.quotes(a.evidence_quotes) : [];
+      return {...a,
+        rankLabel:String(a.rank).padStart(2,"0"),
+        rankColor:below ? "#999999" : (i === 0 ? "#D95B28" : "#999999"),
+        dim:below ? "0.85" : "1",
+        showCut:prevAbove && below,
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        arrLabel:this.money(a.arr),
+        renewLabel:a.days_to_renewal == null ? "not set" : a.days_to_renewal + " days",
+        renewColor:a.days_to_renewal != null && a.days_to_renewal < 90 ? "#F0768D" : "#D6D6D6",
+        target_person:a.target_person || "\u2014",
+        scoreW:a.value_score + "%",
+        scoreColor:a.value_score >= 80 ? "#F43F5E" : a.value_score >= 60 ? "#D9A441" : "#999999",
+        quotes:qs, hasQuotes:qs.length > 0};
+    });
 
-  <div class="sec">Source documents (live)</div>
-  <div class="card"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th>
-    <th>How dated</th><th>What it says</th></tr></thead><tbody>
-  ${(s.documents||[]).map(d=>`<tr><td><b>${esc(d.title)}</b><br><span class="src">${esc(d.file)}</span></td>
-    <td><span class="tag">${esc(d.type)}</span></td>
-    <td class="src">${esc(d.date||"undated")}</td>
-    <td class="src">${esc(d.date_basis)}${d.date_text?` · "${esc(d.date_text)}"`:""}</td>
-    <td class="small muted">${esc(d.summary)}</td></tr>`).join("")}
-  </tbody></table>
-  <div class="small muted" style="margin-top:9px">${s._evidence_count||0} citable evidence
-  units indexed for this account. Documents withdrawn from the source are excluded here
-  and shown on the Change Feed.</div></div>
+    const accountRows = (d.accounts||[]).map(a => {
+      const bd = this.band(a.health_band);
+      const over = a.reality_gap?.direction === "overstated";
+      return {...a,
+        vertical:a.vertical || "",
+        arrLabel:a.arr ? this.money(a.arr) : "\u2014",
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        crmLabel:(a.crm_health || "\u2014") + (over ? "  \u2716 wrong" : ""),
+        crmColor:over ? "#F43F5E" : "#999999",
+        usageLabel:a.usage_pct == null ? "" : this.pct(a.usage_pct),
+        usageColor:(a.usage_pct||0) < 0 ? "#F0768D" : "#72A899",
+        renewLabel:a.renewal?.days_to_renewal == null ? "not set" : a.renewal.days_to_renewal + "d \u00b7 " + a.renewal.bucket,
+        one_line:degradedPreview ? "not available while the reading layer is off" : a.one_line};
+    });
 
-  ${(s._deltas||[]).length?`<div class="sec">How our understanding of this account has changed</div>
-  <div class="card feed">${s._deltas.map(d=>`<div class="row">
-    <span class="src">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span><b>${esc(d.field)}</b> ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
-    ${d.narrative?`<div class="small muted">${esc(d.narrative)}</div>`:""}</span>
-  </div>`).join("")}</div>`:""}`;
+    const gapRows = (d.reality_gaps||[]).slice().sort((x,y) => (y.gap||0) - (x.gap||0) || (y.arr||0) - (x.arr||0)).map(g => {
+      const bd = this.band(g.derived);
+      const over = g.direction === "overstated";
+      return {...g,
+        arrLabel:g.arr ? this.money(g.arr) : "\u2014",
+        edge:over ? (g.gap >= 2 ? "#F43F5E" : "#D9A441") : g.direction === "understated" ? "#3A7A65" : "#3D3D3D",
+        verdict:over ? "overstated by " + Math.abs(g.gap) : g.direction === "understated" ? "understated" : "agrees",
+        arrow:over ? "\u2192" : "=",
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        stated:g.stated || "no label"};
+    });
+
+    const order = ["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
+    const buckets = order.filter(b => m.buckets?.[b]?.count).map(b => {
+      const bd = this.band(b);
+      return {label:b, bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        arrLabel:this.money(m.buckets[b].arr),
+        countLabel:m.buckets[b].count + (m.buckets[b].count === 1 ? " account" : " accounts"),
+        accounts:m.buckets[b].accounts.map(r => ({...r,
+          arrLabel:this.money(r.arr),
+          daysLabel:r.days == null ? "date not set" : r.days + " days",
+          probLabel:r.probability == null ? "\u2014" : Math.round(r.probability*100) + "%",
+          probW:Math.round((r.probability||0)*100) + "%",
+          probColor:(r.probability||0) >= 0.75 ? "#3A7A65" : (r.probability||0) >= 0.5 ? "#D9A441" : "#F43F5E"}))};
+    });
+
+    const mkOpp = o => {
+      const qs = showEvidence ? this.quotes(o.evidence_quotes) : [];
+      const dq = o.qualification?.disqualifiers || [];
+      return {...o, arrLabel:this.money(o.arr), quotes:qs, hasQuotes:qs.length > 0,
+        hasBasis:!!o.estimated_value_basis, hasUnblock:!!o.unblock_condition,
+        disq:dq, hasDisq:dq.length > 0, disqLine:dq.join("   \u00b7   ")};
+    };
+    const oppRows = (degradedPreview ? [] : (d.opportunities||[])).map(mkOpp);
+    const trapRows = (degradedPreview ? [] : (d.traps||[])).map(mkOpp);
+
+    const contraRows = (degradedPreview ? [] : (d.contradictions||[])).map(c => {
+      const open = /^unresolved/i.test(c.resolution||"");
+      return {...c, hasMatters:!!c.matters_because,
+        resColor:open ? "#D9A441" : "#D95B28",
+        resLabel:open ? "Not resolved" : "What we believe",
+        strikeA:open ? "none" : "line-through", strikeB:"none"};
+    });
+
+    const winbackCards = (degradedPreview ? [] : (d.winbacks||[])).map(w => {
+      const v = VERD[w.verdict] || VERD["not-applicable"];
+      return {...w, vFg:v[0], vBg:v[1], vBd:v[2], vLabel:v[3],
+        lostLabel:this.money(w.lost_arr), scoreW:w.score + "%",
+        scoreColor:w.score >= 60 ? "#3A7A65" : w.score >= 30 ? "#D9A441" : "#999999",
+        reversibleLabel:w.reversible ? "the cause can be fixed" : "the cause cannot be fixed",
+        reversibleColor:w.reversible ? "#72A899" : "#F0768D",
+        hasChanged:!!w.what_changed_since, hasFirst:!!w.first_move, hasResidual:!!w.residual_relationship};
+    });
+
+    const flightRows = (d.flight_activity||[]).map(f => {
+      const s = this.spark(f.values, 130, 32);
+      const mo = f.months || [];
+      return {...f, arrLabel:this.money(f.arr), pctLabel:this.pct(f.pct_3v3),
+        pctColor:(f.pct_3v3||0) < 0 ? "#F0768D" : "#72A899",
+        sparkD:s.d, sparkCx:s.cx, sparkCy:s.cy, sparkColor:s.color,
+        crmLabel:f.crm_health || "\u2014",
+        agreeLabel:f.agrees_with_label ? "yes" : "no",
+        agreeColor:f.agrees_with_label ? "#72A899" : "#F43F5E",
+        monthsLabel:mo.length ? mo[0] + " to " + mo[mo.length-1] : ""};
+    });
+
+    const sys = d.system || {}, wd = sys.withdrawn_objects || [];
+    const CT = {ADDED:"#72A899", MODIFIED:"#D9A441", WITHDRAWN:"#F43F5E", RESTORED:"#3E6F9E"};
+    const stamp = t => String(t||"").replace("T"," ").replace("+00:00","");
+    const feedTiles = [
+      {lab:"Checks run", val:String((d.syncs||[]).length), color:"#F0F0F0", note:"most recent " + stamp(sys.last_sync?.started_at)},
+      {lab:"Documents withdrawn", val:String(wd.length), color:wd.length ? "#F43F5E" : "#999999", note:"source files that were there last time and are gone now"},
+      {lab:"Things we changed our mind about", val:String((d.belief_deltas||[]).length), color:"#F0F0F0", note:"each one traced to the change that caused it"},
+      {lab:"Checks every", val:"60s", color:"#F0F0F0", note:"runs on its own, nobody presses a button"}
+    ];
+
+    const hw = m.naive_forecast ? (m.weighted_forecast/m.naive_forecast)*100 : 0;
+
+    return {...base,
+      syncLabel:"live \u00b7 sync #" + (d.system?.last_sync?.id ?? "\u2014"),
+      syncStamp:String(d.generated_at||"").replace("T"," ").replace("+00:00"," UTC"),
+      degraded,
+      degradedDetail:"reading provider " + (d.reading?.provider || "none") + (d.reading?.last_error ? " \u00b7 last error: " + d.reading.last_error : " \u00b7 no model key configured"),
+      moneyTiles:[
+        {lab:"Live ARR", val:this.money(m.live_arr), color:"#F0F0F0", note:c.live + " live, " + c.presale + " in pre-sale, " + c.churned + " churned"},
+        {lab:"Honest forecast", val:this.money(m.weighted_forecast), color:"#F0F0F0", note:"the CRM implies " + this.money(m.naive_forecast)},
+        {lab:"At risk of not renewing", val:this.money(m.forecast_gap), color:"#F43F5E", note:"the gap between the labels and the evidence"},
+        {lab:"Already lost", val:this.money(m.lost_arr), color:"#F0768D", note:(d.winbacks||[]).filter(w => w.verdict !== "do-not-pursue" && w.verdict !== "not-applicable").length + " judged worth chasing"}
+      ],
+      queue, queueCount:queue.length + " of " + (d.action_queue||[]).length + " shown",
+      hasMisread:misARR > 0,
+      misreadLine:misread.length + " of " + c.accounts + " accounts are labelled healthier than their own behaviour supports, covering " + this.money(misARR) + " of ARR.",
+      stale:(d.stale_accounts||[]).map(s => ({...s, arrLabel:this.money(s.arr), silentLabel:s.days_silent + " days quiet"})),
+      loops:(d.open_loops||[]).map(l => ({...l,
+        dueLabel:l.due ? "due " + l.due : "no date",
+        dueColor:l.due && l.due < "2026-08-15" ? "#F43F5E" : "#999999",
+        srcLabel:l.account_name + " \u00b7 " + (l.doc||"")})),
+      accountRows, gapRows, buckets,
+      oppRows, trapRows, contraRows, winbackCards, flightRows, feedTiles,
+      oppCount:oppRows.length + " open", trapCount:trapRows.length + " flagged",
+      noOpps:oppRows.length === 0, noTraps:trapRows.length === 0,
+      noContra:contraRows.length === 0, noWinbacks:winbackCards.length === 0,
+      emptyMsg:degraded ? "Not available while the part that reads documents is off." : "Nothing here right now.",
+      withdrawn:wd.map(w => ({...w, stamp:stamp(w.withdrawn_at), scope:w.account_id || "portfolio-wide"})),
+      hasWithdrawn:wd.length > 0,
+      beliefs:(d.belief_deltas||[]).map(b => ({...b, stamp:stamp(b.occurred_at)})),
+      changes:(d.change_feed||[]).slice(0,30).map(c => ({...c, stamp:stamp(c.detected_at),
+        ctColor:CT[c.change_type] || "#999999", label:c.title || c.source_id})),
+      changeCount:Math.min(30,(d.change_feed||[]).length) + " of " + (d.change_feed||[]).length + " shown",
+      syncRows:(d.syncs||[]).map(s => ({...s, stamp:stamp(s.started_at),
+        wdColor:s.withdrawn ? "#F43F5E" : "#999999",
+        statusColor:s.status === "ok" ? "#72A899" : "#F43F5E"})),
+      naiveLabel:this.money(m.naive_forecast), honestLabel:this.money(m.weighted_forecast),
+      gapLabel:this.money(m.forecast_gap),
+      gapPctLabel:Math.round((m.forecast_gap/(m.naive_forecast||1))*100) + "% of live ARR",
+      honestW:hw.toFixed(1) + "%", gapW:(100-hw).toFixed(1) + "%"};
+  }
 }
-
-/* -------------------------------------------------------------- renewals */
-function vRenewals(){
-  const m=PF.money, order=["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
-  return `<h2>Renewal and revenue picture</h2>
-  <p class="lede">The honest forecast is the sum of ARR times a renewal probability that
-  starts from computed health and is adjusted by named, visible factors. It is deliberately
-  lower than the number you get by trusting the CRM.</p>
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">CRM implies</div><div class="val">${money(m.naive_forecast)}</div>
-      <div class="note">every live account renews in full</div></div>
-    <div class="card kpi"><div class="lab">TOWER forecast</div>
-      <div class="val" style="color:var(--accent)">${money(m.weighted_forecast)}</div>
-      <div class="note">probability weighted from evidence</div></div>
-    <div class="card kpi"><div class="lab">Overstatement</div>
-      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
-      <div class="note">${m.naive_forecast?((m.forecast_gap/m.naive_forecast)*100).toFixed(0):0}% of live ARR</div></div>
-    <div class="card kpi"><div class="lab">Already gone</div>
-      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
-      <div class="note">churned accounts</div></div>
-  </div>
-  ${order.filter(b=>m.buckets[b]&&m.buckets[b].count).map(b=>`
-    <div class="sec">${b} · ${money(m.buckets[b].arr)} across ${m.buckets[b].count}</div>
-    <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-      <th class="num">Renewal in</th><th class="num">Probability</th><th>Health</th></tr></thead><tbody>
-    ${m.buckets[b].accounts.map(a=>`<tr class="click" onclick="open_acc('${a.id}')">
-      <td><b>${esc(a.name)}</b></td><td class="num">${money(a.arr)}</td>
-      <td class="num">${a.days==null?"—":a.days+"d"}</td>
-      <td class="num">${a.probability==null?"—":(a.probability*100).toFixed(0)+"%"}</td>
-      <td><span class="pill ${cls(a.health)}">${esc(a.health)}</span></td></tr>`).join("")}
-    </tbody></table></div>`).join("")}`;
-}
-
-/* ------------------------------------------------------------- expansion */
-function vExpansion(){
-  return `<h2>Expansion, and the things that look like it</h2>
-  <p class="lede">An expansion signal is only an opportunity once it survives qualification.
-  Every trap below shows the exact disqualifier and what would have to change first.</p>
-  <div class="sec">Real opportunities (${(PF.opportunities||[]).length})</div>
-  <div class="card">${(PF.opportunities||[]).length?(PF.opportunities||[]).map(o=>`
-    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
-      <span class="pill b-Healthy">${esc(o.confidence)}</span>
-      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
-      <span class="src"> · ${money(o.arr)} current ARR</span>
-      <div style="margin:5px 0">${esc(o.opportunity)}</div>
-      ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
-      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-    </div>`).join(""):'<div class="muted small">Nothing currently qualifies.</div>'}</div>
-  <div class="sec">Traps (${(PF.traps||[]).length})</div>
-  <div class="card">${(PF.traps||[]).length?(PF.traps||[]).map(o=>`
-    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
-      <span class="pill b-AtRisk">TRAP</span>
-      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
-      <span class="src"> · ${money(o.arr)} current ARR · usage ${esc(o.usage_trajectory)}</span>
-      <div style="margin:5px 0">${esc(o.opportunity)}</div>
-      <div class="small" style="color:var(--bad)">${esc(o.qualification.verdict)}</div>
-      ${o.trap_reason?`<div class="small muted">${esc(o.trap_reason)}</div>`:""}
-      ${o.unblock_condition?`<div class="small" style="color:var(--accent)">Unblock: ${esc(o.unblock_condition)}</div>`:""}
-      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-    </div>`).join(""):'<div class="muted small">No traps detected.</div>'}</div>`;
-}
-
-/* ------------------------------------------------------------------ gaps */
-function vGaps(){
-  return `<h2>Reality gap</h2>
-  <p class="lede">Every account in this Book of Business carries a CRM health label.
-  This is where that label is checked against what the account actually does.
-  A red row means the record is more optimistic than the evidence supports.</p>
-  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-    <th>CRM says</th><th>Evidence says</th><th>Gap</th><th>Usage</th><th>Reading</th>
-  </tr></thead><tbody>
-  ${(PF.reality_gaps||[]).map(g=>`<tr class="click" onclick="open_acc('${g.account_id}')">
-    <td><b>${esc(g.name)}</b></td><td class="num">${money(g.arr)}</td>
-    <td><span class="pill b-none">${esc(g.stated)}</span></td>
-    <td><span class="pill ${cls(g.derived)}">${esc(g.derived)}</span>
-      <span class="src"> ${g.health_score}</span></td>
-    <td>${g.direction==="overstated"?`<span style="color:var(--bad)">overstated by ${Math.abs(g.gap)}</span>`:
-        g.direction==="understated"?`<span style="color:var(--good)">understated</span>`:
-        `<span class="muted">aligned</span>`}</td>
-    <td><span class="tag">${esc(g.usage_trajectory)}</span></td>
-    <td class="small muted">${esc(g.usage_headline)}</td></tr>`).join("")}
-  </tbody></table></div>`;
-}
-
-/* --------------------------------------------------------- contradictions */
-function vContra(){
-  return `<h2>Contradiction ledger</h2>
-  <p class="lede">The brief warned that some of this data does not agree with itself.
-  Rather than silently picking a winner, TOWER records both claims, states which one it
-  believes and why, using a fixed source-authority rule: what the customer said, dated,
-  outranks internal notes, which outrank the CRM record.</p>
-  <div class="card">${(PF.contradictions||[]).length?(PF.contradictions||[]).map(c=>`
-    <div style="margin-bottom:17px;padding-bottom:14px;border-bottom:1px solid #1c2029">
-      <b onclick="open_acc('${c.account_id}')" style="cursor:pointer">${esc(c.account_name)}</b>
-      <span class="src"> · ${esc(c.topic)}</span>
-      <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
-      <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
-      <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
-      ${c.matters_because?`<div class="small muted">Matters because: ${esc(c.matters_because)}</div>`:""}
-    </div>`).join(""):'<div class="muted small">No contradictions detected yet.</div>'}</div>`;
-}
-
-/* --------------------------------------------------------------- winback */
-function vWinback(){
-  return `<h2>Churned accounts and win-back</h2>
-  <p class="lede">Not every lost customer is worth chasing. The score weights whether the
-  cause is something FlytBase can now actually change, whether anything has changed since,
-  and whether a warm contact remains.</p>
-  ${(PF.winbacks||[]).map(w=>`<div class="card" style="margin-bottom:14px">
-    <h2 style="margin:0 0 4px">${esc(w.name)}
-      <span class="pill ${w.verdict==="pursue-now"?"b-Healthy":w.verdict==="pursue-later"?"b-Watch":"b-Critical"}">${esc(w.verdict)}</span>
-      <span class="tag">${money(w.lost_arr)} lost ARR</span>
-      <span class="tag">score ${w.score}</span></h2>
-    <div class="grid k2" style="margin-top:11px">
-      <div><div class="sec" style="margin-top:0">Why they left</div>
-        <div class="small"><span class="tag">${esc(w.cause_category)}</span>
-          ${w.reversible?'<span class="pill b-Healthy">reversible</span>':'<span class="pill b-Critical">not reversible</span>'}</div>
-        <p class="small">${esc(w.root_cause)}</p>
-        ${w.what_changed_since?`<div class="sec">What has changed since</div>
-          <p class="small">${esc(w.what_changed_since)}</p>`:""}</div>
-      <div><div class="sec" style="margin-top:0">The judgment</div>
-        <p class="small">${esc(w.reasoning)}</p>
-        ${w.residual_relationship?`<div class="sec">Who would still take the call</div>
-          <p class="small">${esc(w.residual_relationship)}</p>`:""}
-        ${w.first_move?`<div class="sec">First move</div>
-          <p class="small" style="color:var(--accent)">${esc(w.first_move)}</p>`:""}</div>
-    </div>
-    <div style="margin-top:9px"><a href="#" onclick="open_acc('${w.account_id}');return false">
-      open full account →</a></div>
-  </div>`).join("") || '<div class="card muted small">No churned accounts in state yet.</div>'}`;
-}
-
-/* ---------------------------------------------------------------- flight */
-function vFlight(){
-  return `<h2>Who is actually flying</h2>
-  <p class="lede">Flight hours by month, straight from usage history. The last column
-  answers the question the brief asks directly: does the trend agree with the health label?</p>
-  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-    <th>Trend</th><th>Trajectory</th><th class="num">3v3</th><th class="num">Latest</th>
-    <th class="num">Peak</th><th>CRM label</th><th>Agrees?</th></tr></thead><tbody>
-  ${(PF.flight_activity||[]).map(f=>`<tr class="click" onclick="open_acc('${f.account_id}')">
-    <td><b>${esc(f.name)}</b></td><td class="num">${money(f.arr)}</td>
-    <td>${spark(f.values)}</td>
-    <td><span class="tag">${esc(f.trajectory)}</span></td>
-    <td class="num" style="color:${(f.pct_3v3||0)<0?'var(--bad)':'var(--good)'}">${pct(f.pct_3v3)}</td>
-    <td class="num">${f.latest}</td><td class="num">${f.peak}</td>
-    <td class="small muted">${esc(f.crm_health||"—")}</td>
-    <td>${f.agrees_with_label?'<span style="color:var(--good)">yes</span>':
-        '<span style="color:var(--bad)">no</span>'}</td></tr>`).join("")}
-  </tbody></table>
-  <div class="small muted" style="margin-top:9px">Accounts with no usage history are
-  omitted here. For pre-sale accounts that is expected.</div></div>`;
-}
-
-/* ------------------------------------------------------------------ feed */
-function vFeed(){
-  const sys=PF.system||{}, wd=sys.withdrawn_objects||[];
-  return `<h2>Change feed</h2>
-  <p class="lede">TOWER takes a complete inventory of the source every cycle and
-  content-hashes every object. That is the only way to notice something that
-  <i>stopped</i> being available. Withdrawn documents are tombstoned, dropped from
-  active reasoning, and kept for audit.</p>
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">Syncs run</div><div class="val">${(PF.syncs||[]).length}</div>
-      <div class="note">most recent ${esc((sys.last_sync||{}).started_at||"—")}</div></div>
-    <div class="card kpi"><div class="lab">Objects withdrawn</div>
-      <div class="val" style="color:${wd.length?'var(--crit)':'var(--dim)'}">${wd.length}</div>
-      <div class="note">detected by full-inventory reconciliation</div></div>
-    <div class="card kpi"><div class="lab">Belief changes logged</div>
-      <div class="val">${(PF.belief_deltas||[]).length}</div>
-      <div class="note">each traced to the source change that caused it</div></div>
-    <div class="card kpi"><div class="lab">Poll interval</div><div class="val">60s</div>
-      <div class="note">long-lived runner, no human trigger</div></div>
-  </div>
-
-  ${wd.length?`<div class="sec">Withdrawn from source</div>
-  <div class="card feed">${wd.map(w=>`<div class="row">
-    <span class="ct WITHDRAWN">WITHDRAWN</span>
-    <span>${esc(w.obj_key)} <span class="src">· ${esc(w.account_id||"portfolio-wide")}
-    · ${esc((w.withdrawn_at||"").replace("T"," ").replace("+00:00",""))}</span></span>
-  </div>`).join("")}</div>`:""}
-
-  <div class="sec">How our beliefs moved</div>
-  <div class="card feed">${(PF.belief_deltas||[]).length?PF.belief_deltas.map(d=>`<div class="row">
-    <span class="src" style="min-width:150px">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span><b>${esc(d.account_id)}</b> · ${esc(d.field)}:
-      ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
-      ${d.narrative?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(d.narrative)}</div>`:""}</span>
-  </div>`).join(""):'<div class="muted small">No belief changes yet. The first full pass establishes the baseline.</div>'}</div>
-
-  <div class="sec">Raw source changes detected</div>
-  <div class="card feed">${(PF.change_feed||[]).slice(0,80).map(c=>`<div class="row">
-    <span class="ct ${esc(c.change_type)}">${esc(c.change_type)}</span>
-    <span class="src" style="min-width:150px">${esc((c.detected_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span>${esc(c.title||c.source_id)}
-      ${c.diff_summary?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(c.diff_summary)}</div>`:""}</span>
-  </div>`).join("")}</div>
-
-  <div class="sec">Sync history</div>
-  <div class="card"><table><thead><tr><th>#</th><th>Started</th><th>Trigger</th>
-    <th class="num">Objects</th><th class="num">Added</th><th class="num">Modified</th>
-    <th class="num">Withdrawn</th><th class="num">Re-reasoned</th><th>Status</th></tr></thead><tbody>
-  ${(PF.syncs||[]).map(s=>`<tr>
-    <td class="rank">${s.id}</td>
-    <td class="src">${esc((s.started_at||"").replace("T"," ").replace("+00:00",""))}</td>
-    <td><span class="tag">${esc(s.trigger)}</span></td>
-    <td class="num">${s.objects_seen}</td><td class="num">${s.added}</td>
-    <td class="num">${s.modified}</td>
-    <td class="num" style="color:${s.withdrawn?'var(--crit)':'inherit'}">${s.withdrawn}</td>
-    <td class="num">${s.accounts_resynth}</td>
-    <td class="small ${s.status==='ok'?'':'style="color:var(--bad)"'}">${esc(s.status)}</td>
-  </tr>`).join("")}</tbody></table></div>`;
-}
-
-boot();
 </script>
 </body>
 </html>
