@@ -1,0 +1,293 @@
+{
+ "account_id": "pinnacle-venue-group",
+ "name": "Pinnacle Venue Group",
+ "lifecycle": "renewal-focused",
+ "vertical": "Sports & Broadcasting",
+ "region": "North America",
+ "arr": 19995.0,
+ "tier": "Enterprise",
+ "docks_raw": "3",
+ "cs_owner": "Marcus Oyelaran",
+ "se_owner": "Callum Reyes",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Neutral",
+ "crm_champion_tagged": "Danny Ruiz (unresponsive 6 weeks)",
+ "computed_at": "2026-08-15T08:46:07+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 48.4,
+  "band": "At Risk",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.08,
+    "weight": 30,
+    "contribution": 2.4,
+    "points_lost": 27.6,
+    "reason": "Usage collapsing. -56% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 2,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "At Risk",
+  "severity": "material",
+  "note": "CRM says Healthy. Behaviour says At Risk. The record is 2 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    20.0,
+    22.0,
+    19.0,
+    17.0,
+    12.0,
+    9.0,
+    7.0,
+    5.0
+   ],
+   "n": 8,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 56% versus the prior 3 (21 vs 48 flight hours); latest month 5, peak 22 in 2026-01.",
+   "latest": 5.0,
+   "peak": 22.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -56.2,
+   "pct_last_vs_peak": -77.3,
+   "pct_mom": -28.6,
+   "slope_per_month": -2.56,
+   "slope_pct_of_mean": -18.45,
+   "volatility_cv": 0.466,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 21.0,
+   "total_prior_3": 48.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    13.0,
+    15.0,
+    12.0,
+    11.0,
+    8.0,
+    6.0,
+    4.0,
+    3.0
+   ],
+   "n": 8,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 58% versus the prior 3 (13 vs 31 missions); latest month 3, peak 15 in 2026-01.",
+   "latest": 3.0,
+   "peak": 15.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -58.1,
+   "pct_last_vs_peak": -80.0,
+   "pct_mom": -25.0,
+   "slope_per_month": -1.738,
+   "slope_pct_of_mean": -19.31,
+   "volatility_cv": 0.49,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 13.0,
+   "total_prior_3": 31.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 20.0,
+    "missions": 13.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 22.0,
+    "missions": 15.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 19.0,
+    "missions": 12.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 17.0,
+    "missions": 11.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 12.0,
+    "missions": 8.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 9.0,
+    "missions": 6.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 7.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 5.0,
+    "missions": 3.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.365,
+  "bucket": "At Risk",
+  "basis": "base 56% from health 48; usage collapsed or dormant (-20pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_outreach_attempts.md",
+   "title": "Outreach Log",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_call_transcript_danny_ruiz_preseason.md",
+   "title": "Call Transcript \u2014 Danny Ruiz (Pre-Season Planning)",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_call_transcript_carla_ibsen_security_review.md",
+   "title": "Call Transcript \u2014 Carla Ibsen (Security Review)",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:46:07+00:00",
+   "sync_id": 1,
+   "input_hash": "dfa472941d40c17fba90ecf6635524970f8a6ae09d4a8e4cc2a354b2106a0828"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 20
+}

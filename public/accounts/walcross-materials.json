@@ -1,0 +1,311 @@
+{
+ "account_id": "walcross-materials",
+ "name": "Walcross Materials",
+ "lifecycle": "established",
+ "vertical": "Construction Materials / Cement & Aggregates",
+ "region": "North America (operations across Mexico)",
+ "arr": 53246.0,
+ "tier": "Enterprise",
+ "docks_raw": "Large multi-site fleet, still scaling",
+ "cs_owner": "Nivedita Huple",
+ "se_owner": "Pranjal Suyal",
+ "crm_health": "Healthy",
+ "crm_sentiment": "\u2014",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T08:51:47+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 70.6,
+  "band": "Healthy",
+  "factors": [
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.82,
+    "weight": 30,
+    "contribution": 24.6,
+    "points_lost": 5.4,
+    "reason": "Usage dipped and has recovered to near peak."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "relationship"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "aligned",
+  "stated": "Healthy",
+  "derived": "Healthy",
+  "severity": "aligned",
+  "note": "CRM label and derived health agree at Healthy."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    60.0,
+    68.0,
+    75.0,
+    82.0,
+    90.0,
+    97.0,
+    104.0,
+    112.0
+   ],
+   "n": 8,
+   "trajectory": "recovered",
+   "headline": "Dipped to a trough then recovered: latest month 112 flight hours against a peak of 112. Dip appears resolved.",
+   "latest": 112.0,
+   "peak": 112.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 26.7,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 7.7,
+   "slope_per_month": 7.357,
+   "slope_pct_of_mean": 8.55,
+   "volatility_cv": 0.21,
+   "dormant_months": 0,
+   "recovering": true,
+   "total_recent_3": 313.0,
+   "total_prior_3": 247.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    40.0,
+    45.0,
+    50.0,
+    55.0,
+    60.0,
+    65.0,
+    70.0,
+    76.0
+   ],
+   "n": 8,
+   "trajectory": "recovered",
+   "headline": "Dipped to a trough then recovered: latest month 76 missions against a peak of 76. Dip appears resolved.",
+   "latest": 76.0,
+   "peak": 76.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 27.9,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 8.6,
+   "slope_per_month": 5.083,
+   "slope_pct_of_mean": 8.82,
+   "volatility_cv": 0.216,
+   "dormant_months": 0,
+   "recovering": true,
+   "total_recent_3": 211.0,
+   "total_prior_3": 165.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 60.0,
+    "missions": 40.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 68.0,
+    "missions": 45.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 75.0,
+    "missions": 50.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 82.0,
+    "missions": 55.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 90.0,
+    "missions": 60.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 97.0,
+    "missions": 65.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 104.0,
+    "missions": 70.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 112.0,
+    "missions": 76.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.789,
+  "bucket": "Likely",
+  "basis": "base 71% from health 71; usage healthy or recovering (+8pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_renewal_subscription_table.md",
+   "title": "Renewal & Subscription Tracker",
+   "type": "renewal",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_vp_ops_rollout_review.md",
+   "title": "Call Transcript \u2014 Fleet Rollout Review",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_transcript_quarry_site_pilot_checkin.md",
+   "title": "Call Transcript \u2014 Site Pilot Check-In (Flagship Quarry)",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_transcript_mexico_regional_lead_call.md",
+   "title": "Call Transcript \u2014 Mexico Operations Sync",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "07_email_credit_utilization_followup.md",
+   "title": "Email Thread \u2014 Credit Utilization / Renewal Timing",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:51:47+00:00",
+   "sync_id": 1,
+   "input_hash": "dc15648fe45aaa2d00dfe87598d446e42b98438e0ecbf58cf8083e6bee0b4c83"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 32
+}

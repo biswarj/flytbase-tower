@@ -1,0 +1,293 @@
+{
+ "account_id": "whitecliff-vineyard",
+ "name": "Whitecliff Vineyard Estates",
+ "lifecycle": "renewal-focused",
+ "vertical": "Agriculture",
+ "region": "North America",
+ "arr": 2799.0,
+ "tier": "Enterprise",
+ "docks_raw": "1",
+ "cs_owner": "Nivedita Huple",
+ "se_owner": "Pranjal Suyal",
+ "crm_health": "Healthy",
+ "crm_sentiment": "\u2014 (never logged)",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T08:52:47+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 64.6,
+  "band": "Watch",
+  "factors": [
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.62,
+    "weight": 30,
+    "contribution": 18.6,
+    "points_lost": 11.4,
+    "reason": "Usage flat."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "relationship"
+ },
+ "reality_gap": {
+  "gap": 1,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "Watch",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Watch. The record is 1 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    5.0,
+    6.0,
+    5.0,
+    6.0,
+    7.0,
+    6.0,
+    7.0,
+    6.0
+   ],
+   "n": 8,
+   "trajectory": "flat",
+   "headline": "Last 3 months up 6% versus the prior 3 (19 vs 18 flight hours); latest month 6, peak 7 in 2026-04.",
+   "latest": 6.0,
+   "peak": 7.0,
+   "peak_month": "2026-04",
+   "pct_3v3": 5.6,
+   "pct_last_vs_peak": -14.3,
+   "pct_mom": -14.3,
+   "slope_per_month": 0.19,
+   "slope_pct_of_mean": 3.17,
+   "volatility_cv": 0.126,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 19.0,
+   "total_prior_3": 18.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    4.0,
+    5.0,
+    4.0,
+    5.0,
+    5.0,
+    5.0,
+    6.0,
+    5.0
+   ],
+   "n": 8,
+   "trajectory": "flat",
+   "headline": "Last 3 months up 14% versus the prior 3 (16 vs 14 missions); latest month 5, peak 6 in 2026-06.",
+   "latest": 5.0,
+   "peak": 6.0,
+   "peak_month": "2026-06",
+   "pct_3v3": 14.3,
+   "pct_last_vs_peak": -16.7,
+   "pct_mom": -16.7,
+   "slope_per_month": 0.179,
+   "slope_pct_of_mean": 3.66,
+   "volatility_cv": 0.131,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 16.0,
+   "total_prior_3": 14.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 5.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 5.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 7.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 7.0,
+    "missions": 6.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 6.0,
+    "missions": 5.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.67,
+  "bucket": "Likely",
+  "basis": "base 67% from health 65"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_canopy_inspection_checkin.md",
+   "title": "Call Transcript \u2014 Viticulture Ops Check-In",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_estate_relationship_call.md",
+   "title": "Call Transcript \u2014 Account Relationship Call",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_email_thread_renewal_routing.md",
+   "title": "Email Thread \u2014 Renewal Routing",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:52:47+00:00",
+   "sync_id": 1,
+   "input_hash": "a260699c1f86bef85094ca96851889de02dfcbf2aaeebcfc156078934d68ef8f"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 18
+}

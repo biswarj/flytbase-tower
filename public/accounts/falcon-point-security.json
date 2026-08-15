@@ -1,0 +1,243 @@
+{
+ "account_id": "falcon-point-security",
+ "name": "Falcon Point Security",
+ "lifecycle": "churned",
+ "vertical": "Security",
+ "region": "North America",
+ "arr": 3999.0,
+ "tier": "Enterprise",
+ "docks_raw": "8 of 20 licensed units deployed",
+ "cs_owner": "Deep Malhotra / Nivedita Huple",
+ "se_owner": "Pranjal Suyal",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Positive",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T08:41:49+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 0.0,
+  "band": "Critical",
+  "factors": [
+   {
+    "factor": "churned",
+    "quality": 0,
+    "weight": 100,
+    "contribution": 0,
+    "points_lost": 100,
+    "reason": "Account has already churned."
+   }
+  ],
+  "biggest_drag": "churned"
+ },
+ "reality_gap": {
+  "gap": 3,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "Critical",
+  "severity": "severe",
+  "note": "CRM says Healthy. Behaviour says Critical. The record is 3 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05"
+   ],
+   "values": [
+    30.0,
+    32.0,
+    29.0,
+    31.0,
+    28.0,
+    0.0
+   ],
+   "n": 6,
+   "trajectory": "declining",
+   "headline": "Last 3 months down 35% versus the prior 3 (59 vs 91 flight hours); latest month 0, peak 32 in 2026-01.",
+   "latest": 0.0,
+   "peak": 32.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -35.2,
+   "pct_last_vs_peak": -100.0,
+   "pct_mom": -100.0,
+   "slope_per_month": -4.571,
+   "slope_pct_of_mean": -18.29,
+   "volatility_cv": 0.493,
+   "dormant_months": 1,
+   "recovering": false,
+   "total_recent_3": 59.0,
+   "total_prior_3": 91.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05"
+   ],
+   "values": [
+    20.0,
+    21.0,
+    19.0,
+    20.0,
+    18.0,
+    0.0
+   ],
+   "n": 6,
+   "trajectory": "declining",
+   "headline": "Last 3 months down 37% versus the prior 3 (38 vs 60 missions); latest month 0, peak 21 in 2026-01.",
+   "latest": 0.0,
+   "peak": 21.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -36.7,
+   "pct_last_vs_peak": -100.0,
+   "pct_mom": -100.0,
+   "slope_per_month": -3.086,
+   "slope_pct_of_mean": -18.89,
+   "volatility_cv": 0.494,
+   "dormant_months": 1,
+   "recovering": false,
+   "total_recent_3": 38.0,
+   "total_prior_3": 60.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 30.0,
+    "missions": 20.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 32.0,
+    "missions": 21.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 29.0,
+    "missions": 19.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 31.0,
+    "missions": 20.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 28.0,
+    "missions": 18.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 0.0,
+    "missions": 0.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.0,
+  "bucket": "Lost",
+  "basis": "Already churned."
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_negotiations_update_call.md",
+   "title": "Call Transcript \u2014 Quarterly Check-in",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_finance_procurement_call.md",
+   "title": "Call Transcript \u2014 Finance / Procurement Sync",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_email_non_renewal_confirmation.md",
+   "title": "Email \u2014 Non-Renewal Confirmation",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:41:49+00:00",
+   "sync_id": 1,
+   "input_hash": "158bb1e910eec9694e3c735ef686869b19043bbdbe5a524b0fd0c3fd111b9745"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 20
+}

@@ -1,0 +1,216 @@
+{
+ "account_id": "camborne-constabulary",
+ "name": "Camborne Constabulary",
+ "lifecycle": "newly-sold-onboarding",
+ "vertical": "Public Safety",
+ "region": "Europe",
+ "arr": 3999.0,
+ "tier": "Enterprise",
+ "docks_raw": "0 deployed (contract signed)",
+ "cs_owner": "Jordan Ashby",
+ "se_owner": "Farhan Qureshi",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Positive (from sales cycle)",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T08:39:21+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 61.0,
+  "band": "Watch",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.5,
+    "weight": 30,
+    "contribution": 15.0,
+    "points_lost": 15.0,
+    "reason": "No usage telemetry (not necessarily bad: pre-sale or non-flying account)."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 1,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "Watch",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Watch. The record is 1 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "series": [],
+  "has_usage": false
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.647,
+  "bucket": "Likely",
+  "basis": "base 65% from health 61"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_thread_post_signature.md",
+   "title": "Email Thread \u2014 Post-Signature",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_call_transcript_kickoff_planning.md",
+   "title": "Call Transcript \u2014 Kickoff & Onboarding Planning",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_call_transcript_deployment_siting.md",
+   "title": "Call Transcript \u2014 Deployment Siting",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:39:21+00:00",
+   "sync_id": 1,
+   "input_hash": "0a9a85972bc88d0f170e6400ae026ad8255031b8dc8addb03ecadfc201bbec55"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 26
+}

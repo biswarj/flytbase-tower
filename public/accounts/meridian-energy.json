@@ -1,0 +1,329 @@
+{
+ "account_id": "meridian-energy",
+ "name": "Meridian Energy Corp",
+ "lifecycle": "established",
+ "vertical": "Oil & Gas",
+ "region": "North America (HQ) + emerging APAC site",
+ "arr": 9600.0,
+ "tier": "Enterprise",
+ "docks_raw": "1 (plus multi-site tender in progress)",
+ "cs_owner": "Devon Achebe",
+ "se_owner": "Rhea Kapoor",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Positive",
+ "crm_champion_tagged": "Ross Doak (VP, Robotics & Autonomy Program)",
+ "computed_at": "2026-08-15T08:43:28+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 70.6,
+  "band": "Healthy",
+  "factors": [
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.82,
+    "weight": 30,
+    "contribution": 24.6,
+    "points_lost": 5.4,
+    "reason": "Usage dipped and has recovered to near peak."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "relationship"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "aligned",
+  "stated": "Healthy",
+  "derived": "Healthy",
+  "severity": "aligned",
+  "note": "CRM label and derived health agree at Healthy."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    14.0,
+    18.0,
+    21.0,
+    19.0,
+    24.0,
+    27.0,
+    31.0,
+    35.0
+   ],
+   "n": 8,
+   "trajectory": "recovered",
+   "headline": "Dipped to a trough then recovered: latest month 35 flight hours against a peak of 35. Dip appears resolved.",
+   "latest": 35.0,
+   "peak": 35.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 45.3,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 12.9,
+   "slope_per_month": 2.798,
+   "slope_pct_of_mean": 11.84,
+   "volatility_cv": 0.298,
+   "dormant_months": 0,
+   "recovering": true,
+   "total_recent_3": 93.0,
+   "total_prior_3": 64.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    9.0,
+    12.0,
+    14.0,
+    13.0,
+    16.0,
+    18.0,
+    21.0,
+    24.0
+   ],
+   "n": 8,
+   "trajectory": "recovered",
+   "headline": "Dipped to a trough then recovered: latest month 24 missions against a peak of 24. Dip appears resolved.",
+   "latest": 24.0,
+   "peak": 24.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 46.5,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 14.3,
+   "slope_per_month": 1.964,
+   "slope_pct_of_mean": 12.37,
+   "volatility_cv": 0.311,
+   "dormant_months": 0,
+   "recovering": true,
+   "total_recent_3": 63.0,
+   "total_prior_3": 43.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 14.0,
+    "missions": 9.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 18.0,
+    "missions": 12.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 21.0,
+    "missions": 14.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 19.0,
+    "missions": 13.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 24.0,
+    "missions": 16.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 27.0,
+    "missions": 18.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 31.0,
+    "missions": 21.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 35.0,
+    "missions": 24.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.789,
+  "bucket": "Likely",
+  "basis": "base 71% from health 71; usage healthy or recovering (+8pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_tender_scope_call.md",
+   "title": "Call Transcript \u2014 Tender Scope Call",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_competitive_displacement_call.md",
+   "title": "Call Transcript \u2014 Competitive Displacement",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_polaris_ops_walkthrough.md",
+   "title": "Call Transcript \u2014 Polaris Ops Walkthrough",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_transcript_data_integration_call.md",
+   "title": "Call Transcript \u2014 Data Platform Integration",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_email_tender_paperwork_thread.md",
+   "title": "Email \u2014 Tender Paperwork Thread",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "08_renewal_and_expansion_table.md",
+   "title": "Renewal & Expansion Tracker",
+   "type": "renewal",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "09_support_tickets.md",
+   "title": "Support Tickets",
+   "type": "ticket",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "10_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:43:28+00:00",
+   "sync_id": 1,
+   "input_hash": "213984feece628046b4b53173e3bdd3c5dd444896c380c82f32ee11cfcb85aaf"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 40
+}

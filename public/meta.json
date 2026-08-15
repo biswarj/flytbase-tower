@@ -1,6 +1,49 @@
 {
- "generated_at": "2026-08-15T08:22:14+00:00",
- "accounts": [],
- "last_sync": null,
- "syncs": []
+ "generated_at": "2026-08-15T08:52:47+00:00",
+ "accounts": [
+  "falcon-point-security",
+  "ravel-systems",
+  "pinnacle-venue-group",
+  "coastline-transit",
+  "vantage-protective",
+  "ashford-construction",
+  "camborne-constabulary",
+  "ridgemont-polymers",
+  "swiftline-logistics",
+  "whitecliff-vineyard",
+  "meridian-energy",
+  "northline-grid",
+  "walcross-materials",
+  "amber-ridge-processing"
+ ],
+ "last_sync": {
+  "id": 1,
+  "started_at": "2026-08-15T08:35:59+00:00",
+  "finished_at": null,
+  "trigger": "scheduler",
+  "objects_seen": 0,
+  "added": 0,
+  "modified": 0,
+  "withdrawn": 0,
+  "accounts_resynth": 0,
+  "status": "running",
+  "error": null,
+  "notes": null
+ },
+ "syncs": [
+  {
+   "id": 1,
+   "started_at": "2026-08-15T08:35:59+00:00",
+   "finished_at": null,
+   "trigger": "scheduler",
+   "objects_seen": 0,
+   "added": 0,
+   "modified": 0,
+   "withdrawn": 0,
+   "accounts_resynth": 0,
+   "status": "running",
+   "error": null,
+   "notes": null
+  }
+ ]
 }

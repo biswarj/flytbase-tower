@@ -1,0 +1,266 @@
+{
+ "account_id": "amber-ridge-processing",
+ "name": "Amber Ridge Processing",
+ "lifecycle": "newly-sold-onboarding",
+ "vertical": "Food Processing / Agribusiness",
+ "region": "Oceania",
+ "arr": 3999.0,
+ "tier": "Enterprise",
+ "docks_raw": "1",
+ "cs_owner": "Unnati Patil",
+ "se_owner": "Rudrev Dave",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Neutral",
+ "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
+ "computed_at": "2026-08-15T08:37:11+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 76.0,
+  "band": "Healthy",
+  "factors": [
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 1.0,
+    "weight": 30,
+    "contribution": 30.0,
+    "points_lost": 0.0,
+    "reason": "Usage scaling. +80% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "relationship"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "aligned",
+  "stated": "Healthy",
+  "derived": "Healthy",
+  "severity": "aligned",
+  "note": "CRM label and derived health agree at Healthy."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    4.0,
+    1.0,
+    3.0,
+    6.0
+   ],
+   "n": 4,
+   "trajectory": "scaling",
+   "headline": "Last 3 months up 80% versus the prior 3 (9 vs 5 flight hours); latest month 6, peak 6 in 2026-07.",
+   "latest": 6.0,
+   "peak": 6.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 80.0,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 100.0,
+   "slope_per_month": 0.8,
+   "slope_pct_of_mean": 22.86,
+   "volatility_cv": 0.595,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 9.0,
+   "total_prior_3": 5.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07"
+   ],
+   "values": [
+    3.0,
+    1.0,
+    2.0,
+    4.0
+   ],
+   "n": 4,
+   "trajectory": "scaling",
+   "headline": "Last 3 months up 50% versus the prior 3 (6 vs 4 missions); latest month 4, peak 4 in 2026-07.",
+   "latest": 4.0,
+   "peak": 4.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 50.0,
+   "pct_last_vs_peak": 0.0,
+   "pct_mom": 100.0,
+   "slope_per_month": 0.4,
+   "slope_pct_of_mean": 16.0,
+   "volatility_cv": 0.516,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 6.0,
+   "total_prior_3": 4.0
+  },
+  "series": [
+   {
+    "month": "2026-04",
+    "flightHours": 4.0,
+    "missions": 3.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 1.0,
+    "missions": 1.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 3.0,
+    "missions": 2.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 6.0,
+    "missions": 4.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.824,
+  "bucket": "Secure",
+  "basis": "base 74% from health 76; usage healthy or recovering (+8pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_reonboarding_call.md",
+   "title": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_support_tickets.md",
+   "title": "Support Tickets",
+   "type": "ticket",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_transcript_pilot_ops_call.md",
+   "title": "Call Transcript \u2014 Flight Ops Check-In",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_email_thread.md",
+   "title": "Email Thread",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:37:11+00:00",
+   "sync_id": 1,
+   "input_hash": "fe29dafb8a354b4672561758f79a55fd7dbbe4c7d2b86d4c084a5bb6494513f1"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 27
+}
