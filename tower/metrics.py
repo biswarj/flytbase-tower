@@ -32,20 +32,40 @@ _WORD_N = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5
 _UNIT_DAYS = {"day": 1, "week": 7, "month": 30.44, "quarter": 91.31, "year": 365.25}
 
 
+_REL_FUTURE = re.compile(
+    r"\b(?:in|within|after)\s+(?:(?P<n>\d+|a|an|one|two|three|four|five|six|seven|"
+    r"eight|nine|ten|couple\s+of|few)\s+)?"
+    r"(?P<unit>day|days|week|weeks|month|months|quarter|quarters|year|years)\b"
+    r"(?!\s+ago)", re.I)
+
+
+def _count(raw: str) -> int:
+    raw = (raw or "1").lower().strip()
+    n = _WORD_N.get(raw)
+    if n is not None:
+        return n
+    try:
+        return int(raw)
+    except ValueError:
+        return 1
+
+
 def resolve_relative(text: str, ref: date) -> date | None:
-    """'6 weeks ago' + anchor -> a real date."""
+    """Turn relative phrasing into a real date, in both directions.
+
+    Past ('6 weeks ago') dates documents. Future ('renewal is in 6 weeks')
+    dates renewals. Renewal proximity drives every priority score in the
+    portfolio, so missing the future case would quietly flatten the ranking.
+    """
     m = _REL.search(text or "")
-    if not m:
-        return None
-    raw = (m.group("n") or "1").lower().strip()
-    n = _WORD_N.get(raw, None)
-    if n is None:
-        try:
-            n = int(raw)
-        except ValueError:
-            n = 1
-    unit = m.group("unit").lower().rstrip("s")
-    return ref - timedelta(days=round(n * _UNIT_DAYS[unit]))
+    if m:
+        unit = m.group("unit").lower().rstrip("s")
+        return ref - timedelta(days=round(_count(m.group("n")) * _UNIT_DAYS[unit]))
+    m = _REL_FUTURE.search(text or "")
+    if m:
+        unit = m.group("unit").lower().rstrip("s")
+        return ref + timedelta(days=round(_count(m.group("n")) * _UNIT_DAYS[unit]))
+    return None
 
 
 _ABS_PATTERNS = [
@@ -78,6 +98,55 @@ def resolve_any_date(text: str, ref: date) -> tuple[date | None, str]:
                 return d, "absolute"
     d = resolve_relative(text, ref)
     return (d, "relative-resolved") if d else (None, "none")
+
+
+# Deterministic fallbacks, so the timeline still works when the reading layer
+# is unavailable. Belt and braces: the model finds dates in prose, these find
+# dates in structure. Neither is trusted alone.
+
+_DATE_LABEL = re.compile(
+    r"(?:^|\n)[^\S\n]*\**\s*(?:date|dated|call date|sent|logged|opened|recorded|"
+    r"meeting date|timestamp)\s*\**\s*[:\-]\s*\**\s*([^\n*]{3,40})", re.I)
+
+
+def sniff_document_date(text: str, ref: date) -> tuple[date | None, str]:
+    """Best-effort date for a document with no explicitly extracted date.
+
+    Prefers an explicit 'Date:' style label, then falls back to the first
+    date-like expression anywhere in the opening of the document.
+    """
+    if not text:
+        return None, "none"
+    m = _DATE_LABEL.search(text)
+    if m:
+        d, how = resolve_any_date(m.group(1), ref)
+        if d:
+            return d, f"{how}-from-label"
+    d, how = resolve_any_date(text[:2500], ref)
+    return (d, f"{how}-sniffed") if d else (None, "none")
+
+
+_RENEWAL_LINE = re.compile(
+    r"(?:^|\n)[^\n]{0,90}?\b(renewal date|renews on|renewal|contract end|end date|"
+    r"expiry|expires|term end|poc end|pilot end)\b[^\n]{0,90}", re.I)
+
+
+def sniff_renewal_date(text: str, ref: date) -> tuple[date | None, str, str]:
+    """Find a renewal or contract end date in a renewal-style document.
+
+    Returns (date, basis, the matched line) so the claim stays quotable. A
+    renewal date with no quote behind it is exactly the kind of unsourced
+    number this system is built to avoid.
+    """
+    if not text:
+        return None, "none", ""
+    best: tuple[date | None, str, str] = (None, "none", "")
+    for m in _RENEWAL_LINE.finditer(text):
+        line = m.group(0).strip()
+        d, how = resolve_any_date(line, ref)
+        if d and (best[0] is None or d > best[0]):
+            best = (d, how, line[:220])
+    return best
 
 
 # --------------------------------------------------------------------------

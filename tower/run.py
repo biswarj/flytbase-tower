@@ -41,6 +41,17 @@ def log(*a):
 # --------------------------------------------------------------------------
 
 def export(store: Store) -> dict:
+    # Fold the write-ahead log back into the main database file before we
+    # commit it. The committed .db is how state survives a runner restart, so
+    # it has to be self-contained. If the baseline were ever lost, the next
+    # crawl would report every object as newly ADDED and the change detection
+    # would be worthless exactly when it matters.
+    try:
+        store.conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
+        store.conn.commit()
+    except Exception as e:
+        log(f"wal checkpoint failed (non-fatal): {e}")
+
     out = config.PUBLIC
     out.mkdir(parents=True, exist_ok=True)
     (out / "accounts").mkdir(exist_ok=True)

@@ -178,7 +178,14 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
             store.put_extraction(row["obj_key"], row["hash"], "doc_v1",
                                  cached, config.MODEL_EXTRACT)
             log(f"    read {doc.get('title')}")
+        # Date resolution, two independent routes. The reading layer quotes a
+        # date if the document states one in prose. If it did not, or if the
+        # reading layer is degraded, scan the raw markdown for a structured
+        # date. Whichever wins, the basis is recorded and shown in the UI so a
+        # reader can tell a stated date from an inferred one.
         d, how = M.resolve_any_date(cached.get("doc_date_text", ""), ref)
+        if d is None:
+            d, how = M.sniff_document_date(doc.get("content", ""), ref)
         cached = dict(cached)
         cached["_doc_title"] = doc.get("title")
         cached["_doc_type"] = doc.get("doc_type")
@@ -224,6 +231,24 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
     # renewal date: highest-authority source wins
     renewal_date, renewal_src, renewal_conflicts = _pick_commercial(
         readings, ("renewal_date", "renewal", "contract_end", "poc_end_date"), ref)
+
+    # Deterministic backstop. Renewal proximity drives every priority score on
+    # the portfolio, so it must not silently vanish when the reading layer is
+    # unavailable. Scan renewal-type documents directly, and keep the matched
+    # line as the quote so the date is still traceable.
+    if renewal_date is None:
+        for row in store.live_objects("document"):
+            if row["account_id"] != account_id:
+                continue
+            doc = json.loads(row["payload"])
+            if doc.get("doc_type") not in ("renewal", "profile", "email"):
+                continue
+            d, how, line = M.sniff_renewal_date(doc.get("content", ""), ref)
+            if d and (renewal_date is None or d > renewal_date):
+                renewal_date = d
+                renewal_src = {"doc": doc.get("title"), "quote": line,
+                               "value": line, "basis": f"{how} (deterministic scan)"}
+
     days_to_renewal = (renewal_date - ref).days if renewal_date else None
 
     open_commitments = [
@@ -514,17 +539,26 @@ def run_cycle(store: Store, trigger: str = "manual", force_all: bool = False,
                     f"{d['field']} {d['old']} -> {d['new']}" for d in deltas))
         store.commit()
 
-        pf = build_portfolio(store)
-        store.save_portfolio(pf, sync_id)
-
+        # Close the sync record BEFORE snapshotting the portfolio, otherwise
+        # the published change feed reports its own sync as still running with
+        # zero objects, which reads as a broken audit trail.
         store.finish_sync(
             sync_id, objects_seen=report["objects_seen"], added=len(report["added"]),
             modified=len(report["modified"]), withdrawn=len(report["withdrawn"]),
             accounts_resynth=resynth, status="ok",
-            notes=json.dumps({"model_calls": brain.calls,
+            notes=json.dumps({"provider": brain.provider,
+                              "model_calls": brain.calls,
+                              "model_failures": brain.failures,
+                              "last_model_error": brain.last_error,
                               "in_tok": brain.input_tokens,
                               "out_tok": brain.output_tokens,
                               "crawl_errors": crawl.get("errors", [])[:5]}))
+
+        pf = build_portfolio(store)
+        pf["reading"] = {"provider": brain.provider, "enabled": brain.enabled,
+                         "calls": brain.calls, "failures": brain.failures,
+                         "last_error": brain.last_error}
+        store.save_portfolio(pf, sync_id)
         dur = (datetime.now(timezone.utc) - t0).total_seconds()
         log(f"[sync {sync_id}] done in {dur:.1f}s, {resynth} accounts re-reasoned, "
             f"{brain.calls} model calls")

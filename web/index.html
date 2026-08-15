@@ -179,9 +179,13 @@ function vTriage(){
   <h2>Portfolio triage</h2>
   <p class="lede">Ranked by expected dollars moved per unit of human effort, not by
   who shouted loudest. Every row opens the evidence behind it.</p>
-  ${degraded?`<div class="warnbox"><b>Degraded mode.</b> No model key is configured, so
-    documents are not being read. Ingestion, change detection, usage analytics, health
-    scoring and ranking are still live.</div>`:""}
+  ${degraded?`<div class="warnbox"><b>Degraded mode: the reading layer is not running.</b>
+    Provider <code>${esc((PF.reading||{}).provider||"none")}</code>${(PF.reading||{}).last_error
+      ? `, last error: ${esc(PF.reading.last_error)}` : ", no model key configured"}.
+    <br>Everything on this page is still true. Ingestion, full-inventory change detection,
+    usage analytics, health scoring, the reality gap and the ranking are all computed in
+    Python and do not depend on a model. What is missing is document reading: people,
+    risks, opportunities, traps and recommended actions.</div>`:""}
   ${misARR>0?`<div class="warnbox"><b>${misread.length} of ${c.accounts} accounts carry a CRM
     health label more optimistic than their own behaviour supports</b>, covering
     ${money(misARR)} of ARR. See Reality Gap.</div>`:""}
