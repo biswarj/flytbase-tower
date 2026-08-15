@@ -84,8 +84,41 @@ def export(store: Store) -> dict:
     if src.exists():
         shutil.copy(src, out / "index.html")
     (out / ".nojekyll").write_text("", encoding="utf-8")
+
+    mirror_to_root(out)
     log(f"exported {len(portfolio.get('accounts', []))} accounts to {out}")
     return portfolio
+
+
+# The repository root is what GitHub Pages actually serves. A branch-based
+# Pages site can only be published from "/" or "/docs", never from "/public",
+# so writing only to public/ leaves the live site frozen on whatever was in
+# the root the last time somebody put a file there. The site is mirrored into
+# the root on every export so the published page and the exported data can
+# never drift apart.
+SITE_FILES = ("index.html", "portfolio.json", "meta.json", ".nojekyll")
+
+
+def mirror_to_root(out: Path) -> None:
+    root = config.ROOT
+    if root.resolve() == out.resolve():
+        return
+    for name in SITE_FILES:
+        s = out / name
+        if s.exists():
+            shutil.copy(s, root / name)
+
+    dst = root / "accounts"
+    dst.mkdir(exist_ok=True)
+    published = set()
+    for s in (out / "accounts").glob("*.json"):
+        shutil.copy(s, dst / s.name)
+        published.add(s.name)
+    # An account that stops being exported must stop being served, otherwise
+    # the site keeps answering with a detail page the pipeline no longer backs.
+    for stale in dst.glob("*.json"):
+        if stale.name not in published:
+            stale.unlink()
 
 
 # --------------------------------------------------------------------------
@@ -99,7 +132,9 @@ def git_publish(message: str) -> bool:
         subprocess.run(["git", "config", "user.name", "tower-sentinel"], check=False)
         subprocess.run(["git", "config", "user.email",
                         "tower-sentinel@users.noreply.github.com"], check=False)
-        subprocess.run(["git", "add", "-A", "public", "data"], check=False)
+        subprocess.run(["git", "add", "-A", "public", "data", "accounts",
+                        "index.html", "portfolio.json", "meta.json", ".nojekyll"],
+                       check=False)
         r = subprocess.run(["git", "diff", "--cached", "--quiet"])
         if r.returncode == 0:
             return False                      # nothing moved, stay quiet

@@ -1,0 +1,353 @@
+{
+ "account_id": "whitecliff-vineyard",
+ "name": "Whitecliff Vineyard Estates",
+ "lifecycle": "renewal-focused",
+ "vertical": "Agriculture",
+ "region": "North America",
+ "arr": 2799.0,
+ "tier": "Enterprise",
+ "docks_raw": "1",
+ "cs_owner": "Nivedita Huple",
+ "se_owner": "Pranjal Suyal",
+ "crm_health": "Healthy",
+ "crm_sentiment": "\u2014 (never logged)",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T11:20:08+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 54.4,
+  "band": "At Risk",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.28,
+    "weight": 30,
+    "contribution": 8.4,
+    "points_lost": 21.6,
+    "reason": "Usage declining. -16% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 2,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "At Risk",
+  "severity": "material",
+  "note": "CRM says Healthy. Behaviour says At Risk. The record is 2 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    5.0,
+    6.0,
+    5.0,
+    6.0,
+    7.0,
+    6.0,
+    7.0,
+    6.0,
+    3.0
+   ],
+   "n": 9,
+   "trajectory": "declining",
+   "headline": "Last 3 months down 16% versus the prior 3 (16 vs 19 flight hours); latest month 3, peak 7 in 2026-04.",
+   "latest": 3.0,
+   "peak": 7.0,
+   "peak_month": "2026-04",
+   "pct_3v3": -15.8,
+   "pct_last_vs_peak": -57.1,
+   "pct_mom": -50.0,
+   "slope_per_month": -0.067,
+   "slope_pct_of_mean": -1.18,
+   "volatility_cv": 0.216,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 16.0,
+   "total_prior_3": 19.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    4.0,
+    5.0,
+    4.0,
+    5.0,
+    5.0,
+    5.0,
+    6.0,
+    5.0,
+    2.0
+   ],
+   "n": 9,
+   "trajectory": "flat",
+   "headline": "Last 3 months down 13% versus the prior 3 (13 vs 15 missions); latest month 2, peak 6 in 2026-06.",
+   "latest": 2.0,
+   "peak": 6.0,
+   "peak_month": "2026-06",
+   "pct_3v3": -13.3,
+   "pct_last_vs_peak": -66.7,
+   "pct_mom": -60.0,
+   "slope_per_month": -0.067,
+   "slope_pct_of_mean": -1.46,
+   "volatility_cv": 0.248,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 13.0,
+   "total_prior_3": 15.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 5.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 5.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 7.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 7.0,
+    "missions": 6.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 6.0,
+    "missions": 5.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 3.0,
+    "missions": 2.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": -5,
+ "last_touch": "2026-08-20",
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.604,
+  "bucket": "Likely",
+  "basis": "base 60% from health 54"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "02_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-20",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_email_thread_renewal_routing.md",
+   "title": "Email Thread \u2014 Renewal Routing",
+   "type": "email",
+   "date": "2026-08-01",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_estate_relationship_call.md",
+   "title": "Call Transcript \u2014 Account Relationship Call",
+   "type": "transcript",
+   "date": "2026-07-28",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_canopy_inspection_checkin.md",
+   "title": "Call Transcript \u2014 Viticulture Ops Check-In",
+   "type": "transcript",
+   "date": "2026-04-02",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 2,
+ "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "1e73286ad40938abf0fffa56b06c9942a8ad0c335b89a02f08a82eda1f1d8e1c"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:52:47+00:00",
+   "sync_id": 1,
+   "input_hash": "a260699c1f86bef85094ca96851889de02dfcbf2aaeebcfc156078934d68ef8f"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 34,
+   "account_id": "whitecliff-vineyard",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "reality_gap.severity",
+   "old_value": "\"minor\"",
+   "new_value": "\"material\"",
+   "caused_by": "[137]",
+   "narrative": "Whitecliff Vineyard Estates: 1 modified detected. Health moved Watch to At Risk."
+  },
+  {
+   "id": 33,
+   "account_id": "whitecliff-vineyard",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"flat\"",
+   "new_value": "\"declining\"",
+   "caused_by": "[137]",
+   "narrative": "Whitecliff Vineyard Estates: 1 modified detected. Health moved Watch to At Risk."
+  },
+  {
+   "id": 32,
+   "account_id": "whitecliff-vineyard",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.score",
+   "old_value": "64.6",
+   "new_value": "54.4",
+   "caused_by": "[137]",
+   "narrative": "Whitecliff Vineyard Estates: 1 modified detected. Health moved Watch to At Risk."
+  },
+  {
+   "id": 31,
+   "account_id": "whitecliff-vineyard",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.band",
+   "old_value": "\"Watch\"",
+   "new_value": "\"At Risk\"",
+   "caused_by": "[137]",
+   "narrative": "Whitecliff Vineyard Estates: 1 modified detected. Health moved Watch to At Risk."
+  }
+ ],
+ "_evidence_count": 18
+}

@@ -1,0 +1,260 @@
+{
+ "account_id": "camborne-constabulary",
+ "name": "Camborne Constabulary",
+ "lifecycle": "newly-sold-onboarding",
+ "vertical": "Public Safety",
+ "region": "Europe",
+ "arr": 3999.0,
+ "tier": "Enterprise",
+ "docks_raw": "0 deployed (contract signed)",
+ "cs_owner": "Jordan Ashby",
+ "se_owner": "Farhan Qureshi",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Positive (from sales cycle)",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T11:20:07+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 59.0,
+  "band": "Watch",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.5,
+    "weight": 30,
+    "contribution": 15.0,
+    "points_lost": 15.0,
+    "reason": "No usage telemetry (not necessarily bad: pre-sale or non-flying account)."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 0.9,
+    "weight": 20,
+    "contribution": 18.0,
+    "points_lost": 2.0,
+    "reason": "Support load: 1 open ticket(s)."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 1,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "Watch",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Watch. The record is 1 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "series": [],
+  "has_usage": false
+ },
+ "support": {
+  "open_tickets": 1,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": 7,
+ "last_touch": "2026-08-08",
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.633,
+  "bucket": "Likely",
+  "basis": "base 63% from health 59"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "03_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-08",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_call_transcript_deployment_siting.md",
+   "title": "Call Transcript \u2014 Deployment Siting",
+   "type": "transcript",
+   "date": "2026-06-16",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_call_transcript_kickoff_planning.md",
+   "title": "Call Transcript \u2014 Kickoff & Onboarding Planning",
+   "type": "transcript",
+   "date": "2026-06-08",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_thread_post_signature.md",
+   "title": "Email Thread \u2014 Post-Signature",
+   "type": "email",
+   "date": "2026-05-18",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_support_tickets.md",
+   "title": "Support Tickets",
+   "type": "ticket",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 3,
+ "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T11:20:07+00:00",
+   "sync_id": 31,
+   "input_hash": "bf645ccc62ef0e30ec0f2f9b2091b457dbcbf0f6801a9f675741e99afeede884"
+  },
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T09:59:48+00:00",
+   "sync_id": 7,
+   "input_hash": "0a9a85972bc88d0f170e6400ae026ad8255031b8dc8addb03ecadfc201bbec55"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:39:21+00:00",
+   "sync_id": 1,
+   "input_hash": "0a9a85972bc88d0f170e6400ae026ad8255031b8dc8addb03ecadfc201bbec55"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 5,
+   "account_id": "camborne-constabulary",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "live_documents",
+   "old_value": "5",
+   "new_value": "6",
+   "caused_by": "[118, 119]",
+   "narrative": "Camborne Constabulary: 1 modified, 1 added detected."
+  },
+  {
+   "id": 4,
+   "account_id": "camborne-constabulary",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "health.score",
+   "old_value": "61.0",
+   "new_value": "59.0",
+   "caused_by": "[118, 119]",
+   "narrative": "Camborne Constabulary: 1 modified, 1 added detected."
+  }
+ ],
+ "_evidence_count": 28
+}

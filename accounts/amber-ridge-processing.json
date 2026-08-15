@@ -1,0 +1,1087 @@
+{
+ "account_id": "amber-ridge-processing",
+ "name": "Amber Ridge Processing",
+ "lifecycle": "newly-sold-onboarding",
+ "vertical": "Food Processing / Agribusiness",
+ "region": "Oceania",
+ "arr": 3999.0,
+ "tier": "Enterprise",
+ "docks_raw": "1",
+ "cs_owner": "Unnati Patil",
+ "se_owner": "Rudrev Dave",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Neutral",
+ "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
+ "computed_at": "2026-08-15T11:20:07+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 91.0,
+  "band": "Strong",
+  "factors": [
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 1.0,
+    "weight": 30,
+    "contribution": 30.0,
+    "points_lost": 0.0,
+    "reason": "Usage scaling. +73% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   },
+   {
+    "factor": "relationship",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Relationship: active champion identified, economic buyer identified, multithreaded across 10 contacts."
+   }
+  ],
+  "biggest_drag": "sentiment"
+ },
+ "reality_gap": {
+  "gap": -1,
+  "direction": "understated",
+  "stated": "Healthy",
+  "derived": "Strong",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Strong. The account is doing better than its record suggests."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    4.0,
+    1.0,
+    3.0,
+    6.0,
+    4.0
+   ],
+   "n": 5,
+   "trajectory": "scaling",
+   "headline": "Last 3 months up 73% versus the prior 3 (13 vs 5 flight hours); latest month 4, peak 6 in 2026-07.",
+   "latest": 4.0,
+   "peak": 6.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 73.3,
+   "pct_last_vs_peak": -33.3,
+   "pct_mom": -33.3,
+   "slope_per_month": 0.5,
+   "slope_pct_of_mean": 13.89,
+   "volatility_cv": 0.505,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 13.0,
+   "total_prior_3": 5.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    3.0,
+    1.0,
+    2.0,
+    4.0,
+    3.0
+   ],
+   "n": 5,
+   "trajectory": "scaling",
+   "headline": "Last 3 months up 50% versus the prior 3 (9 vs 4 missions); latest month 3, peak 4 in 2026-07.",
+   "latest": 3.0,
+   "peak": 4.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 50.0,
+   "pct_last_vs_peak": -25.0,
+   "pct_mom": -25.0,
+   "slope_per_month": 0.3,
+   "slope_pct_of_mean": 11.54,
+   "volatility_cv": 0.439,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 9.0,
+   "total_prior_3": 4.0
+  },
+  "series": [
+   {
+    "month": "2026-04",
+    "flightHours": 4.0,
+    "missions": 3.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 1.0,
+    "missions": 1.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 3.0,
+    "missions": 2.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 6.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 4.0,
+    "missions": 3.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [
+  {
+   "name": "Edward",
+   "title": "",
+   "org_side": "customer",
+   "role": "economic-buyer",
+   "role_all": [
+    "economic-buyer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread"
+   ],
+   "quotes": [
+    {
+     "quote": "Good call, I'll loop in Edward \u2014 he's the one who actually owns the security budget conversation.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Explicitly owns the security budget conversation."
+    },
+    {
+     "quote": "Mack, sounds like Edward should be included on that one given the security budget angle.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Controls the security budget for AI detection and perimeter monitoring."
+    }
+   ]
+  },
+  {
+   "name": "Edward Throsby",
+   "title": "Managing Director",
+   "org_side": "customer",
+   "role": "economic-buyer",
+   "role_all": [
+    "economic-buyer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Economic buyer is Edward Throsby (Managing Director) but he's not involved day-to-day \u2014 Mack is fronting this for him.",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Managing Director who controls budget and needs assurance on stability and incident resolution."
+    }
+   ]
+  },
+  {
+   "name": "Mack Stockhausen",
+   "title": "IT",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "technical-evaluator"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 4,
+   "documents": [
+    "Account Profile",
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread",
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "| Champion (tagged in CRM) | Mack Stockhausen \u2014 _new, 6 months in, still building relationship_ |",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": "Tagged as champion in CRM, newly in role and building relationship."
+    },
+    {
+     "quote": "Rob should be the primary contact going forward, and loop me in as a secondary for anything IT-related \u2014 network configuration, dock connectivity, that sort of thing.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Handles IT infrastructure, dock connectivity, and coordination on account setup."
+    },
+    {
+     "quote": "Customer (Mack Stockhausen) confirmed three subsequent evening patrols with no issues and requested closure \u2014 ticket closed via email confirmation.",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": "Oversees operations, verifies successful patrols, and authorizes ticket closure."
+    },
+    {
+     "quote": "I'll update our CRM records so Rob is listed as primary account owner going forward, with Mack as secondary for IT/network items.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Handles IT/network items and evaluates technical integration feasibility with VMS."
+    }
+   ]
+  },
+  {
+   "name": "Rob Thomas",
+   "title": "new Chief Pilot",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "day-to-day-user",
+    "technical-evaluator"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 3,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread"
+   ],
+   "quotes": [
+    {
+     "quote": "No, that'll mostly be Charlie. He's doing most of the stick time right now while I get up to speed on the back office side \u2014 subscriptions, user management, that kind of thing.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "New Chief Pilot managing back-office administration and licensed flight operations."
+    },
+    {
+     "quote": "Rob mentioned you're the one flying the day-to-day missions right now while he's still ramping up on the admin side",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Oversees flight operations and pilot supervision as Chief Pilot"
+    },
+    {
+     "quote": "Until then I'm still the only one who can fly unsupervised, so if the Charlie/Rudrev session needs a second pilot present for any reason, that'll be me.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Primary account owner and certified pilot supervising operations."
+    }
+   ]
+  },
+  {
+   "name": "Mitch",
+   "title": "",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion"
+   ],
+   "sentiment": "neutral",
+   "status": "departed",
+   "mentions": 3,
+   "documents": [
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mitch knew this system inside and out, and now it's basically Rob learning from scratch while also flying real missions, which isn't ideal.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Former platform expert who previously managed platform configuration and flight operations before departing."
+    },
+    {
+     "quote": "Amber Ridge re-onboarding is underway after Mitch left",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Original departed champion on file."
+    },
+    {
+     "quote": "Also appreciate you fixing the CRM contacts \u2014 Mitch left pretty abruptly and I know that must be a pain on your end too.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Former contact who abruptly departed the customer organization."
+    }
+   ]
+  },
+  {
+   "name": "Mack",
+   "title": "IT",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "influencer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
+    },
+    {
+     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Raised automated triggering integration ideas with FlytBase previously"
+    }
+   ]
+  },
+  {
+   "name": "Matt Browne",
+   "title": "Finance",
+   "org_side": "customer",
+   "role": "procurement",
+   "role_all": [
+    "procurement"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Renewal still got processed cleanly through Matt Browne in Finance, so paperwork side was never at risk.",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Processed the renewal cleanly in Finance."
+    }
+   ]
+  },
+  {
+   "name": "Charlie",
+   "title": "",
+   "org_side": "customer",
+   "role": "day-to-day-user",
+   "role_all": [
+    "day-to-day-user"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 3,
+   "documents": [
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Charlie's still mid-way through his RePL certification, so for now I'm the only one who can legally fly unsupervised.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Handles daily stick time and flight missions, currently completing RePL certification."
+    },
+    {
+     "quote": "Charlie's mid-RePL so can't fly solo yet.",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Pilot mid-RePL certification conducting evening patrols under checklists."
+    },
+    {
+     "quote": "Charlie's flown three evening patrols since then with no issues, so from our side we're comfortable calling the clipping incident resolved.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Drone operator flying the patrols and undergoing landing-sequence training."
+    }
+   ]
+  },
+  {
+   "name": "Charlie Dawson",
+   "title": "pilot",
+   "org_side": "customer",
+   "role": "day-to-day-user",
+   "role_all": [
+    "day-to-day-user"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "pilot (Charlie Dawson, mid-RePL) initiated landing approach before the dock's lock-on confirmation step, a training gap rather than a hardware fault.",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": "Acts as pilot flying and landing the drone into the dock."
+    },
+    {
+     "quote": "I'm doing most of the actual flights \u2014 morning site checks, and now the evening patrols they've started asking for. I'm still finishing my RePL though, so technically I fly under Rob's supervision for anything unsupervised.",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Conducts day-to-day flights including morning site checks and evening patrols"
+    }
+   ]
+  },
+  {
+   "name": "Rob",
+   "title": "Chief Pilot",
+   "org_side": "customer",
+   "role": "day-to-day-user",
+   "role_all": [
+    "day-to-day-user"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Rob is the new Chief Pilot still learning the system",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "New Chief Pilot learning the platform."
+    }
+   ]
+  },
+  {
+   "name": "Unnati Patil",
+   "title": "CS Owner",
+   "org_side": "flytbase",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "day-to-day-user",
+    "influencer"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 5,
+   "documents": [
+    "Account Profile",
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "| CS Owner | Unnati Patil |",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": "Assigned Customer Success owner from FlytBase."
+    },
+    {
+     "quote": "Thanks for hopping on \u2014 I know this is a bit of a reset given Mitch's departure.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Customer Success Lead managing account re-onboarding and training coordination."
+    },
+    {
+     "quote": "Unnati Patil \u2014 2 weeks ago",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "CS lead actively managing the account onboarding and sequencing."
+    },
+    {
+     "quote": "Unnati Patil (FlytBase CS)",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "FlytBase Customer Success leading account sequencing and follow-ups"
+    },
+    {
+     "quote": "I'll update our CRM records so Rob is listed as primary account owner going forward, with Mack as secondary for IT/network items.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Manages customer onboarding and coordination on the FlytBase side."
+    }
+   ]
+  },
+  {
+   "name": "Rudrev Dave",
+   "title": "SE",
+   "org_side": "flytbase",
+   "role": "technical-evaluator",
+   "role_all": [
+    "day-to-day-user",
+    "technical-evaluator"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 4,
+   "documents": [
+    "Account Profile",
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Internal Notes",
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "| SE Owner | Rudrev Dave |",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": "Assigned Solutions Engineer from FlytBase."
+    },
+    {
+     "quote": "SE (Rudrev Dave) walked the pilot through the confirmation indicator live and provided a low-light landing checklist given the account's new evening-patrol use case.",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": "FlytBase Solutions Engineer providing technical guidance and troubleshooting."
+    },
+    {
+     "quote": "Rudrev Dave \u2014 2 weeks ago",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Solutions/CS team member advising on technical sequencing and risk."
+    },
+    {
+     "quote": "Rudrev Dave (FlytBase SE)",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "FlytBase Solutions Engineer providing landing technical guidance and checklists"
+    }
+   ]
+  },
+  {
+   "name": "Rudrev",
+   "title": "solutions engineer",
+   "org_side": "flytbase",
+   "role": "technical-evaluator",
+   "role_all": [
+    "technical-evaluator"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread"
+   ],
+   "quotes": [
+    {
+     "quote": "I'm going to have Rudrev, our solutions engineer, do a live walkthrough with whoever's actually flying day to day",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Solutions engineer handling technical dock landing sequence training."
+    },
+    {
+     "quote": "Rudrev walked Charlie through the dock-linking confirmation step and sent over a low-light landing checklist.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Solutions Engineer conducting technical walkthroughs and scoping integrations."
+    }
+   ]
+  }
+ ],
+ "days_silent": 7,
+ "last_touch": "2026-08-08",
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.921,
+  "bucket": "Secure",
+  "basis": "base 84% from health 91; usage healthy or recovering (+8pp)"
+ },
+ "signals": [
+  {
+   "severity": "high",
+   "who": "",
+   "claim": "Account is mid-transition in onboarding following the departure of the previous champion.",
+   "kind": "champion-risk",
+   "quote": "| Lifecycle Stage | **Onboarding \u2014 mid-transition after champion departure** |",
+   "dollar_hint": "",
+   "doc": "Account Profile",
+   "date": null,
+   "doc_type": "profile"
+  },
+  {
+   "severity": "high",
+   "who": "Mack Stockhausen",
+   "quote": "Mitch knew this system inside and out, and now it's basically Rob learning from scratch while also flying real missions, which isn't ideal.",
+   "claim": "Loss of previous champion/expert Mitch has created an operational knowledge vacuum and onboarding risk.",
+   "kind": "champion-risk",
+   "dollar_hint": "",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18",
+   "doc_type": "transcript"
+  },
+  {
+   "severity": "high",
+   "quote": "Correct, and that's honestly a known gap in the UI that a few of our newer accounts have run into.",
+   "claim": "A recent drone clipping incident occurred during docking because the UI does not block unsafe early descent before guide rail lock-on confirmation.",
+   "who": "Unnati Patil",
+   "dollar_hint": "",
+   "kind": "product-gap",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18",
+   "doc_type": "transcript"
+  },
+  {
+   "kind": "champion-risk",
+   "severity": "high",
+   "claim": "Account is re-onboarding a green team after the departure of key champion Mitch.",
+   "who": "Unnati Patil",
+   "dollar_hint": "",
+   "quote": "Amber Ridge re-onboarding is underway after Mitch left \u2014 Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system, Charlie's mid-RePL so can't fly solo yet.",
+   "doc": "Internal Notes",
+   "date": "2026-08-08",
+   "doc_type": "note"
+  },
+  {
+   "claim": "Green pilot team is pushing into high-stakes night and holiday security patrols due to industry activist risks right after a landing incident.",
+   "who": "Unnati Patil",
+   "quote": "On top of the team being brand new, they're pushing hard into night/holiday security patrols now because of activist-related risk in their industry. That's a lot of new surface area for a team this green.",
+   "dollar_hint": "",
+   "severity": "high",
+   "kind": "risk",
+   "doc": "Internal Notes",
+   "date": "2026-08-08",
+   "doc_type": "note"
+  },
+  {
+   "dollar_hint": "",
+   "who": "Mack Stockhausen",
+   "kind": "champion-risk",
+   "quote": "| Champion (tagged in CRM) | Mack Stockhausen \u2014 _new, 6 months in, still building relationship_ |",
+   "severity": "medium",
+   "claim": "The new champion is 6 months into the role and relationship building is still underway.",
+   "doc": "Account Profile",
+   "date": null,
+   "doc_type": "profile"
+  },
+  {
+   "severity": "medium",
+   "quote": "Also appreciate you fixing the CRM contacts \u2014 Mitch left pretty abruptly and I know that must be a pain on your end too.",
+   "dollar_hint": "",
+   "claim": "Previous contact Mitch departed abruptly from Amber Ridge Processing.",
+   "kind": "champion-risk",
+   "who": "Rob Thomas",
+   "doc": "Email Thread",
+   "date": null,
+   "doc_type": "email"
+  },
+  {
+   "dollar_hint": "",
+   "severity": "medium",
+   "who": "Rob Thomas",
+   "quote": "One addition \u2014 Charlie's RePL exam isn't booked yet but he's targeting next month, I'll confirm the exact date once he locks it in. Until then I'm still the only one who can fly unsupervised",
+   "claim": "Only one certified pilot available to fly unsupervised until Charlie completes RePL exam next month.",
+   "kind": "adoption-blocker",
+   "doc": "Email Thread",
+   "date": null,
+   "doc_type": "email"
+  },
+  {
+   "dollar_hint": "",
+   "severity": "medium",
+   "kind": "expansion-signal",
+   "quote": "Separately \u2014 the reason we're leaning harder into this now is our security use case has gotten more serious. We're moving toward night-time and holiday patrols specifically.",
+   "claim": "Amber Ridge is urgently expanding its drone scope to night-time and holiday perimeter patrols due to industry activist threats.",
+   "who": "Mack Stockhausen",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18",
+   "doc_type": "transcript"
+  },
+  {
+   "quote": "Charlie's still mid-way through his RePL certification, so for now I'm the only one who can legally fly unsupervised.",
+   "claim": "Only one pilot is legally certified to fly unsupervised while the primary day-to-day operator completes certification.",
+   "severity": "medium",
+   "who": "Rob Thomas",
+   "dollar_hint": "",
+   "kind": "compliance-or-legal",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18",
+   "doc_type": "transcript"
+  },
+  {
+   "quote": "Honestly I think I sequenced the dock-linking step wrong \u2014 I started the landing approach before the dock had fully confirmed the lock-on. Nobody had shown me that the confirmation step actually matters, I just assumed the drone would wait for it automatically.",
+   "severity": "medium",
+   "kind": "adoption-blocker",
+   "dollar_hint": "",
+   "claim": "A previous drone clipping incident was identified as an operator training gap rather than hardware failure during dock lock-on sequencing.",
+   "who": "Charlie Dawson",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09",
+   "doc_type": "transcript"
+  },
+  {
+   "claim": "Customer IT is enthusiastic about AI detection and automated VMS alarm mission triggering via API.",
+   "dollar_hint": "",
+   "kind": "expansion-signal",
+   "who": "Rudrev Dave",
+   "severity": "medium",
+   "quote": "The AI detection opportunity is real and Mack was enthusiastic, but I'd actually hold off pushing that until the basics (safe landing procedure, Charlie's certification) are solid.",
+   "doc": "Internal Notes",
+   "date": "2026-08-08",
+   "doc_type": "note"
+  },
+  {
+   "claim": "Customer completed three consecutive evening patrols without issues following dock lock-on guidance and closed the support ticket.",
+   "severity": "low",
+   "who": "Mack Stockhausen",
+   "quote": "Customer (Mack Stockhausen) confirmed three subsequent evening patrols with no issues and requested closure \u2014 ticket closed via email confirmation.",
+   "kind": "positive-proof",
+   "dollar_hint": "",
+   "doc": "Support Tickets",
+   "date": null,
+   "doc_type": "ticket"
+  },
+  {
+   "dollar_hint": "",
+   "quote": "Rudrev walked Charlie through the dock-linking confirmation step and sent over a low-light landing checklist. Charlie's flown three evening patrols since then with no issues, so from our side we're comfortable calling the clipping incident resolved.",
+   "who": "Mack Stockhausen",
+   "severity": "low",
+   "claim": "Dock clipping landing incident resolved after SE walkthrough and three successful evening patrols.",
+   "kind": "positive-proof",
+   "doc": "Email Thread",
+   "date": null,
+   "doc_type": "email"
+  },
+  {
+   "kind": "expansion-signal",
+   "dollar_hint": "",
+   "who": "Mack Stockhausen",
+   "claim": "Customer is exploring automated drone mission triggering integrated with perimeter VMS camera alerts for night patrols.",
+   "severity": "low",
+   "quote": "can a FlytBase mission be triggered automatically if our existing video management system (VMS) flags an alarm on the perimeter cameras overnight? Right now if something trips an alert at 2am, someone has to manually decide to launch a drone, which kind of defeats the point of automating the night coverage.",
+   "doc": "Email Thread",
+   "date": null,
+   "doc_type": "email"
+  },
+  {
+   "who": "Rob Thomas",
+   "dollar_hint": "",
+   "severity": "low",
+   "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
+   "kind": "expansion-signal",
+   "claim": "Customer is expanding operations to evening patrols and considering camera-triggered automated flights in phase two.",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09",
+   "doc_type": "transcript"
+  },
+  {
+   "claim": "Pilot certification exam booked for next month will provide pilot coverage redundancy.",
+   "kind": "positive-proof",
+   "who": "Rob Thomas",
+   "dollar_hint": "",
+   "severity": "low",
+   "quote": "Charlie's RePL exam is booked for next month. Once that clears, we'll have two certified pilots instead of one, which should take some pressure off the patrol schedule.",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09",
+   "doc_type": "transcript"
+  },
+  {
+   "kind": "positive-proof",
+   "dollar_hint": "",
+   "quote": "Incident ticket #5610-A closed out this week \u2014 Charlie's had three clean evening patrols since the checklist.",
+   "who": "Unnati Patil",
+   "claim": "Landing incident ticket #5610-A was resolved and Charlie completed three clean evening patrols under the new checklist.",
+   "severity": "low",
+   "doc": "Internal Notes",
+   "date": "2026-08-08",
+   "doc_type": "note"
+  },
+  {
+   "who": "Rudrev Dave",
+   "claim": "Customer initiated discussion on using thermal cameras for crop tracking and irrigation leak detection.",
+   "kind": "expansion-signal",
+   "dollar_hint": "",
+   "quote": "Mack mentioned thermal camera use for crop/hay-growth tracking and irrigation-leak detection on the property.",
+   "severity": "low",
+   "doc": "Internal Notes",
+   "date": "2026-08-08",
+   "doc_type": "note"
+  }
+ ],
+ "open_commitments": [
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Update CRM records to set Rob Thomas as primary contact and Mack Stockhausen as secondary IT contact",
+   "due": "after this call",
+   "quote": "Noted, I'll update that after this call.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Schedule a landing sequence walkthrough session with Rudrev for Charlie",
+   "due": "",
+   "quote": "Good, let's get Charlie on a separate session with Rudrev specifically for the landing sequence, and I'll keep this one focused on account-level re-onboarding for you and Mack.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Follow up to schedule an AI detection session with Amber Ridge's security team",
+   "due": "this week",
+   "quote": "I'll follow up this week to find a time that works for your security team as well, since they'll probably want to weigh in on what \"lowest-traffic areas\" actually means for your site.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "customer",
+   "owner": "Mack Stockhausen",
+   "promise": "Loop in Edward into the security AI detection conversation",
+   "due": "",
+   "quote": "Good call, I'll loop in Edward \u2014 he's the one who actually owns the security budget conversation.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "customer",
+   "owner": "Rob Thomas",
+   "promise": "Provide Charlie's RePL exam/certification date to FlytBase",
+   "due": "once he books the exam",
+   "quote": "Not exact yet, but he's been studying for it. I'll get you a date once he books the exam.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Send a recap email with next steps",
+   "due": "after this call",
+   "quote": "I'll send a recap email after this call with next steps \u2014 Charlie's landing-sequence walkthrough with Rudrev, updating the account contacts, and scheduling the AI detection session.",
+   "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "date": "2026-06-18"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Sequence triggering missions automatically off VMS alarm system as phase two after AI detection ships",
+   "due": "phase two",
+   "quote": "technically doable via our API, but we agreed to sequence it as phase two, after AI detection ships.",
+   "doc": "Internal Notes",
+   "date": "2026-08-08"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Rudrev Dave",
+   "promise": "Send over a pre-landing checklist specific to low-light conditions",
+   "due": "after this call",
+   "quote": "Yep, I'll send that over after this call. Nothing exotic \u2014 just a pre-landing checklist specific to low-light conditions until you're more comfortable.",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09"
+  },
+  {
+   "owner_side": "customer",
+   "owner": "Rob Thomas",
+   "promise": "Build a laminated checklist card by the console for landing procedure",
+   "due": "",
+   "quote": "We can build that into a laminated card by the console if it helps \u2014 something physical Charlie can glance at until it's second nature.",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Send the low-light checklist and a short recap after the call, and follow up separately to lock a date for the AI detection session",
+   "due": "after this call",
+   "quote": "I'll send the low-light checklist and a short recap after this call, and I'll follow up separately once we've got a date locked for the AI detection session.",
+   "doc": "Call Transcript \u2014 Flight Ops Check-In",
+   "date": "2026-07-09"
+  },
+  {
+   "owner_side": "flytbase",
+   "owner": "Unnati Patil",
+   "promise": "Follow up to schedule AI detection session for perimeter monitoring",
+   "due": "",
+   "quote": "I'll follow up separately once we've got the AI detection session on the calendar.",
+   "doc": "Email Thread",
+   "date": null
+  },
+  {
+   "owner_side": "customer",
+   "owner": "Rob Thomas",
+   "promise": "Confirm exact date for Charlie's RePL exam",
+   "due": "once locked in",
+   "quote": "One addition \u2014 Charlie's RePL exam isn't booked yet but he's targeting next month, I'll confirm the exact date once he locks it in.",
+   "doc": "Email Thread",
+   "date": null
+  }
+ ],
+ "documents": [
+  {
+   "file": "04_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-08",
+   "date_basis": "relative-resolved",
+   "date_text": "1 week ago",
+   "summary": "Amber Ridge is stabilizing a green operations team and successfully closed a landing incident ticket following previous champion Mitch's departure. The CS team is deliberately sequencing core operational training before pursuing queued expansion opportunities in AI detection, VMS integration, and thermal imaging."
+  },
+  {
+   "file": "05_transcript_pilot_ops_call.md",
+   "title": "Call Transcript \u2014 Flight Ops Check-In",
+   "type": "transcript",
+   "date": "2026-07-09",
+   "date_basis": "absolute",
+   "date_text": "2026-07-09",
+   "summary": "FlytBase conducted a flight ops check-in with Amber Ridge to review dock lock-on landing procedures after a prior clipping incident caused by a training gap. The team aligned on low-light landing checklists for expanding evening patrols and agreed to defer automated camera triggering until pilot fundamentals and AI detection are established."
+  },
+  {
+   "file": "02_transcript_reonboarding_call.md",
+   "title": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+   "type": "transcript",
+   "date": "2026-06-18",
+   "date_basis": "absolute",
+   "date_text": "2026-06-18",
+   "summary": "FlytBase conducted a platform re-onboarding call with Amber Ridge following the departure of their primary operator, addressing a recent dock landing clipping incident caused by early descent. Amber Ridge expressed strong interest in expanding into overnight AI-driven perimeter security patrols to counter activist threats."
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "Amber Ridge Processing is in onboarding with 1 deployed dock and $3,999 ARR following a recent renewal. The account is undergoing transition after a champion departure, with Mack Stockhausen identified as the new champion."
+  },
+  {
+   "file": "03_support_tickets.md",
+   "title": "Support Tickets",
+   "type": "ticket",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "Ticket #5610-A regarding a drone clipping incident during landing was resolved after FlytBase SE Rudrev Dave delivered pilot guidance and a low-light checklist. Customer Mack Stockhausen confirmed three subsequent successful evening patrols, leaving zero open tickets."
+  },
+  {
+   "file": "06_email_thread.md",
+   "title": "Email Thread",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "Amber Ridge resolved a dock-clipping landing incident following an SE walkthrough, confirming three clean evening patrols and closing support ticket #5610-A. The team transitioned primary account ownership to Rob after Mitch's abrupt departure and planned upcoming sessions for AI perimeter detection and phase-two VMS integration."
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 3,
+ "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T11:20:07+00:00",
+   "sync_id": 31,
+   "input_hash": "1f8f97f477d85c589533b74985b5f81231a66b262363d5c5f6bdc8e2ed1d762d"
+  },
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T09:40:51+00:00",
+   "sync_id": 7,
+   "input_hash": "fe29dafb8a354b4672561758f79a55fd7dbbe4c7d2b86d4c084a5bb6494513f1"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:37:11+00:00",
+   "sync_id": 1,
+   "input_hash": "fe29dafb8a354b4672561758f79a55fd7dbbe4c7d2b86d4c084a5bb6494513f1"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 3,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 7,
+   "occurred_at": "2026-08-15T09:40:53+00:00",
+   "field": "reality_gap.severity",
+   "old_value": "\"aligned\"",
+   "new_value": "\"minor\"",
+   "caused_by": "[]",
+   "narrative": "Amber Ridge Processing:  detected. Health moved Healthy to Strong."
+  },
+  {
+   "id": 2,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 7,
+   "occurred_at": "2026-08-15T09:40:53+00:00",
+   "field": "health.score",
+   "old_value": "76.0",
+   "new_value": "91.0",
+   "caused_by": "[]",
+   "narrative": "Amber Ridge Processing:  detected. Health moved Healthy to Strong."
+  },
+  {
+   "id": 1,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 7,
+   "occurred_at": "2026-08-15T09:40:53+00:00",
+   "field": "health.band",
+   "old_value": "\"Healthy\"",
+   "new_value": "\"Strong\"",
+   "caused_by": "[]",
+   "narrative": "Amber Ridge Processing:  detected. Health moved Healthy to Strong."
+  }
+ ],
+ "_evidence_count": 27
+}

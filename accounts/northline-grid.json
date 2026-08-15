@@ -1,0 +1,380 @@
+{
+ "account_id": "northline-grid",
+ "name": "Northline Grid Authority",
+ "lifecycle": "renewal-focused",
+ "vertical": "Utilities / Critical Infrastructure",
+ "region": "North America",
+ "arr": 61400.0,
+ "tier": "Enterprise",
+ "docks_raw": "6 (4\u00d7 Dock Gen2, 2\u00d7 Dock Gen3)",
+ "cs_owner": "Priya Nandakumar",
+ "se_owner": "Marcus Oyelaran",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Positive",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T11:20:08+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 73.0,
+  "band": "Healthy",
+  "factors": [
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.9,
+    "weight": 30,
+    "contribution": 27.0,
+    "points_lost": 3.0,
+    "reason": "Usage growing. +22% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "relationship"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "aligned",
+  "stated": "Healthy",
+  "derived": "Healthy",
+  "severity": "aligned",
+  "note": "CRM label and derived health agree at Healthy."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    52.0,
+    55.0,
+    31.0,
+    24.0,
+    48.0,
+    58.0,
+    61.0,
+    64.0,
+    33.0
+   ],
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 22% versus the prior 3 (158 vs 130 flight hours); latest month 33, peak 64 in 2026-07.",
+   "latest": 33.0,
+   "peak": 64.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 21.5,
+   "pct_last_vs_peak": -48.4,
+   "pct_mom": -48.4,
+   "slope_per_month": 0.75,
+   "slope_pct_of_mean": 1.58,
+   "volatility_cv": 0.306,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 158.0,
+   "total_prior_3": 130.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    34.0,
+    36.0,
+    20.0,
+    16.0,
+    31.0,
+    38.0,
+    40.0,
+    42.0,
+    21.0
+   ],
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 21% versus the prior 3 (103 vs 85 missions); latest month 21, peak 42 in 2026-07.",
+   "latest": 21.0,
+   "peak": 42.0,
+   "peak_month": "2026-07",
+   "pct_3v3": 21.2,
+   "pct_last_vs_peak": -50.0,
+   "pct_mom": -50.0,
+   "slope_per_month": 0.467,
+   "slope_pct_of_mean": 1.51,
+   "volatility_cv": 0.309,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 103.0,
+   "total_prior_3": 85.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 52.0,
+    "missions": 34.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 55.0,
+    "missions": 36.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 31.0,
+    "missions": 20.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 24.0,
+    "missions": 16.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 48.0,
+    "missions": 31.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 58.0,
+    "missions": 38.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 61.0,
+    "missions": 40.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 64.0,
+    "missions": 42.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 33.0,
+    "missions": 21.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": 5,
+ "last_touch": "2026-08-10",
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.804,
+  "bucket": "Secure",
+  "basis": "base 72% from health 73; usage healthy or recovering (+8pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "07_later_email_thread.md",
+   "title": "Email Thread \u2014 Follow-Up",
+   "type": "email",
+   "date": "2026-08-10",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "09_transcript_security_procurement_signoff.md",
+   "title": "Call Transcript \u2014 Vendor Risk / Security Sign-Off Review",
+   "type": "transcript",
+   "date": "2026-08-06",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "08_transcript_quarterly_compliance_review.md",
+   "title": "Call Transcript \u2014 Quarterly Reliability & Compliance Review",
+   "type": "transcript",
+   "date": "2026-07-30",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-07-25",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_hardware_review_call.md",
+   "title": "Call Transcript \u2014 Year-End Check-in",
+   "type": "transcript",
+   "date": "2026-07-24",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_mission_planning_feedback.md",
+   "title": "Call Transcript \u2014 3D Mission Planning Feedback",
+   "type": "transcript",
+   "date": "2026-06-28",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_renewal_subscription_table.md",
+   "title": "Renewal & Subscription Tracker",
+   "type": "renewal",
+   "date": "2026-06-15",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 2,
+ "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "f18cf9137f00d1b17ad4942f016d556f8a0385e1c322b29c077bdfa734338606"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:45:08+00:00",
+   "sync_id": 1,
+   "input_hash": "19de982d2d0c729809eed094809e5d813924ebada1780f0921afabde09366d40"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 17,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "live_documents",
+   "old_value": "9",
+   "new_value": "8",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 16,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"recovered\"",
+   "new_value": "\"growing\"",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 15,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "renewal.bucket",
+   "old_value": "\"Likely\"",
+   "new_value": "\"Secure\"",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 14,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.score",
+   "old_value": "70.6",
+   "new_value": "73.0",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  }
+ ],
+ "_evidence_count": 40
+}

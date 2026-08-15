@@ -1,0 +1,216 @@
+{
+ "account_id": "ravel-systems",
+ "name": "Ravel Systems",
+ "lifecycle": "churned",
+ "vertical": "Security",
+ "region": "Middle East",
+ "arr": 999.0,
+ "tier": "Pro",
+ "docks_raw": "1, license lapsed",
+ "cs_owner": "Deepa Anand",
+ "se_owner": "Ravi Krishnan",
+ "crm_health": "At Risk \u2192 Churned",
+ "crm_sentiment": "\u2014 (never logged)",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T08:46:57+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 0.0,
+  "band": "Critical",
+  "factors": [
+   {
+    "factor": "churned",
+    "quality": 0,
+    "weight": 100,
+    "contribution": 0,
+    "points_lost": 100,
+    "reason": "Account has already churned."
+   }
+  ],
+  "biggest_drag": "churned"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "unknown",
+  "stated": "At Risk \u2192 Churned",
+  "derived": "Critical",
+  "severity": "unknown",
+  "note": "CRM health label is blank or unrecognised, so it cannot be checked."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12"
+   ],
+   "values": [
+    3.0,
+    2.0,
+    1.0,
+    0.0
+   ],
+   "n": 4,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 80% versus the prior 3 (1 vs 5 flight hours); latest month 0, peak 3 in 2025-09.",
+   "latest": 0.0,
+   "peak": 3.0,
+   "peak_month": "2025-09",
+   "pct_3v3": -80.0,
+   "pct_last_vs_peak": -100.0,
+   "pct_mom": -100.0,
+   "slope_per_month": -1.0,
+   "slope_pct_of_mean": -66.67,
+   "volatility_cv": 0.861,
+   "dormant_months": 1,
+   "recovering": false,
+   "total_recent_3": 1.0,
+   "total_prior_3": 5.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12"
+   ],
+   "values": [
+    2.0,
+    1.0,
+    1.0,
+    0.0
+   ],
+   "n": 4,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 67% versus the prior 3 (1 vs 3 missions); latest month 0, peak 2 in 2025-09.",
+   "latest": 0.0,
+   "peak": 2.0,
+   "peak_month": "2025-09",
+   "pct_3v3": -66.7,
+   "pct_last_vs_peak": -100.0,
+   "pct_mom": -100.0,
+   "slope_per_month": -0.6,
+   "slope_pct_of_mean": -60.0,
+   "volatility_cv": 0.816,
+   "dormant_months": 1,
+   "recovering": false,
+   "total_recent_3": 1.0,
+   "total_prior_3": 3.0
+  },
+  "series": [
+   {
+    "month": "2025-09",
+    "flightHours": 3.0,
+    "missions": 2.0
+   },
+   {
+    "month": "2025-10",
+    "flightHours": 2.0,
+    "missions": 1.0
+   },
+   {
+    "month": "2025-11",
+    "flightHours": 1.0,
+    "missions": 1.0
+   },
+   {
+    "month": "2025-12",
+    "flightHours": 0.0,
+    "missions": 0.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": null,
+ "last_touch": null,
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": 0.0,
+  "bucket": "Lost",
+  "basis": "Already churned."
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_call_transcript_checkin.md",
+   "title": "Call Transcript \u2014 Ravel Systems Check-In",
+   "type": "transcript",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_email_thread_lapse.md",
+   "title": "Email Thread \u2014 Final Exchange",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 1,
+ "_history": [
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:46:57+00:00",
+   "sync_id": 1,
+   "input_hash": "7e0ce1b8e8debbf92d96bde4a6a70114ee7c3482f2dd03e4ea0007103e42a600"
+  }
+ ],
+ "_deltas": [],
+ "_evidence_count": 12
+}

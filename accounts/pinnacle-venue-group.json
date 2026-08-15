@@ -1,0 +1,367 @@
+{
+ "account_id": "pinnacle-venue-group",
+ "name": "Pinnacle Venue Group",
+ "lifecycle": "renewal-focused",
+ "vertical": "Sports & Broadcasting",
+ "region": "North America",
+ "arr": 19995.0,
+ "tier": "Enterprise",
+ "docks_raw": "3",
+ "cs_owner": "Marcus Oyelaran",
+ "se_owner": "Callum Reyes",
+ "crm_health": "Healthy",
+ "crm_sentiment": "Neutral",
+ "crm_champion_tagged": "Danny Ruiz (unresponsive 6 weeks)",
+ "computed_at": "2026-08-15T11:20:08+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 42.4,
+  "band": "At Risk",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.08,
+    "weight": 30,
+    "contribution": 2.4,
+    "points_lost": 27.6,
+    "reason": "Usage collapsing. -63% over the last 3 months versus the prior 3."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.4,
+    "weight": 15,
+    "contribution": 6.0,
+    "points_lost": 9.0,
+    "reason": "Commercial: renewal date has passed without a signed outcome."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 2,
+  "direction": "overstated",
+  "stated": "Healthy",
+  "derived": "At Risk",
+  "severity": "material",
+  "note": "CRM says Healthy. Behaviour says At Risk. The record is 2 band(s) more optimistic than the evidence supports."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    20.0,
+    22.0,
+    19.0,
+    17.0,
+    12.0,
+    9.0,
+    7.0,
+    5.0,
+    2.0
+   ],
+   "n": 9,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 63% versus the prior 3 (14 vs 38 flight hours); latest month 2, peak 22 in 2026-01.",
+   "latest": 2.0,
+   "peak": 22.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -63.2,
+   "pct_last_vs_peak": -90.9,
+   "pct_mom": -60.0,
+   "slope_per_month": -2.583,
+   "slope_pct_of_mean": -20.58,
+   "volatility_cv": 0.576,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 14.0,
+   "total_prior_3": 38.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04",
+    "2026-05",
+    "2026-06",
+    "2026-07",
+    "2026-08"
+   ],
+   "values": [
+    13.0,
+    15.0,
+    12.0,
+    11.0,
+    8.0,
+    6.0,
+    4.0,
+    3.0,
+    1.0
+   ],
+   "n": 9,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 68% versus the prior 3 (8 vs 25 missions); latest month 1, peak 15 in 2026-01.",
+   "latest": 1.0,
+   "peak": 15.0,
+   "peak_month": "2026-01",
+   "pct_3v3": -68.0,
+   "pct_last_vs_peak": -93.3,
+   "pct_mom": -66.7,
+   "slope_per_month": -1.75,
+   "slope_pct_of_mean": -21.58,
+   "volatility_cv": 0.605,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 8.0,
+   "total_prior_3": 25.0
+  },
+  "series": [
+   {
+    "month": "2025-12",
+    "flightHours": 20.0,
+    "missions": 13.0
+   },
+   {
+    "month": "2026-01",
+    "flightHours": 22.0,
+    "missions": 15.0
+   },
+   {
+    "month": "2026-02",
+    "flightHours": 19.0,
+    "missions": 12.0
+   },
+   {
+    "month": "2026-03",
+    "flightHours": 17.0,
+    "missions": 11.0
+   },
+   {
+    "month": "2026-04",
+    "flightHours": 12.0,
+    "missions": 8.0
+   },
+   {
+    "month": "2026-05",
+    "flightHours": 9.0,
+    "missions": 6.0
+   },
+   {
+    "month": "2026-06",
+    "flightHours": 7.0,
+    "missions": 4.0
+   },
+   {
+    "month": "2026-07",
+    "flightHours": 5.0,
+    "missions": 3.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 2.0,
+    "missions": 1.0
+   }
+  ],
+  "has_usage": true
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": 1,
+ "last_touch": "2026-08-14",
+ "renewal": {
+  "date": "2026-07-18",
+  "days_to_renewal": -28,
+  "source": {
+   "doc": "Outreach Log",
+   "quote": "**Email 2 \u2014 sent 4 weeks ago (renewal date, day of)**",
+   "value": "**Email 2 \u2014 sent 4 weeks ago (renewal date, day of)**",
+   "basis": "relative-resolved (deterministic scan)"
+  },
+  "conflicts": [],
+  "probability": 0.176,
+  "bucket": "High Risk",
+  "basis": "base 53% from health 42; renewal date already passed (-15pp); usage collapsed or dormant (-20pp)"
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "04_email_renewal_negotiation.md",
+   "title": "Email Thread \u2014 Renewal Negotiation",
+   "type": "email",
+   "date": "2026-08-14",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-08",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_outreach_attempts.md",
+   "title": "Outreach Log",
+   "type": "email",
+   "date": "2026-08-07",
+   "date_basis": "absolute-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_call_transcript_carla_ibsen_security_review.md",
+   "title": "Call Transcript \u2014 Carla Ibsen (Security Review)",
+   "type": "transcript",
+   "date": "2026-04-10",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_call_transcript_danny_ruiz_preseason.md",
+   "title": "Call Transcript \u2014 Danny Ruiz (Pre-Season Planning)",
+   "type": "transcript",
+   "date": "2026-01-20",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 2,
+ "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "f5d7e76e36f6ec0140833de04ad6318fc4d0dc7952c8d643722cd8da12daec83"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:46:07+00:00",
+   "sync_id": 1,
+   "input_hash": "dfa472941d40c17fba90ecf6635524970f8a6ae09d4a8e4cc2a354b2106a0828"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 21,
+   "account_id": "pinnacle-venue-group",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "live_documents",
+   "old_value": "5",
+   "new_value": "6",
+   "caused_by": "[134, 135, 136]",
+   "narrative": "Pinnacle Venue Group: 2 modified, 1 added detected."
+  },
+  {
+   "id": 20,
+   "account_id": "pinnacle-venue-group",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "renewal.date",
+   "old_value": "null",
+   "new_value": "\"2026-07-18\"",
+   "caused_by": "[134, 135, 136]",
+   "narrative": "Pinnacle Venue Group: 2 modified, 1 added detected."
+  },
+  {
+   "id": 19,
+   "account_id": "pinnacle-venue-group",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "renewal.bucket",
+   "old_value": "\"At Risk\"",
+   "new_value": "\"High Risk\"",
+   "caused_by": "[134, 135, 136]",
+   "narrative": "Pinnacle Venue Group: 2 modified, 1 added detected."
+  },
+  {
+   "id": 18,
+   "account_id": "pinnacle-venue-group",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.score",
+   "old_value": "48.4",
+   "new_value": "42.4",
+   "caused_by": "[134, 135, 136]",
+   "narrative": "Pinnacle Venue Group: 2 modified, 1 added detected."
+  }
+ ],
+ "_evidence_count": 27
+}

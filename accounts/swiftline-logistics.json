@@ -1,0 +1,243 @@
+{
+ "account_id": "swiftline-logistics",
+ "name": "Swiftline Logistics",
+ "lifecycle": "pre-sale",
+ "vertical": "Logistics / Last-Mile Delivery",
+ "region": "North America",
+ "arr": 0.0,
+ "tier": "\u2014",
+ "docks_raw": "0 (prospect)",
+ "cs_owner": "\u2014",
+ "se_owner": "Rhea Kapoor",
+ "crm_health": "\u2014",
+ "crm_sentiment": "Neutral",
+ "crm_champion_tagged": null,
+ "computed_at": "2026-08-15T11:20:08+00:00",
+ "reference_date": "2026-08-15",
+ "health": {
+  "score": 61.0,
+  "band": "Watch",
+  "factors": [
+   {
+    "factor": "usage_trajectory",
+    "quality": 0.5,
+    "weight": 30,
+    "contribution": 15.0,
+    "points_lost": 15.0,
+    "reason": "No usage telemetry (not necessarily bad: pre-sale or non-flying account)."
+   },
+   {
+    "factor": "relationship",
+    "quality": 0.25,
+    "weight": 20,
+    "contribution": 5.0,
+    "points_lost": 15.0,
+    "reason": "Relationship: no economic buyer identified, single-threaded."
+   },
+   {
+    "factor": "sentiment",
+    "quality": 0.6,
+    "weight": 15,
+    "contribution": 9.0,
+    "points_lost": 6.0,
+    "reason": "Customer sentiment reads neutral and stable."
+   },
+   {
+    "factor": "commercial",
+    "quality": 0.8,
+    "weight": 15,
+    "contribution": 12.0,
+    "points_lost": 3.0,
+    "reason": "No commercial friction detected."
+   },
+   {
+    "factor": "support_burden",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Clean support record."
+   }
+  ],
+  "biggest_drag": "usage_trajectory"
+ },
+ "reality_gap": {
+  "gap": 0,
+  "direction": "unknown",
+  "stated": "\u2014",
+  "derived": "Watch",
+  "severity": "unknown",
+  "note": "CRM health label is blank or unrecognised, so it cannot be checked."
+ },
+ "usage": {
+  "flightHours": {
+   "metric": "flightHours",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "missions": {
+   "metric": "missions",
+   "months": [],
+   "values": [],
+   "n": 0,
+   "trajectory": "no-data",
+   "headline": "No usage history available.",
+   "latest": null,
+   "peak": null,
+   "peak_month": null,
+   "pct_3v3": null,
+   "pct_last_vs_peak": null,
+   "pct_mom": null,
+   "slope_per_month": 0.0,
+   "slope_pct_of_mean": 0.0,
+   "volatility_cv": null,
+   "dormant_months": 0,
+   "recovering": false,
+   "total_recent_3": 0.0,
+   "total_prior_3": 0.0
+  },
+  "series": [],
+  "has_usage": false
+ },
+ "support": {
+  "open_tickets": 0,
+  "critical_open": 0,
+  "sla_breaches": 0,
+  "recurring_issues": 0
+ },
+ "people": [],
+ "days_silent": 0,
+ "last_touch": "2026-08-15",
+ "renewal": {
+  "date": null,
+  "days_to_renewal": null,
+  "source": null,
+  "conflicts": [],
+  "probability": null,
+  "bucket": "Not Applicable",
+  "basis": "Pre-sale: no renewal to forecast, this is new business."
+ },
+ "signals": [],
+ "open_commitments": [],
+ "documents": [
+  {
+   "file": "04_transcript_followup_call.md",
+   "title": "Call Transcript \u2014 Follow-Up Call",
+   "type": "transcript",
+   "date": "2026-08-15",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_transcript_compliance_call.md",
+   "title": "Call Transcript \u2014 Compliance & Safety Call",
+   "type": "transcript",
+   "date": "2026-05-15",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_ops_scoping_call.md",
+   "title": "Call Transcript \u2014 Ops Scoping Call",
+   "type": "transcript",
+   "date": "2026-05-12",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_email_initial_outreach.md",
+   "title": "Email \u2014 Initial Outreach",
+   "type": "email",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": null,
+   "date_basis": "none",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  }
+ ],
+ "synthesis": {
+  "one_line": "[degraded mode: deterministic signals only, no narrative synthesis]",
+  "situation": "No model key configured. Usage analytics, health scoring, change detection and ranking are still live; narrative reasoning is not.",
+  "sentiment_label": "neutral",
+  "sentiment_trend": "stable",
+  "sentiment_reason": "",
+  "champion_status": "none-identified",
+  "economic_buyer_identified": false,
+  "competitor_present": false,
+  "competitor_names": [],
+  "commercial_friction": false,
+  "unresolved_commercial_items": 0,
+  "top_risks": [],
+  "opportunities": [],
+  "contradictions": [],
+  "next_actions": [],
+  "_degraded": true
+ },
+ "actions": [],
+ "degraded": true,
+ "_version": 2,
+ "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "f966b2381589d73ce2abbf834da391d6ea8d9419661ddf3cf3ed333bbae6607c"
+  },
+  {
+   "version": 1,
+   "computed_at": "2026-08-15T08:48:57+00:00",
+   "sync_id": 1,
+   "input_hash": "68c67e850e98a604a7dbcb903293ff5c4af253501d0801701b2c7cea397b76ed"
+  }
+ ],
+ "_deltas": [
+  {
+   "id": 22,
+   "account_id": "swiftline-logistics",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "live_documents",
+   "old_value": "5",
+   "new_value": "6",
+   "caused_by": "[129, 130]",
+   "narrative": "Swiftline Logistics: 1 modified, 1 added detected."
+  }
+ ],
+ "_evidence_count": 25
+}
