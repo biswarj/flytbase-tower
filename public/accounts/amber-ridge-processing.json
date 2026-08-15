@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
- "computed_at": "2026-08-15T09:40:51+00:00",
+ "computed_at": "2026-08-15T11:20:07+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 91.0,
@@ -40,7 +40,7 @@
     "weight": 30,
     "contribution": 30.0,
     "points_lost": 0.0,
-    "reason": "Usage scaling. +80% over the last 3 months versus the prior 3."
+    "reason": "Usage scaling. +73% over the last 3 months versus the prior 3."
    },
    {
     "factor": "support_burden",
@@ -76,29 +76,31 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     4.0,
     1.0,
     3.0,
-    6.0
+    6.0,
+    4.0
    ],
-   "n": 4,
+   "n": 5,
    "trajectory": "scaling",
-   "headline": "Last 3 months up 80% versus the prior 3 (9 vs 5 flight hours); latest month 6, peak 6 in 2026-07.",
-   "latest": 6.0,
+   "headline": "Last 3 months up 73% versus the prior 3 (13 vs 5 flight hours); latest month 4, peak 6 in 2026-07.",
+   "latest": 4.0,
    "peak": 6.0,
    "peak_month": "2026-07",
-   "pct_3v3": 80.0,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 100.0,
-   "slope_per_month": 0.8,
-   "slope_pct_of_mean": 22.86,
-   "volatility_cv": 0.595,
+   "pct_3v3": 73.3,
+   "pct_last_vs_peak": -33.3,
+   "pct_mom": -33.3,
+   "slope_per_month": 0.5,
+   "slope_pct_of_mean": 13.89,
+   "volatility_cv": 0.505,
    "dormant_months": 0,
    "recovering": false,
-   "total_recent_3": 9.0,
+   "total_recent_3": 13.0,
    "total_prior_3": 5.0
   },
   "missions": {
@@ -107,29 +109,31 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     3.0,
     1.0,
     2.0,
-    4.0
+    4.0,
+    3.0
    ],
-   "n": 4,
+   "n": 5,
    "trajectory": "scaling",
-   "headline": "Last 3 months up 50% versus the prior 3 (6 vs 4 missions); latest month 4, peak 4 in 2026-07.",
-   "latest": 4.0,
+   "headline": "Last 3 months up 50% versus the prior 3 (9 vs 4 missions); latest month 3, peak 4 in 2026-07.",
+   "latest": 3.0,
    "peak": 4.0,
    "peak_month": "2026-07",
    "pct_3v3": 50.0,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 100.0,
-   "slope_per_month": 0.4,
-   "slope_pct_of_mean": 16.0,
-   "volatility_cv": 0.516,
+   "pct_last_vs_peak": -25.0,
+   "pct_mom": -25.0,
+   "slope_per_month": 0.3,
+   "slope_pct_of_mean": 11.54,
+   "volatility_cv": 0.439,
    "dormant_months": 0,
    "recovering": false,
-   "total_recent_3": 6.0,
+   "total_recent_3": 9.0,
    "total_prior_3": 4.0
   },
   "series": [
@@ -152,6 +156,11 @@
     "month": "2026-07",
     "flightHours": 6.0,
     "missions": 4.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 4.0,
+    "missions": 3.0
    }
   ],
   "has_usage": true
@@ -263,7 +272,7 @@
   },
   {
    "name": "Rob Thomas",
-   "title": "Chief Pilot",
+   "title": "new Chief Pilot",
    "org_side": "customer",
    "role": "champion",
    "role_all": [
@@ -334,6 +343,37 @@
      "doc": "Email Thread",
      "date": null,
      "reason": "Former contact who abruptly departed the customer organization."
+    }
+   ]
+  },
+  {
+   "name": "Mack",
+   "title": "IT",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "influencer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
+    },
+    {
+     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Raised automated triggering integration ideas with FlytBase previously"
     }
    ]
   },
@@ -451,39 +491,8 @@
    ]
   },
   {
-   "name": "Mack",
-   "title": "IT",
-   "org_side": "customer",
-   "role": "influencer",
-   "role_all": [
-    "champion",
-    "influencer"
-   ],
-   "sentiment": "neutral",
-   "status": "active",
-   "mentions": 2,
-   "documents": [
-    "Call Transcript \u2014 Flight Ops Check-In",
-    "Internal Notes"
-   ],
-   "quotes": [
-    {
-     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
-     "doc": "Internal Notes",
-     "date": "2026-08-08",
-     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
-    },
-    {
-     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
-     "doc": "Call Transcript \u2014 Flight Ops Check-In",
-     "date": "2026-07-09",
-     "reason": "Raised automated triggering integration ideas with FlytBase previously"
-    }
-   ]
-  },
-  {
    "name": "Unnati Patil",
-   "title": "CS",
+   "title": "CS Owner",
    "org_side": "flytbase",
    "role": "champion",
    "role_all": [
@@ -1018,8 +1027,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 2,
+ "_version": 3,
  "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T11:20:07+00:00",
+   "sync_id": 31,
+   "input_hash": "1f8f97f477d85c589533b74985b5f81231a66b262363d5c5f6bdc8e2ed1d762d"
+  },
   {
    "version": 2,
    "computed_at": "2026-08-15T09:40:51+00:00",

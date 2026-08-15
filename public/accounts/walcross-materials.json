@@ -12,11 +12,11 @@
  "crm_health": "Healthy",
  "crm_sentiment": "\u2014",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T08:51:47+00:00",
+ "computed_at": "2026-08-15T11:20:08+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 70.6,
-  "band": "Healthy",
+  "score": 64.6,
+  "band": "Watch",
   "factors": [
    {
     "factor": "relationship",
@@ -27,20 +27,20 @@
     "reason": "Relationship: no economic buyer identified, single-threaded."
    },
    {
+    "factor": "usage_trajectory",
+    "quality": 0.62,
+    "weight": 30,
+    "contribution": 18.6,
+    "points_lost": 11.4,
+    "reason": "Usage flat."
+   },
+   {
     "factor": "sentiment",
     "quality": 0.6,
     "weight": 15,
     "contribution": 9.0,
     "points_lost": 6.0,
     "reason": "Customer sentiment reads neutral and stable."
-   },
-   {
-    "factor": "usage_trajectory",
-    "quality": 0.82,
-    "weight": 30,
-    "contribution": 24.6,
-    "points_lost": 5.4,
-    "reason": "Usage dipped and has recovered to near peak."
    },
    {
     "factor": "commercial",
@@ -62,12 +62,12 @@
   "biggest_drag": "relationship"
  },
  "reality_gap": {
-  "gap": 0,
-  "direction": "aligned",
+  "gap": 1,
+  "direction": "overstated",
   "stated": "Healthy",
-  "derived": "Healthy",
-  "severity": "aligned",
-  "note": "CRM label and derived health agree at Healthy."
+  "derived": "Watch",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Watch. The record is 1 band(s) more optimistic than the evidence supports."
  },
  "usage": {
   "flightHours": {
@@ -80,7 +80,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     60.0,
@@ -90,24 +91,25 @@
     90.0,
     97.0,
     104.0,
-    112.0
+    112.0,
+    58.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 112 flight hours against a peak of 112. Dip appears resolved.",
-   "latest": 112.0,
+   "n": 9,
+   "trajectory": "flat",
+   "headline": "Last 3 months up 2% versus the prior 3 (274 vs 269 flight hours); latest month 58, peak 112 in 2026-07.",
+   "latest": 58.0,
    "peak": 112.0,
    "peak_month": "2026-07",
-   "pct_3v3": 26.7,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 7.7,
-   "slope_per_month": 7.357,
-   "slope_pct_of_mean": 8.55,
-   "volatility_cv": 0.21,
+   "pct_3v3": 1.9,
+   "pct_last_vs_peak": -48.2,
+   "pct_mom": -48.2,
+   "slope_per_month": 3.283,
+   "slope_pct_of_mean": 3.96,
+   "volatility_cv": 0.232,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 313.0,
-   "total_prior_3": 247.0
+   "recovering": false,
+   "total_recent_3": 274.0,
+   "total_prior_3": 269.0
   },
   "missions": {
    "metric": "missions",
@@ -119,7 +121,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     40.0,
@@ -129,24 +132,25 @@
     60.0,
     65.0,
     70.0,
-    76.0
+    76.0,
+    39.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 76 missions against a peak of 76. Dip appears resolved.",
-   "latest": 76.0,
+   "n": 9,
+   "trajectory": "flat",
+   "headline": "Last 3 months up 3% versus the prior 3 (185 vs 180 missions); latest month 39, peak 76 in 2026-07.",
+   "latest": 39.0,
    "peak": 76.0,
    "peak_month": "2026-07",
-   "pct_3v3": 27.9,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 8.6,
-   "slope_per_month": 5.083,
-   "slope_pct_of_mean": 8.82,
-   "volatility_cv": 0.216,
+   "pct_3v3": 2.8,
+   "pct_last_vs_peak": -48.7,
+   "pct_mom": -48.7,
+   "slope_per_month": 2.317,
+   "slope_pct_of_mean": 4.17,
+   "volatility_cv": 0.238,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 211.0,
-   "total_prior_3": 165.0
+   "recovering": false,
+   "total_recent_3": 185.0,
+   "total_prior_3": 180.0
   },
   "series": [
    {
@@ -188,6 +192,11 @@
     "month": "2026-07",
     "flightHours": 112.0,
     "missions": 76.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 58.0,
+    "missions": 39.0
    }
   ],
   "has_usage": true
@@ -199,35 +208,26 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": -17,
+ "last_touch": "2026-09-01",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.789,
+  "probability": 0.67,
   "bucket": "Likely",
-  "basis": "base 71% from health 71; usage healthy or recovering (+8pp)"
+  "basis": "base 67% from health 65"
  },
  "signals": [],
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
    "file": "02_renewal_subscription_table.md",
    "title": "Renewal & Subscription Tracker",
    "type": "renewal",
-   "date": null,
-   "date_basis": "none",
+   "date": "2026-09-01",
+   "date_basis": "absolute-sniffed",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -235,35 +235,8 @@
    "file": "03_internal_notes.md",
    "title": "Internal Notes",
    "type": "note",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "04_transcript_vp_ops_rollout_review.md",
-   "title": "Call Transcript \u2014 Fleet Rollout Review",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "05_transcript_quarry_site_pilot_checkin.md",
-   "title": "Call Transcript \u2014 Site Pilot Check-In (Flagship Quarry)",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "06_transcript_mexico_regional_lead_call.md",
-   "title": "Call Transcript \u2014 Mexico Operations Sync",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "date": "2026-08-11",
+   "date_basis": "relative-resolved-sniffed",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -271,6 +244,42 @@
    "file": "07_email_credit_utilization_followup.md",
    "title": "Email Thread \u2014 Credit Utilization / Renewal Timing",
    "type": "email",
+   "date": "2026-08-11",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_transcript_mexico_regional_lead_call.md",
+   "title": "Call Transcript \u2014 Mexico Operations Sync",
+   "type": "transcript",
+   "date": "2026-08-05",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "05_transcript_quarry_site_pilot_checkin.md",
+   "title": "Call Transcript \u2014 Site Pilot Check-In (Flagship Quarry)",
+   "type": "transcript",
+   "date": "2026-07-22",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_vp_ops_rollout_review.md",
+   "title": "Call Transcript \u2014 Fleet Rollout Review",
+   "type": "transcript",
+   "date": "2026-06-18",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -297,8 +306,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "2eccf302bcf15fb66e0e47858f33b51ae75465c20d59f67f727b83e73833c615"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:51:47+00:00",
@@ -306,6 +321,51 @@
    "input_hash": "dc15648fe45aaa2d00dfe87598d446e42b98438e0ecbf58cf8083e6bee0b4c83"
   }
  ],
- "_deltas": [],
+ "_deltas": [
+  {
+   "id": 30,
+   "account_id": "walcross-materials",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "reality_gap.severity",
+   "old_value": "\"aligned\"",
+   "new_value": "\"minor\"",
+   "caused_by": "[126]",
+   "narrative": "Walcross Materials: 1 modified detected. Health moved Healthy to Watch."
+  },
+  {
+   "id": 29,
+   "account_id": "walcross-materials",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"recovered\"",
+   "new_value": "\"flat\"",
+   "caused_by": "[126]",
+   "narrative": "Walcross Materials: 1 modified detected. Health moved Healthy to Watch."
+  },
+  {
+   "id": 28,
+   "account_id": "walcross-materials",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.score",
+   "old_value": "70.6",
+   "new_value": "64.6",
+   "caused_by": "[126]",
+   "narrative": "Walcross Materials: 1 modified detected. Health moved Healthy to Watch."
+  },
+  {
+   "id": 27,
+   "account_id": "walcross-materials",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.band",
+   "old_value": "\"Healthy\"",
+   "new_value": "\"Watch\"",
+   "caused_by": "[126]",
+   "narrative": "Walcross Materials: 1 modified detected. Health moved Healthy to Watch."
+  }
+ ],
  "_evidence_count": 32
 }

@@ -12,10 +12,10 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T08:45:08+00:00",
+ "computed_at": "2026-08-15T11:20:08+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 70.6,
+  "score": 73.0,
   "band": "Healthy",
   "factors": [
    {
@@ -36,11 +36,11 @@
    },
    {
     "factor": "usage_trajectory",
-    "quality": 0.82,
+    "quality": 0.9,
     "weight": 30,
-    "contribution": 24.6,
-    "points_lost": 5.4,
-    "reason": "Usage dipped and has recovered to near peak."
+    "contribution": 27.0,
+    "points_lost": 3.0,
+    "reason": "Usage growing. +22% over the last 3 months versus the prior 3."
    },
    {
     "factor": "commercial",
@@ -80,7 +80,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     52.0,
@@ -90,24 +91,25 @@
     48.0,
     58.0,
     61.0,
-    64.0
+    64.0,
+    33.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 64 flight hours against a peak of 64. Dip appears resolved.",
-   "latest": 64.0,
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 22% versus the prior 3 (158 vs 130 flight hours); latest month 33, peak 64 in 2026-07.",
+   "latest": 33.0,
    "peak": 64.0,
    "peak_month": "2026-07",
-   "pct_3v3": 77.7,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 4.9,
-   "slope_per_month": 2.607,
-   "slope_pct_of_mean": 5.31,
-   "volatility_cv": 0.292,
+   "pct_3v3": 21.5,
+   "pct_last_vs_peak": -48.4,
+   "pct_mom": -48.4,
+   "slope_per_month": 0.75,
+   "slope_pct_of_mean": 1.58,
+   "volatility_cv": 0.306,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 183.0,
-   "total_prior_3": 103.0
+   "recovering": false,
+   "total_recent_3": 158.0,
+   "total_prior_3": 130.0
   },
   "missions": {
    "metric": "missions",
@@ -119,7 +121,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     34.0,
@@ -129,24 +132,25 @@
     31.0,
     38.0,
     40.0,
-    42.0
+    42.0,
+    21.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 42 missions against a peak of 42. Dip appears resolved.",
-   "latest": 42.0,
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 21% versus the prior 3 (103 vs 85 missions); latest month 21, peak 42 in 2026-07.",
+   "latest": 21.0,
    "peak": 42.0,
    "peak_month": "2026-07",
-   "pct_3v3": 79.1,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 5.0,
-   "slope_per_month": 1.726,
-   "slope_pct_of_mean": 5.37,
-   "volatility_cv": 0.293,
+   "pct_3v3": 21.2,
+   "pct_last_vs_peak": -50.0,
+   "pct_mom": -50.0,
+   "slope_per_month": 0.467,
+   "slope_pct_of_mean": 1.51,
+   "volatility_cv": 0.309,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 120.0,
-   "total_prior_3": 67.0
+   "recovering": false,
+   "total_recent_3": 103.0,
+   "total_prior_3": 85.0
   },
   "series": [
    {
@@ -188,6 +192,11 @@
     "month": "2026-07",
     "flightHours": 64.0,
     "missions": 42.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 33.0,
+    "missions": 21.0
    }
   ],
   "has_usage": true
@@ -199,89 +208,26 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 5,
+ "last_touch": "2026-08-10",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.789,
-  "bucket": "Likely",
-  "basis": "base 71% from health 71; usage healthy or recovering (+8pp)"
+  "probability": 0.804,
+  "bucket": "Secure",
+  "basis": "base 72% from health 73; usage healthy or recovering (+8pp)"
  },
  "signals": [],
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "02_transcript_hardware_review_call.md",
-   "title": "Call Transcript \u2014 Year-End Check-in",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "03_transcript_mission_planning_feedback.md",
-   "title": "Call Transcript \u2014 3D Mission Planning Feedback",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "04_renewal_subscription_table.md",
-   "title": "Renewal & Subscription Tracker",
-   "type": "renewal",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "05_support_tickets.md",
-   "title": "Support Tickets",
-   "type": "ticket",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "06_internal_notes.md",
-   "title": "Internal Notes",
-   "type": "note",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
    "file": "07_later_email_thread.md",
    "title": "Email Thread \u2014 Follow-Up",
    "type": "email",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "08_transcript_quarterly_compliance_review.md",
-   "title": "Call Transcript \u2014 Quarterly Reliability & Compliance Review",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "date": "2026-08-10",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -289,6 +235,60 @@
    "file": "09_transcript_security_procurement_signoff.md",
    "title": "Call Transcript \u2014 Vendor Risk / Security Sign-Off Review",
    "type": "transcript",
+   "date": "2026-08-06",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "08_transcript_quarterly_compliance_review.md",
+   "title": "Call Transcript \u2014 Quarterly Reliability & Compliance Review",
+   "type": "transcript",
+   "date": "2026-07-30",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-07-25",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_hardware_review_call.md",
+   "title": "Call Transcript \u2014 Year-End Check-in",
+   "type": "transcript",
+   "date": "2026-07-24",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_mission_planning_feedback.md",
+   "title": "Call Transcript \u2014 3D Mission Planning Feedback",
+   "type": "transcript",
+   "date": "2026-06-28",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_renewal_subscription_table.md",
+   "title": "Renewal & Subscription Tracker",
+   "type": "renewal",
+   "date": "2026-06-15",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -315,8 +315,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:08+00:00",
+   "sync_id": 31,
+   "input_hash": "f18cf9137f00d1b17ad4942f016d556f8a0385e1c322b29c077bdfa734338606"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:45:08+00:00",
@@ -324,6 +330,51 @@
    "input_hash": "19de982d2d0c729809eed094809e5d813924ebada1780f0921afabde09366d40"
   }
  ],
- "_deltas": [],
- "_evidence_count": 43
+ "_deltas": [
+  {
+   "id": 17,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "live_documents",
+   "old_value": "9",
+   "new_value": "8",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 16,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"recovered\"",
+   "new_value": "\"growing\"",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 15,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "renewal.bucket",
+   "old_value": "\"Likely\"",
+   "new_value": "\"Secure\"",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  },
+  {
+   "id": 14,
+   "account_id": "northline-grid",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:08+00:00",
+   "field": "health.score",
+   "old_value": "70.6",
+   "new_value": "73.0",
+   "caused_by": "[127, 128, 138]",
+   "narrative": "Northline Grid Authority: 2 modified, 1 withdrawn detected."
+  }
+ ],
+ "_evidence_count": 40
 }

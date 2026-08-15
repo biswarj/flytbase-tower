@@ -12,19 +12,19 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Isaac (Operator)",
- "computed_at": "2026-08-15T08:40:50+00:00",
+ "computed_at": "2026-08-15T11:20:07+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 54.4,
+  "score": 48.4,
   "band": "At Risk",
   "factors": [
    {
     "factor": "usage_trajectory",
-    "quality": 0.28,
+    "quality": 0.08,
     "weight": 30,
-    "contribution": 8.4,
-    "points_lost": 21.6,
-    "reason": "Usage declining. -40% over the last 3 months versus the prior 3."
+    "contribution": 2.4,
+    "points_lost": 27.6,
+    "reason": "Usage collapsing. -50% over the last 3 months versus the prior 3."
    },
    {
     "factor": "relationship",
@@ -80,7 +80,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     36.0,
@@ -90,24 +91,25 @@
     26.0,
     22.0,
     18.0,
-    15.0
+    15.0,
+    6.0
    ],
-   "n": 8,
-   "trajectory": "declining",
-   "headline": "Last 3 months down 40% versus the prior 3 (55 vs 91 flight hours); latest month 15, peak 38 in 2026-01.",
-   "latest": 15.0,
+   "n": 9,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 50% versus the prior 3 (39 vs 78 flight hours); latest month 6, peak 38 in 2026-01.",
+   "latest": 6.0,
    "peak": 38.0,
    "peak_month": "2026-01",
-   "pct_3v3": -39.6,
-   "pct_last_vs_peak": -60.5,
-   "pct_mom": -16.7,
-   "slope_per_month": -3.452,
-   "slope_pct_of_mean": -12.55,
-   "volatility_cv": 0.315,
+   "pct_3v3": -50.0,
+   "pct_last_vs_peak": -84.2,
+   "pct_mom": -60.0,
+   "slope_per_month": -3.85,
+   "slope_pct_of_mean": -15.33,
+   "volatility_cv": 0.43,
    "dormant_months": 0,
    "recovering": false,
-   "total_recent_3": 55.0,
-   "total_prior_3": 91.0
+   "total_recent_3": 39.0,
+   "total_prior_3": 78.0
   },
   "missions": {
    "metric": "missions",
@@ -119,7 +121,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     22.0,
@@ -129,24 +132,25 @@
     16.0,
     14.0,
     11.0,
-    9.0
+    9.0,
+    4.0
    ],
-   "n": 8,
-   "trajectory": "declining",
-   "headline": "Last 3 months down 39% versus the prior 3 (34 vs 56 missions); latest month 9, peak 24 in 2026-01.",
-   "latest": 9.0,
+   "n": 9,
+   "trajectory": "collapsing",
+   "headline": "Last 3 months down 51% versus the prior 3 (24 vs 49 missions); latest month 4, peak 24 in 2026-01.",
+   "latest": 4.0,
    "peak": 24.0,
    "peak_month": "2026-01",
-   "pct_3v3": -39.3,
-   "pct_last_vs_peak": -62.5,
-   "pct_mom": -18.2,
-   "slope_per_month": -2.143,
-   "slope_pct_of_mean": -12.61,
-   "volatility_cv": 0.318,
+   "pct_3v3": -51.0,
+   "pct_last_vs_peak": -83.3,
+   "pct_mom": -55.6,
+   "slope_per_month": -2.367,
+   "slope_pct_of_mean": -15.21,
+   "volatility_cv": 0.428,
    "dormant_months": 0,
    "recovering": false,
-   "total_recent_3": 34.0,
-   "total_prior_3": 56.0
+   "total_recent_3": 24.0,
+   "total_prior_3": 49.0
   },
   "series": [
    {
@@ -188,6 +192,11 @@
     "month": "2026-07",
     "flightHours": 15.0,
     "missions": 9.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 6.0,
+    "missions": 4.0
    }
   ],
   "has_usage": true
@@ -199,26 +208,44 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 0,
+ "last_touch": "2026-08-15",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.604,
-  "bucket": "Likely",
-  "basis": "base 60% from health 54"
+  "probability": 0.365,
+  "bucket": "At Risk",
+  "basis": "base 56% from health 48; usage collapsed or dormant (-20pp)"
  },
  "signals": [],
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
+   "file": "05_transcript_competitor_evaluation_call.md",
+   "title": "Call Transcript \u2014 Ops Sync",
+   "type": "transcript",
+   "date": "2026-08-15",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "07_transcript_renewal_procurement_call.md",
+   "title": "Call Transcript \u2014 Renewal & Procurement Call",
+   "type": "transcript",
+   "date": "2026-08-05",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "06_transcript_isaac_operations.md",
+   "title": "Call Transcript \u2014 Isaac Operations Check-In",
+   "type": "transcript",
+   "date": "2026-07-09",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -226,6 +253,15 @@
    "file": "02_transcript_cockpit_gap_call.md",
    "title": "Call Transcript \u2014 Cockpit 3.0 Feedback",
    "type": "transcript",
+   "date": "2026-06-18",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -244,24 +280,6 @@
    "file": "04_support_tickets.md",
    "title": "Support Tickets",
    "type": "ticket",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "06_transcript_isaac_operations.md",
-   "title": "Call Transcript \u2014 Isaac Operations Check-In",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "07_transcript_renewal_procurement_call.md",
-   "title": "Call Transcript \u2014 Renewal & Procurement Call",
-   "type": "transcript",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -306,8 +324,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:07+00:00",
+   "sync_id": 31,
+   "input_hash": "1c1c526f125f45eba9be38f7910baa05010edbc47ce56812e67f8cce1517b394"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:40:50+00:00",
@@ -315,6 +339,51 @@
    "input_hash": "1d95b1750e4e7e2b97fc6a6c984307819e5615b3da580e2ba45cb7b0acb650de"
   }
  ],
- "_deltas": [],
- "_evidence_count": 34
+ "_deltas": [
+  {
+   "id": 9,
+   "account_id": "coastline-transit",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "live_documents",
+   "old_value": "8",
+   "new_value": "9",
+   "caused_by": "[131, 132, 133]",
+   "narrative": "Coastline Transit Authority: 2 modified, 1 added detected."
+  },
+  {
+   "id": 8,
+   "account_id": "coastline-transit",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"declining\"",
+   "new_value": "\"collapsing\"",
+   "caused_by": "[131, 132, 133]",
+   "narrative": "Coastline Transit Authority: 2 modified, 1 added detected."
+  },
+  {
+   "id": 7,
+   "account_id": "coastline-transit",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "renewal.bucket",
+   "old_value": "\"Likely\"",
+   "new_value": "\"At Risk\"",
+   "caused_by": "[131, 132, 133]",
+   "narrative": "Coastline Transit Authority: 2 modified, 1 added detected."
+  },
+  {
+   "id": 6,
+   "account_id": "coastline-transit",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "health.score",
+   "old_value": "54.4",
+   "new_value": "48.4",
+   "caused_by": "[131, 132, 133]",
+   "narrative": "Coastline Transit Authority: 2 modified, 1 added detected."
+  }
+ ],
+ "_evidence_count": 39
 }

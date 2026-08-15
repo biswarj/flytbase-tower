@@ -12,10 +12,10 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive",
  "crm_champion_tagged": "Ross Doak (VP, Robotics & Autonomy Program)",
- "computed_at": "2026-08-15T08:43:28+00:00",
+ "computed_at": "2026-08-15T11:20:07+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 70.6,
+  "score": 73.0,
   "band": "Healthy",
   "factors": [
    {
@@ -36,11 +36,11 @@
    },
    {
     "factor": "usage_trajectory",
-    "quality": 0.82,
+    "quality": 0.9,
     "weight": 30,
-    "contribution": 24.6,
-    "points_lost": 5.4,
-    "reason": "Usage dipped and has recovered to near peak."
+    "contribution": 27.0,
+    "points_lost": 3.0,
+    "reason": "Usage growing. +21% over the last 3 months versus the prior 3."
    },
    {
     "factor": "commercial",
@@ -80,7 +80,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     14.0,
@@ -90,24 +91,25 @@
     24.0,
     27.0,
     31.0,
-    35.0
+    35.0,
+    19.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 35 flight hours against a peak of 35. Dip appears resolved.",
-   "latest": 35.0,
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 21% versus the prior 3 (85 vs 70 flight hours); latest month 19, peak 35 in 2026-07.",
+   "latest": 19.0,
    "peak": 35.0,
    "peak_month": "2026-07",
-   "pct_3v3": 45.3,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 12.9,
-   "slope_per_month": 2.798,
-   "slope_pct_of_mean": 11.84,
-   "volatility_cv": 0.298,
+   "pct_3v3": 21.4,
+   "pct_last_vs_peak": -45.7,
+   "pct_mom": -45.7,
+   "slope_per_month": 1.65,
+   "slope_pct_of_mean": 7.14,
+   "volatility_cv": 0.293,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 93.0,
-   "total_prior_3": 64.0
+   "recovering": false,
+   "total_recent_3": 85.0,
+   "total_prior_3": 70.0
   },
   "missions": {
    "metric": "missions",
@@ -119,7 +121,8 @@
     "2026-04",
     "2026-05",
     "2026-06",
-    "2026-07"
+    "2026-07",
+    "2026-08"
    ],
    "values": [
     9.0,
@@ -129,24 +132,25 @@
     16.0,
     18.0,
     21.0,
-    24.0
+    24.0,
+    13.0
    ],
-   "n": 8,
-   "trajectory": "recovered",
-   "headline": "Dipped to a trough then recovered: latest month 24 missions against a peak of 24. Dip appears resolved.",
-   "latest": 24.0,
+   "n": 9,
+   "trajectory": "growing",
+   "headline": "Last 3 months up 23% versus the prior 3 (58 vs 47 missions); latest month 13, peak 24 in 2026-07.",
+   "latest": 13.0,
    "peak": 24.0,
    "peak_month": "2026-07",
-   "pct_3v3": 46.5,
-   "pct_last_vs_peak": 0.0,
-   "pct_mom": 14.3,
-   "slope_per_month": 1.964,
-   "slope_pct_of_mean": 12.37,
-   "volatility_cv": 0.311,
+   "pct_3v3": 23.4,
+   "pct_last_vs_peak": -45.8,
+   "pct_mom": -45.8,
+   "slope_per_month": 1.183,
+   "slope_pct_of_mean": 7.61,
+   "volatility_cv": 0.303,
    "dormant_months": 0,
-   "recovering": true,
-   "total_recent_3": 63.0,
-   "total_prior_3": 43.0
+   "recovering": false,
+   "total_recent_3": 58.0,
+   "total_prior_3": 47.0
   },
   "series": [
    {
@@ -188,6 +192,11 @@
     "month": "2026-07",
     "flightHours": 35.0,
     "missions": 24.0
+   },
+   {
+    "month": "2026-08",
+    "flightHours": 19.0,
+    "missions": 13.0
    }
   ],
   "has_usage": true
@@ -199,53 +208,35 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 0,
+ "last_touch": "2026-08-15",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.789,
-  "bucket": "Likely",
-  "basis": "base 71% from health 71; usage healthy or recovering (+8pp)"
+  "probability": 0.804,
+  "bucket": "Secure",
+  "basis": "base 72% from health 73; usage healthy or recovering (+8pp)"
  },
  "signals": [],
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
+   "file": "07_transcript_remote_demo_followup.md",
+   "title": "Call Transcript \u2014 Remote Demo Follow-Up",
+   "type": "transcript",
+   "date": "2026-08-15",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
   {
-   "file": "02_transcript_tender_scope_call.md",
-   "title": "Call Transcript \u2014 Tender Scope Call",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "03_transcript_competitive_displacement_call.md",
-   "title": "Call Transcript \u2014 Competitive Displacement",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "04_transcript_polaris_ops_walkthrough.md",
-   "title": "Call Transcript \u2014 Polaris Ops Walkthrough",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "file": "10_internal_notes.md",
+   "title": "Internal Notes",
+   "type": "note",
+   "date": "2026-08-10",
+   "date_basis": "relative-resolved-sniffed",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -253,6 +244,51 @@
    "file": "05_transcript_data_integration_call.md",
    "title": "Call Transcript \u2014 Data Platform Integration",
    "type": "transcript",
+   "date": "2026-07-10",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "04_transcript_polaris_ops_walkthrough.md",
+   "title": "Call Transcript \u2014 Polaris Ops Walkthrough",
+   "type": "transcript",
+   "date": "2026-06-19",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "03_transcript_competitive_displacement_call.md",
+   "title": "Call Transcript \u2014 Competitive Displacement",
+   "type": "transcript",
+   "date": "2026-05-28",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "02_transcript_tender_scope_call.md",
+   "title": "Call Transcript \u2014 Tender Scope Call",
+   "type": "transcript",
+   "date": "2026-05-04",
+   "date_basis": "absolute-from-label",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "09_support_tickets.md",
+   "title": "Support Tickets",
+   "type": "ticket",
+   "date": "2026-03-16",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -271,24 +307,6 @@
    "file": "08_renewal_and_expansion_table.md",
    "title": "Renewal & Expansion Tracker",
    "type": "renewal",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "09_support_tickets.md",
-   "title": "Support Tickets",
-   "type": "ticket",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "10_internal_notes.md",
-   "title": "Internal Notes",
-   "type": "note",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -315,8 +333,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T11:20:07+00:00",
+   "sync_id": 31,
+   "input_hash": "4c8c3bc61613e77f747cccb3ecfa5e4bd827301bcf1683be87bbb907517fef73"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:43:28+00:00",
@@ -324,6 +348,51 @@
    "input_hash": "213984feece628046b4b53173e3bdd3c5dd444896c380c82f32ee11cfcb85aaf"
   }
  ],
- "_deltas": [],
- "_evidence_count": 40
+ "_deltas": [
+  {
+   "id": 13,
+   "account_id": "meridian-energy",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "live_documents",
+   "old_value": "9",
+   "new_value": "10",
+   "caused_by": "[120, 121, 122]",
+   "narrative": "Meridian Energy Corp: 2 modified, 1 added detected."
+  },
+  {
+   "id": 12,
+   "account_id": "meridian-energy",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "usage.trajectory",
+   "old_value": "\"recovered\"",
+   "new_value": "\"growing\"",
+   "caused_by": "[120, 121, 122]",
+   "narrative": "Meridian Energy Corp: 2 modified, 1 added detected."
+  },
+  {
+   "id": 11,
+   "account_id": "meridian-energy",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "renewal.bucket",
+   "old_value": "\"Likely\"",
+   "new_value": "\"Secure\"",
+   "caused_by": "[120, 121, 122]",
+   "narrative": "Meridian Energy Corp: 2 modified, 1 added detected."
+  },
+  {
+   "id": 10,
+   "account_id": "meridian-energy",
+   "sync_id": 31,
+   "occurred_at": "2026-08-15T11:20:07+00:00",
+   "field": "health.score",
+   "old_value": "70.6",
+   "new_value": "73.0",
+   "caused_by": "[120, 121, 122]",
+   "narrative": "Meridian Energy Corp: 2 modified, 1 added detected."
+  }
+ ],
+ "_evidence_count": 46
 }
