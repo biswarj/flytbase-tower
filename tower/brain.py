@@ -400,10 +400,23 @@ class Brain:
                 throttled = any(k in msg for k in ("429", "rate limit", "rate_limit",
                                                    "quota", "resource_exhausted",
                                                    "overloaded", "503"))
-                budget = retries + 3 if throttled else retries
+                budget = retries + 4 if throttled else retries
                 if attempt >= budget - 1:
                     break
-                time.sleep((8 * (attempt + 1)) if throttled else (2 * (attempt + 1)))
+                # A throttling provider usually says exactly how long to wait.
+                # Guessing an exponential backoff instead means either giving up
+                # while the bucket is one second from refilling, or sleeping far
+                # longer than needed. Believe the number when it is given.
+                wait = None
+                if throttled:
+                    m = re.search(r"try again in ([\d.]+)(ms|m[\s\d.]*s|s)", msg)
+                    if m:
+                        v, unit = float(m.group(1)), m.group(2)
+                        wait = v / 1000 if unit == "ms" else (v * 60 if unit.startswith("m") and unit != "ms" else v)
+                        wait = min(wait + 2, 90)
+                if wait is None:
+                    wait = (8 * (attempt + 1)) if throttled else (2 * (attempt + 1))
+                time.sleep(wait)
         self.failures += 1
         self.last_error = str(last)[:300]
         print(f"[brain] call failed, degrading this item: {self.last_error}", flush=True)
