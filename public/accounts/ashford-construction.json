@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T09:51:05+00:00",
+ "computed_at": "2026-08-15T15:39:59+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 61.0,
@@ -211,8 +211,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 2,
+ "_version": 3,
  "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T15:39:59+00:00",
+   "sync_id": 32,
+   "input_hash": "9cc1285ea8d2e1795db4be1750d6df754e8ee3646617c087a9f41e65b9ad534c"
+  },
   {
    "version": 2,
    "computed_at": "2026-08-15T09:51:05+00:00",

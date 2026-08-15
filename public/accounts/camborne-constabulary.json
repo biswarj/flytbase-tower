@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive (from sales cycle)",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T11:20:07+00:00",
+ "computed_at": "2026-08-15T15:44:01+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 59.0,
@@ -211,8 +211,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 3,
+ "_version": 4,
  "_history": [
+  {
+   "version": 4,
+   "computed_at": "2026-08-15T15:44:01+00:00",
+   "sync_id": 32,
+   "input_hash": "bf645ccc62ef0e30ec0f2f9b2091b457dbcbf0f6801a9f675741e99afeede884"
+  },
   {
    "version": 3,
    "computed_at": "2026-08-15T11:20:07+00:00",

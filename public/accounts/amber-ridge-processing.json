@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
- "computed_at": "2026-08-15T11:20:07+00:00",
+ "computed_at": "2026-08-15T15:35:57+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 91.0,
@@ -272,7 +272,7 @@
   },
   {
    "name": "Rob Thomas",
-   "title": "new Chief Pilot",
+   "title": "Chief Pilot",
    "org_side": "customer",
    "role": "champion",
    "role_all": [
@@ -343,37 +343,6 @@
      "doc": "Email Thread",
      "date": null,
      "reason": "Former contact who abruptly departed the customer organization."
-    }
-   ]
-  },
-  {
-   "name": "Mack",
-   "title": "IT",
-   "org_side": "customer",
-   "role": "champion",
-   "role_all": [
-    "champion",
-    "influencer"
-   ],
-   "sentiment": "neutral",
-   "status": "active",
-   "mentions": 2,
-   "documents": [
-    "Call Transcript \u2014 Flight Ops Check-In",
-    "Internal Notes"
-   ],
-   "quotes": [
-    {
-     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
-     "doc": "Internal Notes",
-     "date": "2026-08-08",
-     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
-    },
-    {
-     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
-     "doc": "Call Transcript \u2014 Flight Ops Check-In",
-     "date": "2026-07-09",
-     "reason": "Raised automated triggering integration ideas with FlytBase previously"
     }
    ]
   },
@@ -491,8 +460,39 @@
    ]
   },
   {
+   "name": "Mack",
+   "title": "IT",
+   "org_side": "customer",
+   "role": "influencer",
+   "role_all": [
+    "champion",
+    "influencer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
+    },
+    {
+     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Raised automated triggering integration ideas with FlytBase previously"
+    }
+   ]
+  },
+  {
    "name": "Unnati Patil",
-   "title": "CS Owner",
+   "title": "FlytBase CS",
    "org_side": "flytbase",
    "role": "champion",
    "role_all": [
@@ -1027,8 +1027,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 3,
+ "_version": 4,
  "_history": [
+  {
+   "version": 4,
+   "computed_at": "2026-08-15T15:35:57+00:00",
+   "sync_id": 32,
+   "input_hash": "1f8f97f477d85c589533b74985b5f81231a66b262363d5c5f6bdc8e2ed1d762d"
+  },
   {
    "version": 3,
    "computed_at": "2026-08-15T11:20:07+00:00",
