@@ -20,7 +20,18 @@ MODEL_SYNTH = os.environ.get("TOWER_MODEL_SYNTH", "claude-sonnet-4-5-20250929")
 
 # Alternative provider. Used only when no Anthropic key is present, so the
 # system is never tied to one vendor's billing state.
+#
+# OPENAI_BASE_URL makes this work with anything that speaks the OpenAI wire
+# format, which is most of the market now. Known-good options:
+#
+#   OpenAI     (default)  https://api.openai.com/v1
+#   Google     free tier  https://generativelanguage.googleapis.com/v1beta/openai/
+#   Groq       free tier  https://api.groq.com/openai/v1
+#   OpenRouter free tier  https://openrouter.ai/api/v1
+#
+# Only the key, the base url and the model name change. No code changes.
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.environ.get("OPENAI_BASE_URL", "") or None
 OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "gpt-4.1")
 
 POLL_SECONDS = int(os.environ.get("TOWER_POLL_SECONDS", "60"))

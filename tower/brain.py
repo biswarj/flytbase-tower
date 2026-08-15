@@ -299,9 +299,12 @@ class Brain:
             self.provider = "anthropic"
             self.client = Anthropic(api_key=self.api_key)
         elif config.OPENAI_API_KEY and OpenAI is not None:
+            # "openai" here means the OpenAI wire format, not necessarily
+            # OpenAI the company. Google, Groq and OpenRouter all speak it.
             self.provider = "openai"
             self.api_key = config.OPENAI_API_KEY
-            self.client = OpenAI(api_key=self.api_key)
+            self.client = OpenAI(api_key=self.api_key,
+                                 base_url=config.OPENAI_BASE_URL)
 
         self.enabled = self.provider != "none"
         self.calls = 0
