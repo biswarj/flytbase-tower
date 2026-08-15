@@ -9,14 +9,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Extract source bundle
         run: |
-          if [ -f bootstrap.tar.gz ]; then
-            tar xzf bootstrap.tar.gz
-            rm -f bootstrap.tar.gz
-            echo unpacked
-            find . -name '*.py' -not -path './.git/*'
-          else
-            echo 'no bundle present, nothing to do'
-          fi
+          if [ ! -f bootstrap.tar.gz ]; then echo 'nothing to unpack'; exit 0; fi
+          mkdir -p /tmp/bs && tar xzf bootstrap.tar.gz -C /tmp/bs
+          rm -rf /tmp/bs/.github
+          cp -r /tmp/bs/. .
+          rm -f bootstrap.tar.gz
+          ls -R tower web
       - name: Commit extracted source
         run: |
           git config user.name 'tower-bootstrap'
