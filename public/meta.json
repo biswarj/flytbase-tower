@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-15T09:21:43+00:00",
+ "generated_at": "2026-08-15T09:26:48+00:00",
  "accounts": [
   "falcon-point-security",
   "ravel-systems",
@@ -17,9 +17,9 @@
   "amber-ridge-processing"
  ],
  "last_sync": {
-  "id": 2,
-  "started_at": "2026-08-15T09:21:41+00:00",
-  "finished_at": "2026-08-15T09:21:43+00:00",
+  "id": 6,
+  "started_at": "2026-08-15T09:25:51+00:00",
+  "finished_at": "2026-08-15T09:25:53+00:00",
   "trigger": "scheduler",
   "objects_seen": 116,
   "added": 0,
@@ -31,6 +31,62 @@
   "notes": "{\"provider\": \"openai\", \"model_calls\": 0, \"model_failures\": 0, \"last_model_error\": \"\", \"in_tok\": 0, \"out_tok\": 0, \"crawl_errors\": []}"
  },
  "syncs": [
+  {
+   "id": 6,
+   "started_at": "2026-08-15T09:25:51+00:00",
+   "finished_at": "2026-08-15T09:25:53+00:00",
+   "trigger": "scheduler",
+   "objects_seen": 116,
+   "added": 0,
+   "modified": 0,
+   "withdrawn": 0,
+   "accounts_resynth": 0,
+   "status": "ok",
+   "error": null,
+   "notes": "{\"provider\": \"openai\", \"model_calls\": 0, \"model_failures\": 0, \"last_model_error\": \"\", \"in_tok\": 0, \"out_tok\": 0, \"crawl_errors\": []}"
+  },
+  {
+   "id": 5,
+   "started_at": "2026-08-15T09:24:49+00:00",
+   "finished_at": "2026-08-15T09:24:51+00:00",
+   "trigger": "scheduler",
+   "objects_seen": 116,
+   "added": 0,
+   "modified": 0,
+   "withdrawn": 0,
+   "accounts_resynth": 0,
+   "status": "ok",
+   "error": null,
+   "notes": "{\"provider\": \"openai\", \"model_calls\": 0, \"model_failures\": 0, \"last_model_error\": \"\", \"in_tok\": 0, \"out_tok\": 0, \"crawl_errors\": []}"
+  },
+  {
+   "id": 4,
+   "started_at": "2026-08-15T09:23:46+00:00",
+   "finished_at": "2026-08-15T09:23:49+00:00",
+   "trigger": "scheduler",
+   "objects_seen": 116,
+   "added": 0,
+   "modified": 0,
+   "withdrawn": 0,
+   "accounts_resynth": 0,
+   "status": "ok",
+   "error": null,
+   "notes": "{\"provider\": \"openai\", \"model_calls\": 0, \"model_failures\": 0, \"last_model_error\": \"\", \"in_tok\": 0, \"out_tok\": 0, \"crawl_errors\": []}"
+  },
+  {
+   "id": 3,
+   "started_at": "2026-08-15T09:22:44+00:00",
+   "finished_at": "2026-08-15T09:22:46+00:00",
+   "trigger": "scheduler",
+   "objects_seen": 116,
+   "added": 0,
+   "modified": 0,
+   "withdrawn": 0,
+   "accounts_resynth": 0,
+   "status": "ok",
+   "error": null,
+   "notes": "{\"provider\": \"openai\", \"model_calls\": 0, \"model_failures\": 0, \"last_model_error\": \"\", \"in_tok\": 0, \"out_tok\": 0, \"crawl_errors\": []}"
+  },
   {
    "id": 2,
    "started_at": "2026-08-15T09:21:41+00:00",
