@@ -1,0 +1,43 @@
+name: tower watchdog
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Is the daemon alive
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          RUNNING=$(gh run list --workflow 'tower daemon' --status in_progress --json databaseId --jq 'length')
+          echo "running=$RUNNING" >> $GITHUB_OUTPUT
+          echo "daemon jobs in progress: $RUNNING"
+      - name: Restart daemon if down
+        if: steps.check.outputs.running == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run 'tower daemon'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Independent one-shot sync
+        env:
+          MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
+          MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TOWER_TRIGGER: watchdog
+        run: |
+          git config user.name 'tower-sentinel'
+          git config user.email 'tower-sentinel@users.noreply.github.com'
+          python -m tower.run once
