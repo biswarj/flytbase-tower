@@ -1,0 +1,66 @@
+{
+ "generated_at": "2026-08-15T08:19:52+00:00",
+ "counts": {
+  "accounts": 0,
+  "live": 0,
+  "churned": 0,
+  "presale": 0
+ },
+ "money": {
+  "live_arr": 0,
+  "lost_arr": 0,
+  "weighted_forecast": 0,
+  "naive_forecast": 0,
+  "forecast_gap": 0,
+  "buckets": {
+   "Secure": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   },
+   "Likely": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   },
+   "At Risk": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   },
+   "High Risk": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   },
+   "Lost": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   },
+   "Not Applicable": {
+    "arr": 0.0,
+    "count": 0,
+    "accounts": []
+   }
+  }
+ },
+ "action_queue": [],
+ "opportunities": [],
+ "traps": [],
+ "reality_gaps": [],
+ "contradictions": [],
+ "winbacks": [],
+ "flight_activity": [],
+ "open_loops": [],
+ "stale_accounts": [],
+ "accounts": [],
+ "change_feed": [],
+ "belief_deltas": [],
+ "syncs": [],
+ "system": {
+  "last_sync": null,
+  "total_syncs": 0,
+  "withdrawn_objects": []
+ }
+}
