@@ -42,7 +42,15 @@ OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "") or (
 
 # Free tiers throttle. Pace document reads so a burst of 130 extractions does
 # not trip a rate limit and degrade half the portfolio.
-READ_DELAY_SECONDS = float(os.environ.get("TOWER_READ_DELAY", "0.7"))
+READ_DELAY_SECONDS = float(os.environ.get("TOWER_READ_DELAY", "0.5"))
+
+# Hard ceiling on any single model call. Never let one slow request own the
+# cycle. See the comment in brain.Brain.__init__ for why this matters.
+MODEL_TIMEOUT_SECONDS = float(os.environ.get("TOWER_MODEL_TIMEOUT", "75"))
+
+# How many documents to read concurrently. Kept low on purpose: the point is
+# to overlap network latency, not to hammer a free-tier rate limit.
+READ_CONCURRENCY = int(os.environ.get("TOWER_READ_CONCURRENCY", "3"))
 
 POLL_SECONDS = int(os.environ.get("TOWER_POLL_SECONDS", "60"))
 MAX_RUN_SECONDS = int(os.environ.get("TOWER_MAX_RUN_SECONDS", str(5 * 3600 + 40 * 60)))

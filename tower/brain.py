@@ -295,16 +295,27 @@ class Brain:
         self.client = None
         self.api_key = api_key or config.ANTHROPIC_API_KEY
 
+        # Explicit timeouts, and retries disabled at the SDK layer.
+        #
+        # Both SDKs default to a 600 second timeout with their own retries on
+        # top. One hung request would therefore stall a cycle for up to half
+        # an hour with no log line explaining why. A poll loop that promises
+        # to react within a minute cannot own a thirty minute failure mode, so
+        # we cap it hard and do our own backoff where it is visible.
         if self.api_key and Anthropic is not None:
             self.provider = "anthropic"
-            self.client = Anthropic(api_key=self.api_key)
+            self.client = Anthropic(api_key=self.api_key,
+                                    timeout=config.MODEL_TIMEOUT_SECONDS,
+                                    max_retries=0)
         elif config.OPENAI_API_KEY and OpenAI is not None:
             # "openai" here means the OpenAI wire format, not necessarily
             # OpenAI the company. Google, Groq and OpenRouter all speak it.
             self.provider = "openai"
             self.api_key = config.OPENAI_API_KEY
             self.client = OpenAI(api_key=self.api_key,
-                                 base_url=config.OPENAI_BASE_URL)
+                                 base_url=config.OPENAI_BASE_URL,
+                                 timeout=config.MODEL_TIMEOUT_SECONDS,
+                                 max_retries=0)
 
         self.enabled = self.provider != "none"
         self.calls = 0

@@ -12,6 +12,8 @@ from __future__ import annotations
 
 import json
 import re
+import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timezone
 
 from . import config
@@ -69,6 +71,18 @@ def build_evidence(store: Store, account_id: str, obj_key: str, doc: dict,
 # --------------------------------------------------------------------------
 # Account reasoning
 # --------------------------------------------------------------------------
+
+def _fallback_doc_stub() -> dict:
+    """Placeholder for a document whose read failed outright. Explicit and
+    inert, so a failed read never silently looks like an empty document."""
+    return {
+        "doc_date_text": "", "summary": "[read failed, not analysed]",
+        "people": [], "signals": [], "commitments": [], "commercial_facts": [],
+        "support_state": {"open_tickets": 0, "critical_open": 0,
+                          "sla_breaches": 0, "recurring_issues": 0},
+        "overall_sentiment": "neutral", "_degraded": True,
+    }
+
 
 def _ref_date() -> date:
     if config.REFERENCE_DATE:
@@ -162,11 +176,17 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
     u_hours = M.usage_profile(series, "flightHours")
     u_miss = M.usage_profile(series, "missions")
 
-    # ---- documents (LLM reads, cached by hash) --------------------------
-    readings, doc_index = [], []
-    for row in store.live_objects("document"):
-        if row["account_id"] != account_id:
-            continue
+    # ---- documents (model reads, cached by content hash) ----------------
+    #
+    # Two phases on purpose. Work out which documents actually need reading,
+    # then read only those, with bounded concurrency. Anything already cached
+    # costs nothing, which is what keeps a 60 second poll affordable once the
+    # first pass is done.
+    rows = [r for r in store.live_objects("document")
+            if r["account_id"] == account_id]
+    prepared: list[list] = []
+    to_read: list[tuple] = []
+    for row in rows:
         doc = json.loads(row["payload"])
         cached = store.get_extraction(row["obj_key"], row["hash"], "doc_v1")
         # A degraded result is a placeholder, not a reading. If the reading
@@ -175,20 +195,43 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
         # content hash never changes, so the document would never be re-read.
         if cached is not None and cached.get("_degraded") and brain.enabled:
             cached = None
+        prepared.append([row, doc, cached])
         if cached is None:
-            cached = brain.read_document(
+            to_read.append((row, doc))
+
+    if to_read:
+        log(f"    reading {len(to_read)} document(s), "
+            f"{len(prepared) - len(to_read)} cached")
+
+        def _read(pair):
+            row_, doc_ = pair
+            out = brain.read_document(
                 account_name=name, lifecycle=lifecycle,
-                doc_type=doc.get("doc_type", "other"),
-                title=doc.get("title", ""), content=doc.get("content", ""),
+                doc_type=doc_.get("doc_type", "other"),
+                title=doc_.get("title", ""), content=doc_.get("content", ""),
             )
-            store.put_extraction(row["obj_key"], row["hash"], "doc_v1",
-                                 cached, config.MODEL_EXTRACT)
-            log(f"    read {doc.get('title')}")
-            # Only pace when we actually called out. Cache hits cost nothing
-            # and must stay instant, which is what makes the 60s poll viable.
             if brain.enabled and config.READ_DELAY_SECONDS:
-                import time as _t
-                _t.sleep(config.READ_DELAY_SECONDS)
+                time.sleep(config.READ_DELAY_SECONDS)
+            return row_["obj_key"], out
+
+        workers = max(1, min(config.READ_CONCURRENCY, len(to_read)))
+        fresh: dict = {}
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            for key, out in ex.map(_read, to_read):
+                fresh[key] = out
+        # Every SQLite write happens back on this thread. Single writer.
+        for row_, _doc in to_read:
+            out = fresh.get(row_["obj_key"])
+            if out is not None:
+                store.put_extraction(row_["obj_key"], row_["hash"], "doc_v1",
+                                     out, config.MODEL_EXTRACT)
+        for item in prepared:
+            if item[2] is None:
+                item[2] = fresh.get(item[0]["obj_key"])
+
+    for row, doc, cached in prepared:
+        if cached is None:
+            cached = _fallback_doc_stub()
         # Date resolution, two independent routes. The reading layer quotes a
         # date if the document states one in prose. If it did not, or if the
         # reading layer is degraded, scan the raw markdown for a structured
