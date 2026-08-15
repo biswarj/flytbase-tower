@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T08:41:49+00:00",
+ "computed_at": "2026-08-15T19:36:48+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 0.0,
@@ -149,8 +149,8 @@
   "recurring_issues": 0
  },
  "people": [],
- "days_silent": null,
- "last_touch": null,
+ "days_silent": 17,
+ "last_touch": "2026-07-29",
  "renewal": {
   "date": null,
   "days_to_renewal": null,
@@ -164,20 +164,11 @@
  "open_commitments": [],
  "documents": [
   {
-   "file": "01_account_profile.md",
-   "title": "Account Profile",
-   "type": "profile",
-   "date": null,
-   "date_basis": "none",
-   "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
-  },
-  {
-   "file": "02_transcript_negotiations_update_call.md",
-   "title": "Call Transcript \u2014 Quarterly Check-in",
-   "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "file": "04_email_non_renewal_confirmation.md",
+   "title": "Email \u2014 Non-Renewal Confirmation",
+   "type": "email",
+   "date": "2026-07-29",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -185,17 +176,17 @@
    "file": "03_transcript_finance_procurement_call.md",
    "title": "Call Transcript \u2014 Finance / Procurement Sync",
    "type": "transcript",
-   "date": null,
-   "date_basis": "none",
+   "date": "2026-07-22",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
   {
-   "file": "04_email_non_renewal_confirmation.md",
-   "title": "Email \u2014 Non-Renewal Confirmation",
-   "type": "email",
-   "date": null,
-   "date_basis": "none",
+   "file": "02_transcript_negotiations_update_call.md",
+   "title": "Call Transcript \u2014 Quarterly Check-in",
+   "type": "transcript",
+   "date": "2026-05-18",
+   "date_basis": "absolute-from-label",
    "date_text": "",
    "summary": "[degraded mode: no model key, document not read]"
   },
@@ -203,6 +194,15 @@
    "file": "05_internal_notes.md",
    "title": "Internal Notes",
    "type": "note",
+   "date": "2024-08-15",
+   "date_basis": "relative-resolved-sniffed",
+   "date_text": "",
+   "summary": "[degraded mode: no model key, document not read]"
+  },
+  {
+   "file": "01_account_profile.md",
+   "title": "Account Profile",
+   "type": "profile",
    "date": null,
    "date_basis": "none",
    "date_text": "",
@@ -229,8 +229,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 1,
+ "_version": 2,
  "_history": [
+  {
+   "version": 2,
+   "computed_at": "2026-08-15T19:36:48+00:00",
+   "sync_id": 37,
+   "input_hash": "158bb1e910eec9694e3c735ef686869b19043bbdbe5a524b0fd0c3fd111b9745"
+  },
   {
    "version": 1,
    "computed_at": "2026-08-15T08:41:49+00:00",

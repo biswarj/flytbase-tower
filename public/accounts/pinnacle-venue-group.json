@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Danny Ruiz (unresponsive 6 weeks)",
- "computed_at": "2026-08-15T11:20:08+00:00",
+ "computed_at": "2026-08-15T22:13:06+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 42.4,
@@ -302,8 +302,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 2,
+ "_version": 3,
  "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T22:13:06+00:00",
+   "sync_id": 37,
+   "input_hash": "f5d7e76e36f6ec0140833de04ad6318fc4d0dc7952c8d643722cd8da12daec83"
+  },
   {
    "version": 2,
    "computed_at": "2026-08-15T11:20:08+00:00",

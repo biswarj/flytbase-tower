@@ -12,10 +12,10 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive (from sales cycle)",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T15:44:01+00:00",
+ "computed_at": "2026-08-15T18:05:52+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 59.0,
+  "score": 64.4,
   "band": "Watch",
   "factors": [
    {
@@ -28,11 +28,11 @@
    },
    {
     "factor": "relationship",
-    "quality": 0.25,
+    "quality": 0.52,
     "weight": 20,
-    "contribution": 5.0,
-    "points_lost": 15.0,
-    "reason": "Relationship: no economic buyer identified, single-threaded."
+    "contribution": 10.4,
+    "points_lost": 9.6,
+    "reason": "Relationship: no economic buyer identified, multithreaded across 3 contacts."
    },
    {
     "factor": "sentiment",
@@ -121,7 +121,96 @@
   "sla_breaches": 0,
   "recurring_issues": 0
  },
- "people": [],
+ "people": [
+  {
+   "name": "R. Oduya",
+   "title": "Sgt.",
+   "org_side": "customer",
+   "role": "technical-evaluator",
+   "role_all": [
+    "technical-evaluator"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "our digital forensics unit (Sgt. R. Oduya) has asked a specific question",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": "He is raising a technical requirement for evidential use."
+    }
+   ]
+  },
+  {
+   "name": "Grace Pentreath",
+   "title": "Insp.",
+   "org_side": "customer",
+   "role": "day-to-day-user",
+   "role_all": [
+    "day-to-day-user"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "Reporter: Insp. Grace Pentreath (Camborne Constabulary)",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": "She is the reported contact submitting the ticket."
+    }
+   ]
+  },
+  {
+   "name": "DPO",
+   "title": "",
+   "org_side": "customer",
+   "role": "unknown",
+   "role_all": [],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "before our DPO finalizes the records-management policy update",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": ""
+    }
+   ]
+  },
+  {
+   "name": "Farhan",
+   "title": "",
+   "org_side": "flytbase",
+   "role": "unknown",
+   "role_all": [],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Support Tickets"
+   ],
+   "quotes": [
+    {
+     "quote": "Following up from our siting call with Farhan",
+     "doc": "Support Tickets",
+     "date": null,
+     "reason": ""
+    }
+   ]
+  }
+ ],
  "days_silent": 7,
  "last_touch": "2026-08-08",
  "renewal": {
@@ -129,11 +218,23 @@
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.633,
+  "probability": 0.669,
   "bucket": "Likely",
-  "basis": "base 63% from health 59"
+  "basis": "base 67% from health 64"
  },
- "signals": [],
+ "signals": [
+  {
+   "claim": "could become a blocker for go-live if the answer is \"manual export only.\"",
+   "dollar_hint": "",
+   "kind": "risk",
+   "quote": "could become a blocker for go-live if the answer is \"manual export only.\"",
+   "severity": "medium",
+   "who": "R. Oduya",
+   "doc": "Support Tickets",
+   "date": null,
+   "doc_type": "ticket"
+  }
+ ],
  "open_commitments": [],
  "documents": [
   {
@@ -188,7 +289,7 @@
    "date": null,
    "date_basis": "none",
    "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
+   "summary": "The customer\u2019s forensic unit is questioning whether FlytBase\u2019s hash\u2011verified export can be ingested directly into Axon Evidence, raising a potential go\u2011live blocker if a manual conversion is required."
   }
  ],
  "synthesis": {
@@ -211,8 +312,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 4,
+ "_version": 5,
  "_history": [
+  {
+   "version": 5,
+   "computed_at": "2026-08-15T18:05:52+00:00",
+   "sync_id": 37,
+   "input_hash": "bf645ccc62ef0e30ec0f2f9b2091b457dbcbf0f6801a9f675741e99afeede884"
+  },
   {
    "version": 4,
    "computed_at": "2026-08-15T15:44:01+00:00",
@@ -239,6 +346,17 @@
   }
  ],
  "_deltas": [
+  {
+   "id": 41,
+   "account_id": "camborne-constabulary",
+   "sync_id": 37,
+   "occurred_at": "2026-08-15T18:05:53+00:00",
+   "field": "health.score",
+   "old_value": "59.0",
+   "new_value": "64.4",
+   "caused_by": "[]",
+   "narrative": "Our view of Camborne Constabulary\u2019s health improved (score 59\u202f\u2192\u202f64.4) because the relationship factor was updated to reflect a multithreaded engagement with three contacts instead of a single\u2011threaded one. This change comes from the revised \u201crelationship\u201d entry in the AFTER source data."
+  },
   {
    "id": 5,
    "account_id": "camborne-constabulary",

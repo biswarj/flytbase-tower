@@ -12,19 +12,19 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Positive",
  "crm_champion_tagged": "Ross Doak (VP, Robotics & Autonomy Program)",
- "computed_at": "2026-08-15T11:20:07+00:00",
+ "computed_at": "2026-08-15T20:38:24+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 73.0,
+  "score": 78.0,
   "band": "Healthy",
   "factors": [
    {
     "factor": "relationship",
-    "quality": 0.25,
+    "quality": 0.5,
     "weight": 20,
-    "contribution": 5.0,
-    "points_lost": 15.0,
-    "reason": "Relationship: no economic buyer identified, single-threaded."
+    "contribution": 10.0,
+    "points_lost": 10.0,
+    "reason": "Relationship: active champion identified, no economic buyer identified, single-threaded."
    },
    {
     "factor": "sentiment",
@@ -207,7 +207,73 @@
   "sla_breaches": 0,
   "recurring_issues": 0
  },
- "people": [],
+ "people": [
+  {
+   "name": "Ross Doak",
+   "title": "VP, Robotics & Autonomy Program",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Account Profile"
+   ],
+   "quotes": [
+    {
+     "quote": "Champion (tagged in CRM) | Ross Doak (VP, Robotics & Autonomy Program)",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": "Tagged as Champion in CRM"
+    }
+   ]
+  },
+  {
+   "name": "Devon Achebe",
+   "title": "",
+   "org_side": "flytbase",
+   "role": "unknown",
+   "role_all": [],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Account Profile"
+   ],
+   "quotes": [
+    {
+     "quote": "CS Owner | Devon Achebe",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": ""
+    }
+   ]
+  },
+  {
+   "name": "Rhea Kapoor",
+   "title": "",
+   "org_side": "flytbase",
+   "role": "unknown",
+   "role_all": [],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Account Profile"
+   ],
+   "quotes": [
+    {
+     "quote": "SE Owner | Rhea Kapoor",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": ""
+    }
+   ]
+  }
+ ],
  "days_silent": 0,
  "last_touch": "2026-08-15",
  "renewal": {
@@ -215,9 +281,9 @@
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.804,
+  "probability": 0.837,
   "bucket": "Secure",
-  "basis": "base 72% from health 73; usage healthy or recovering (+8pp)"
+  "basis": "base 76% from health 78; usage healthy or recovering (+8pp)"
  },
  "signals": [],
  "open_commitments": [],
@@ -292,7 +358,7 @@
    "date": null,
    "date_basis": "none",
    "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
+   "summary": "Meridian Energy Corp's Polaris Refining Business Unit has deployed one Gen3 dock and one drone airframe at its terminal and is evaluating multiple additional sites. The account is in the established\u2011expansion stage with a positive sentiment and an ARR of $9,600."
   },
   {
    "file": "06_email_tender_paperwork_thread.md",
@@ -333,8 +399,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 2,
+ "_version": 3,
  "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T20:38:24+00:00",
+   "sync_id": 37,
+   "input_hash": "4c8c3bc61613e77f747cccb3ecfa5e4bd827301bcf1683be87bbb907517fef73"
+  },
   {
    "version": 2,
    "computed_at": "2026-08-15T11:20:07+00:00",
@@ -349,6 +421,17 @@
   }
  ],
  "_deltas": [
+  {
+   "id": 42,
+   "account_id": "meridian-energy",
+   "sync_id": 37,
+   "occurred_at": "2026-08-15T20:38:24+00:00",
+   "field": "health.score",
+   "old_value": "73.0",
+   "new_value": "78.0",
+   "caused_by": "[]",
+   "narrative": "Meridian Energy Corp:  detected."
+  },
   {
    "id": 13,
    "account_id": "meridian-energy",

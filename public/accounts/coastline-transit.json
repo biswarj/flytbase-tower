@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Isaac (Operator)",
- "computed_at": "2026-08-15T11:20:07+00:00",
+ "computed_at": "2026-08-15T19:03:02+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 48.4,
@@ -219,7 +219,18 @@
   "bucket": "At Risk",
   "basis": "base 56% from health 48; usage collapsed or dormant (-20pp)"
  },
- "signals": [],
+ "signals": [
+  {
+   "claim": "Silent failure with no error message shown to the customer is a product UX gap.",
+   "dollar_hint": "",
+   "kind": "product-gap",
+   "quote": "Fixed procedurally; flagged internally as a product UX gap (silent failure, no toast/error shown) rather than fully resolved at the root.",
+   "severity": "medium",
+   "doc": "Support Tickets",
+   "date": null,
+   "doc_type": "ticket"
+  }
+ ],
  "open_commitments": [],
  "documents": [
   {
@@ -283,7 +294,7 @@
    "date": null,
    "date_basis": "none",
    "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
+   "summary": "Both tickets were resolved: one due to a powered\u2011off drone causing registration failure and another due to a firmware mismatch causing incorrect maintenance mode reporting; currently no open tickets."
   },
   {
    "file": "08_email_renewal_payment_chain.md",
@@ -324,8 +335,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 2,
+ "_version": 3,
  "_history": [
+  {
+   "version": 3,
+   "computed_at": "2026-08-15T19:03:02+00:00",
+   "sync_id": 37,
+   "input_hash": "1c1c526f125f45eba9be38f7910baa05010edbc47ce56812e67f8cce1517b394"
+  },
   {
    "version": 2,
    "computed_at": "2026-08-15T11:20:07+00:00",
