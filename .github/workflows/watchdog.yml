@@ -36,6 +36,9 @@ jobs:
           MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
           MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          TOWER_OPENAI_MODEL: ${{ vars.TOWER_OPENAI_MODEL }}
           TOWER_TRIGGER: watchdog
         run: |
           git config user.name 'tower-sentinel'
