@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOWER · FlytBase GTM Control Tower</title>
+<style>
+:root{
+  --bg:#0c0e12; --panel:#14171d; --panel2:#1a1e26; --line:#252a34;
+  --ink:#e8eaee; --dim:#9aa3b2; --dimmer:#69707d;
+  --accent:#4da3ff; --good:#3fbf7f; --warn:#e0a33c; --bad:#e0603c; --crit:#d6455b;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
+a{color:var(--accent);text-decoration:none}
+header{position:sticky;top:0;z-index:20;background:rgba(12,14,18,.94);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hwrap{display:flex;align-items:center;gap:18px;padding:10px 20px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.14em;font-size:15px}
+.brand span{color:var(--accent)}
+.sub{color:var(--dimmer);font-size:12px}
+nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+nav button{background:transparent;border:1px solid transparent;color:var(--dim);
+  padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500}
+nav button:hover{color:var(--ink);background:var(--panel)}
+nav button.on{background:var(--panel2);color:var(--ink);border-color:var(--line)}
+.live{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);
+  font-family:var(--mono);padding:5px 10px;background:var(--panel);
+  border:1px solid var(--line);border-radius:7px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--good);
+  box-shadow:0 0 0 0 rgba(63,191,127,.6);animation:p 2.4s infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(63,191,127,.55)}70%{box-shadow:0 0 0 9px rgba(63,191,127,0)}100%{box-shadow:0 0 0 0 rgba(63,191,127,0)}}
+main{padding:20px;max-width:1520px;margin:0 auto}
+h2{font-size:16px;margin:0 0 4px}
+.lede{color:var(--dim);font-size:13px;margin:0 0 16px;max-width:900px}
+.grid{display:grid;gap:14px}
+.k4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.k2{grid-template-columns:repeat(auto-fit,minmax(420px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px}
+.kpi .lab{color:var(--dimmer);font-size:11px;text-transform:uppercase;letter-spacing:.09em}
+.kpi .val{font-size:27px;font-weight:650;margin-top:5px;font-variant-numeric:tabular-nums}
+.kpi .note{color:var(--dim);font-size:12px;margin-top:5px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--dimmer);font-weight:600;font-size:10.5px;
+  text-transform:uppercase;letter-spacing:.08em;padding:8px 9px;border-bottom:1px solid var(--line)}
+td{padding:9px;border-bottom:1px solid #1c2029;vertical-align:top}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--panel2)}
+.num{font-variant-numeric:tabular-nums;text-align:right;font-family:var(--mono)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;
+  font-weight:600;border:1px solid}
+.b-Strong,.b-Secure{color:#7ee0aa;border-color:#1f4d36;background:#12241b}
+.b-Healthy,.b-Likely{color:#8fd6b0;border-color:#1d4231;background:#111f18}
+.b-Watch{color:#e9c579;border-color:#4d3d1a;background:#221c10}
+.b-AtRisk,.b-Risk{color:#f0a184;border-color:#54301f;background:#241610}
+.b-Critical,.b-Lost,.b-HighRisk{color:#f08497;border-color:#54202c;background:#240f15}
+.b-none{color:var(--dim);border-color:var(--line);background:var(--panel2)}
+.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:10.5px;
+  background:var(--panel2);border:1px solid var(--line);color:var(--dim);margin:1px 3px 1px 0}
+.spark{display:block}
+.bar{height:5px;border-radius:3px;background:#22262f;overflow:hidden;margin-top:5px}
+.bar>i{display:block;height:100%;border-radius:3px}
+.q{border-left:2px solid #2f3542;padding:5px 0 5px 11px;margin:6px 0;color:var(--dim);
+  font-size:12.5px;font-style:italic}
+.q b{color:var(--ink);font-style:normal}
+.src{color:var(--dimmer);font-size:11px;font-family:var(--mono)}
+.warnbox{background:#241610;border:1px solid #54301f;border-radius:9px;padding:11px 13px;
+  color:#f0a184;font-size:12.5px;margin-bottom:12px}
+.okbox{background:#12241b;border:1px solid #1f4d36;border-radius:9px;padding:11px 13px;
+  color:#7ee0aa;font-size:12.5px;margin-bottom:12px}
+.feed{font-family:var(--mono);font-size:12px}
+.feed .row{display:flex;gap:11px;padding:7px 0;border-bottom:1px solid #1c2029}
+.ct{font-weight:700;min-width:88px}
+.ADDED{color:var(--good)} .MODIFIED{color:var(--warn)}
+.WITHDRAWN{color:var(--crit)} .RESTORED{color:var(--accent)}
+.back{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+  padding:5px 11px;border-radius:7px;cursor:pointer;font-size:12px;margin-bottom:13px}
+.sec{margin:22px 0 9px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--dimmer);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
+.fac{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;
+  padding:7px 0;border-bottom:1px solid #1c2029;font-size:12.5px}
+.muted{color:var(--dim)}
+.small{font-size:12px}
+details{margin:5px 0}
+summary{cursor:pointer;color:var(--accent);font-size:12px;outline:none}
+.rank{font-family:var(--mono);color:var(--dimmer);font-size:11px}
+.err{padding:40px;text-align:center;color:var(--dim)}
+code{font-family:var(--mono);font-size:12px;background:var(--panel2);padding:1px 5px;border-radius:4px}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <div><div class="brand">TOWER<span>.</span></div>
+       <div class="sub">FlytBase GTM control tower · book of business</div></div>
+  <nav id="nav"></nav>
+  <div class="live"><span class="dot"></span><span id="livetxt">connecting</span></div>
+</div></header>
+<main id="app"><div class="err">loading portfolio…</div></main>
+
+<script>
+const $ = (s,r=document)=>r.querySelector(s);
+const money = n => n==null ? "—" : "$" + Math.round(n).toLocaleString();
+const pct = n => n==null ? "—" : (n>0?"+":"") + n.toFixed(0) + "%";
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cls = s => "b-" + String(s??"none").replace(/[^A-Za-z]/g,"");
+let PF=null, VIEW="triage", ACC=null, CACHE={};
+
+const VIEWS = [
+  ["triage","Triage"],["accounts","Accounts"],["renewals","Renewals"],
+  ["expansion","Expansion & Traps"],["gaps","Reality Gap"],
+  ["contradictions","Contradictions"],["winback","Win-back"],
+  ["flight","Flight Activity"],["feed","Change Feed"]
+];
+
+function spark(vals, w=104, h=26){
+  if(!vals || vals.length<2) return "";
+  const mx=Math.max(...vals,1), mn=Math.min(...vals,0), rng=(mx-mn)||1;
+  const pts=vals.map((v,i)=>[i/(vals.length-1)*w, h-((v-mn)/rng)*(h-4)-2]);
+  const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
+  const last=vals[vals.length-1], first=vals[0];
+  const col = last>=first? "var(--good)":"var(--bad)";
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.6"/>
+    <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.4" fill="${col}"/>
+  </svg>`;
+}
+
+async function boot(){
+  try{
+    PF = await (await fetch("portfolio.json?t="+Date.now())).json();
+  }catch(e){
+    $("#app").innerHTML = `<div class="err">Could not load <code>portfolio.json</code>.<br>
+      The daemon has not published state yet. This page refreshes itself every 30 seconds.</div>`;
+    return;
+  }
+  renderNav(); render(); tickLive();
+}
+
+function renderNav(){
+  $("#nav").innerHTML = VIEWS.map(([k,l])=>
+    `<button class="${k===VIEW?'on':''}" onclick="go('${k}')">${l}</button>`).join("");
+}
+window.go = k => { VIEW=k; ACC=null; renderNav(); render(); window.scrollTo(0,0); };
+window.open_acc = id => { ACC=id; render(); window.scrollTo(0,0); };
+
+function tickLive(){
+  const s = PF?.system?.last_sync;
+  const gen = PF?.generated_at;
+  $("#livetxt").textContent = s
+    ? `sync #${s.id} · ${(gen||"").replace("T"," ").replace("+00:00","")}Z`
+    : "no sync yet";
+}
+
+setInterval(async ()=>{
+  try{
+    const fresh = await (await fetch("portfolio.json?t="+Date.now())).json();
+    if(JSON.stringify(fresh.generated_at)!==JSON.stringify(PF?.generated_at)){
+      PF = fresh; CACHE={}; render(); tickLive();
+    }
+  }catch(e){}
+}, 30000);
+
+function render(){
+  if(ACC) return renderAccount(ACC);
+  const fn = {triage:vTriage,accounts:vAccounts,renewals:vRenewals,expansion:vExpansion,
+    gaps:vGaps,contradictions:vContra,winback:vWinback,flight:vFlight,feed:vFeed}[VIEW];
+  $("#app").innerHTML = fn ? fn() : "";
+}
+
+/* ---------------------------------------------------------------- triage */
+function vTriage(){
+  const m = PF.money, c = PF.counts;
+  const degraded = (PF.accounts||[]).some(a=>a.degraded);
+  const misread = (PF.reality_gaps||[]).filter(g=>g.direction==="overstated"&&Math.abs(g.gap)>=1);
+  const misARR = misread.reduce((s,g)=>s+(g.arr||0),0);
+  return `
+  <h2>Portfolio triage</h2>
+  <p class="lede">Ranked by expected dollars moved per unit of human effort, not by
+  who shouted loudest. Every row opens the evidence behind it.</p>
+  ${degraded?`<div class="warnbox"><b>Degraded mode.</b> No model key is configured, so
+    documents are not being read. Ingestion, change detection, usage analytics, health
+    scoring and ranking are still live.</div>`:""}
+  ${misARR>0?`<div class="warnbox"><b>${misread.length} of ${c.accounts} accounts carry a CRM
+    health label more optimistic than their own behaviour supports</b>, covering
+    ${money(misARR)} of ARR. See Reality Gap.</div>`:""}
+  <div class="grid k4">
+    <div class="card kpi"><div class="lab">Live ARR</div><div class="val">${money(m.live_arr)}</div>
+      <div class="note">${c.live} live accounts · ${c.presale} pre-sale · ${c.churned} churned</div></div>
+    <div class="card kpi"><div class="lab">Honest forecast</div>
+      <div class="val">${money(m.weighted_forecast)}</div>
+      <div class="note">probability weighted, not the ${money(m.naive_forecast)} the CRM implies</div></div>
+    <div class="card kpi"><div class="lab">Forecast gap</div>
+      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
+      <div class="note">the difference between believing the labels and reading the evidence</div></div>
+    <div class="card kpi"><div class="lab">Already lost</div>
+      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
+      <div class="note">${(PF.winbacks||[]).filter(w=>w.verdict!=="do-not-pursue"&&w.verdict!=="not-applicable").length} judged worth a win-back attempt</div></div>
+  </div>
+
+  <div class="sec">Do these first</div>
+  <div class="card"><table><thead><tr>
+    <th>#</th><th>Account</th><th>Action</th><th>Why now</th><th>Owner</th>
+    <th class="num">ARR</th><th class="num">Renewal</th><th class="num">Value score</th>
+  </tr></thead><tbody>
+  ${(PF.action_queue||[]).slice(0,14).map(a=>`
+    <tr class="click" onclick="open_acc('${a.account_id}')">
+      <td class="rank">${a.rank}</td>
+      <td><b>${esc(a.account_name)}</b><br>
+        <span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span></td>
+      <td>${esc(a.action)}${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}</td>
+      <td class="muted small">${esc(a.why_now)}</td>
+      <td><span class="tag">${esc(a.owner_function)}</span></td>
+      <td class="num">${money(a.arr)}</td>
+      <td class="num">${a.days_to_renewal==null?"—":a.days_to_renewal+"d"}</td>
+      <td class="num"><b>${a.value_score}</b></td>
+    </tr>`).join("")}
+  </tbody></table></div>
+
+  <div class="grid k2" style="margin-top:16px">
+    <div class="card"><div class="sec" style="margin-top:0">Gone quiet</div>
+      ${(PF.stale_accounts||[]).length===0?'<div class="muted small">No account has gone quiet for more than 45 days.</div>':
+      `<table><tbody>${PF.stale_accounts.map(s=>`<tr class="click" onclick="open_acc('${s.account_id}')">
+        <td><b>${esc(s.name)}</b></td><td class="num">${money(s.arr)}</td>
+        <td class="num" style="color:var(--warn)">${s.days_silent}d silent</td>
+        <td><span class="pill ${cls(s.health)}">${esc(s.health)}</span></td></tr>`).join("")}
+      </tbody></table>`}</div>
+    <div class="card"><div class="sec" style="margin-top:0">Promises we made and never closed</div>
+      ${(PF.open_loops||[]).length===0?'<div class="muted small">No open FlytBase-side commitments detected.</div>':
+      `<table><tbody>${PF.open_loops.slice(0,8).map(l=>`<tr class="click" onclick="open_acc('${l.account_id}')">
+        <td><b>${esc(l.account_name)}</b><br><span class="src">${esc(l.doc||"")}</span></td>
+        <td>${esc(l.promise)}${l.due?`<br><span class="src">due: ${esc(l.due)}</span>`:""}</td></tr>`).join("")}
+      </tbody></table>`}</div>
+  </div>`;
+}
+
+/* -------------------------------------------------------------- accounts */
+function vAccounts(){
+  return `<h2>All accounts</h2>
+  <p class="lede">Health is computed from behaviour, not copied from the CRM. The
+  <i>CRM says</i> column is shown next to it so you can see where the record lies.</p>
+  <div class="card"><table><thead><tr>
+    <th>Account</th><th>Stage</th><th class="num">ARR</th>
+    <th>Derived health</th><th>CRM says</th><th>Usage</th><th>Renewal</th>
+    <th>Biggest drag</th><th>Read this first</th>
+  </tr></thead><tbody>
+  ${(PF.accounts||[]).map(a=>`
+    <tr class="click" onclick="open_acc('${a.account_id}')">
+      <td><b>${esc(a.name)}</b><br><span class="src">${esc(a.vertical||"")}</span></td>
+      <td><span class="tag">${esc(a.lifecycle)}</span></td>
+      <td class="num">${money(a.arr)}</td>
+      <td><span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span>
+        <span class="src"> ${a.health_score}</span></td>
+      <td>${a.reality_gap.direction==="overstated"
+            ? `<span style="color:var(--bad)">${esc(a.crm_health||"—")} ⚠</span>`
+            : `<span class="muted">${esc(a.crm_health||"—")}</span>`}</td>
+      <td><span class="tag">${esc(a.usage_trajectory)}</span>
+        ${a.usage_pct!=null?`<span class="src"> ${pct(a.usage_pct)}</span>`:""}</td>
+      <td>${a.renewal.days_to_renewal==null?'<span class="muted">—</span>':
+          `<span class="pill ${cls(a.renewal.bucket)}">${esc(a.renewal.bucket)}</span>
+           <span class="src"> ${a.renewal.days_to_renewal}d</span>`}</td>
+      <td class="muted small">${esc(a.biggest_drag||"")}</td>
+      <td class="small">${esc(a.one_line)}</td>
+    </tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+/* ------------------------------------------------------- account detail */
+async function renderAccount(id){
+  if(!CACHE[id]){
+    try{ CACHE[id] = await (await fetch(`accounts/${id}.json?t=`+Date.now())).json(); }
+    catch(e){ $("#app").innerHTML = `<button class="back" onclick="go('${VIEW}')">← back</button>
+      <div class="err">No detail file for ${esc(id)} yet.</div>`; return; }
+  }
+  const s = CACHE[id], u = s.usage.flightHours, g = s.reality_gap, sy = s.synthesis||{};
+  $("#app").innerHTML = `
+  <button class="back" onclick="go('${VIEW}')">← back</button>
+  <h2>${esc(s.name)} <span class="pill ${cls(s.health.band)}">${esc(s.health.band)} ${s.health.score}</span>
+    <span class="tag">${esc(s.lifecycle)}</span>
+    <span class="tag">${money(s.arr)} ARR</span>
+    ${s.tier?`<span class="tag">${esc(s.tier)}</span>`:""}</h2>
+  <p class="lede"><b>${esc(sy.one_line||"")}</b></p>
+  ${g.direction==="overstated"?`<div class="warnbox"><b>Reality gap (${esc(g.severity)}).</b> ${esc(g.note)}</div>`:
+    g.direction==="aligned"?`<div class="okbox">${esc(g.note)}</div>`:
+    `<div class="card small muted" style="margin-bottom:12px">${esc(g.note)}</div>`}
+
+  <div class="grid k2">
+    <div class="card"><div class="sec" style="margin-top:0">Why this health score</div>
+      ${(s.health.factors||[]).map(f=>`<div class="fac">
+        <div><b>${esc(f.factor.replace(/_/g," "))}</b><br><span class="src">weight ${f.weight}</span></div>
+        <div>${esc(f.reason)}<div class="bar"><i style="width:${(f.quality*100).toFixed(0)}%;
+          background:${f.quality>.7?'var(--good)':f.quality>.45?'var(--warn)':'var(--bad)'}"></i></div></div>
+        <div class="num" style="color:${f.points_lost>8?'var(--bad)':'var(--dim)'}">−${f.points_lost}</div>
+      </div>`).join("")}
+      <div class="small muted" style="margin-top:9px">Weighted sum of five factors.
+      Every point lost is attributable to a named factor and a stated reason.</div>
+    </div>
+
+    <div class="card"><div class="sec" style="margin-top:0">Flight activity</div>
+      ${s.usage.has_usage?`
+        <div style="display:flex;align-items:center;gap:14px">
+          ${spark(u.values,220,54)}
+          <div><div class="kpi"><div class="val">${u.latest}</div>
+            <div class="note">flight hours in ${esc(u.months[u.months.length-1])}</div></div></div>
+        </div>
+        <p class="small" style="margin:9px 0 0">${esc(u.headline)}</p>
+        <div class="small muted" style="margin-top:7px">
+          trajectory <b>${esc(u.trajectory)}</b> ·
+          3v3 ${pct(u.pct_3v3)} · peak ${u.peak} in ${esc(u.peak_month)} ·
+          missions latest ${s.usage.missions.latest}
+        </div>`:'<div class="muted small">No usage telemetry for this account. For a pre-sale or non-flying account that is expected, not a red flag.</div>'}
+      <div class="sec">Renewal</div>
+      ${s.renewal.date?`<div class="small">
+        <b>${esc(s.renewal.date)}</b> · ${s.renewal.days_to_renewal} days away ·
+        <span class="pill ${cls(s.renewal.bucket)}">${esc(s.renewal.bucket)}</span>
+        ${s.renewal.probability!=null?` · renewal probability ${(s.renewal.probability*100).toFixed(0)}%`:""}
+        <div class="src" style="margin-top:6px">${esc(s.renewal.basis)}</div>
+        ${s.renewal.source?`<div class="q">${esc(s.renewal.source.quote||"")}
+          <br><b>${esc(s.renewal.source.doc||"")}</b></div>`:""}
+      </div>`:'<div class="muted small">No renewal or contract date stated anywhere in the source material.</div>'}
+    </div>
+  </div>
+
+  <div class="sec">The situation</div>
+  <div class="card"><p style="margin:0">${esc(sy.situation||"")}</p>
+    <div class="small muted" style="margin-top:9px">
+      sentiment <b>${esc(sy.sentiment_label||"")}</b> and ${esc(sy.sentiment_trend||"")} ·
+      champion <b>${esc(sy.champion_status||"")}</b> ·
+      economic buyer ${sy.economic_buyer_identified?"identified":"<span style='color:var(--bad)'>not identified</span>"}
+      ${sy.competitor_present?` · <span style="color:var(--bad)">competitor present: ${esc((sy.competitor_names||[]).join(", "))}</span>`:""}
+      ${s.days_silent!=null?` · last dated contact ${s.days_silent} days ago`:""}
+    </div></div>
+
+  <div class="sec">Do this next</div>
+  <div class="card"><table><thead><tr><th>#</th><th>Action</th><th>Why now</th>
+    <th>Owner</th><th class="num">Effort</th><th class="num">Value</th></tr></thead><tbody>
+  ${(s.actions||[]).map((a,i)=>`<tr>
+    <td class="rank">${i+1}</td>
+    <td><b>${esc(a.action)}</b>${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}
+      ${(a.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}</td>
+    <td class="muted small">${esc(a.why_now)}</td>
+    <td><span class="tag">${esc(a.owner_function)}</span></td>
+    <td class="num">${a.effort}</td><td class="num"><b>${a.value_score}</b></td></tr>`).join("")}
+  </tbody></table></div>
+
+  <div class="grid k2">
+    <div class="card"><div class="sec" style="margin-top:0">Risks</div>
+      ${(sy.top_risks||[]).length?(sy.top_risks||[]).map(r=>`<div style="margin-bottom:13px">
+        <span class="pill ${r.severity==="critical"?"b-Critical":r.severity==="high"?"b-AtRisk":"b-Watch"}">${esc(r.severity)}</span>
+        <b> ${esc(r.risk)}</b>
+        <div class="small muted" style="margin:4px 0">${esc(r.why_it_matters)}</div>
+        ${(r.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
+      </div>`).join(""):'<div class="muted small">No material risks surfaced in the evidence.</div>'}</div>
+    <div class="card"><div class="sec" style="margin-top:0">Opportunities</div>
+      ${(sy.opportunities||[]).length?(sy.opportunities||[]).map(o=>`<div style="margin-bottom:13px">
+        <span class="pill ${o.is_trap?"b-AtRisk":"b-Healthy"}">${o.is_trap?"TRAP":esc(o.confidence)}</span>
+        <b> ${esc(o.opportunity)}</b>
+        ${o.is_trap?`<div class="small" style="color:var(--bad);margin:4px 0">Disqualified: ${esc(o.trap_reason)}</div>`:""}
+        ${o.unblock_condition?`<div class="small muted">Unblock: ${esc(o.unblock_condition)}</div>`:""}
+        ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
+        ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
+      </div>`).join(""):'<div class="muted small">No expansion signals in the evidence.</div>'}</div>
+  </div>
+
+  <div class="sec">Who matters here</div>
+  <div class="card"><table><thead><tr><th>Person</th><th>Title</th><th>Role</th>
+    <th>Side</th><th>Sentiment</th><th>Status</th><th>Seen in</th></tr></thead><tbody>
+  ${(s.people||[]).map(p=>`<tr><td><b>${esc(p.name)}</b>
+      ${(p.quotes||[]).slice(0,1).map(q=>`<div class="q">${esc(q.quote)}</div>`).join("")}</td>
+    <td class="small">${esc(p.title||"—")}</td>
+    <td><span class="tag">${esc(p.role)}</span></td>
+    <td class="small muted">${esc(p.org_side)}</td>
+    <td class="small">${esc(p.sentiment)}</td>
+    <td class="small ${p.status!=="active"?'style="color:var(--bad)"':''}">${esc(p.status)}</td>
+    <td class="src">${esc((p.documents||[]).join(", "))}</td></tr>`).join("")}
+  </tbody></table></div>
+
+  ${(sy.contradictions||[]).length?`<div class="sec">Where the sources disagree</div>
+  <div class="card">${sy.contradictions.map(c=>`<div style="margin-bottom:14px">
+    <b>${esc(c.topic)}</b>
+    <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
+    <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
+    <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
+    ${c.matters_because?`<div class="small muted">${esc(c.matters_because)}</div>`:""}
+  </div>`).join("")}</div>`:""}
+
+  ${(s.open_commitments||[]).length?`<div class="sec">Open commitments</div>
+  <div class="card"><table><tbody>${s.open_commitments.map(c=>`<tr>
+    <td><span class="tag">${esc(c.owner_side)}</span> ${esc(c.owner||"")}</td>
+    <td>${esc(c.promise)}<div class="q">${esc(c.quote||"")}</div></td>
+    <td class="src">${esc(c.doc||"")}${c.due?` · due ${esc(c.due)}`:""}</td></tr>`).join("")}
+  </tbody></table></div>`:""}
+
+  <div class="sec">Source documents (live)</div>
+  <div class="card"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th>
+    <th>How dated</th><th>What it says</th></tr></thead><tbody>
+  ${(s.documents||[]).map(d=>`<tr><td><b>${esc(d.title)}</b><br><span class="src">${esc(d.file)}</span></td>
+    <td><span class="tag">${esc(d.type)}</span></td>
+    <td class="src">${esc(d.date||"undated")}</td>
+    <td class="src">${esc(d.date_basis)}${d.date_text?` · "${esc(d.date_text)}"`:""}</td>
+    <td class="small muted">${esc(d.summary)}</td></tr>`).join("")}
+  </tbody></table>
+  <div class="small muted" style="margin-top:9px">${s._evidence_count||0} citable evidence
+  units indexed for this account. Documents withdrawn from the source are excluded here
+  and shown on the Change Feed.</div></div>
+
+  ${(s._deltas||[]).length?`<div class="sec">How our understanding of this account has changed</div>
+  <div class="card feed">${s._deltas.map(d=>`<div class="row">
+    <span class="src">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
+    <span><b>${esc(d.field)}</b> ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
+    ${d.narrative?`<div class="small muted">${esc(d.narrative)}</div>`:""}</span>
+  </div>`).join("")}</div>`:""}`;
+}
+
+/* -------------------------------------------------------------- renewals */
+function vRenewals(){
+  const m=PF.money, order=["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
+  return `<h2>Renewal and revenue picture</h2>
+  <p class="lede">The honest forecast is the sum of ARR times a renewal probability that
+  starts from computed health and is adjusted by named, visible factors. It is deliberately
+  lower than the number you get by trusting the CRM.</p>
+  <div class="grid k4">
+    <div class="card kpi"><div class="lab">CRM implies</div><div class="val">${money(m.naive_forecast)}</div>
+      <div class="note">every live account renews in full</div></div>
+    <div class="card kpi"><div class="lab">TOWER forecast</div>
+      <div class="val" style="color:var(--accent)">${money(m.weighted_forecast)}</div>
+      <div class="note">probability weighted from evidence</div></div>
+    <div class="card kpi"><div class="lab">Overstatement</div>
+      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
+      <div class="note">${m.naive_forecast?((m.forecast_gap/m.naive_forecast)*100).toFixed(0):0}% of live ARR</div></div>
+    <div class="card kpi"><div class="lab">Already gone</div>
+      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
+      <div class="note">churned accounts</div></div>
+  </div>
+  ${order.filter(b=>m.buckets[b]&&m.buckets[b].count).map(b=>`
+    <div class="sec">${b} · ${money(m.buckets[b].arr)} across ${m.buckets[b].count}</div>
+    <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
+      <th class="num">Renewal in</th><th class="num">Probability</th><th>Health</th></tr></thead><tbody>
+    ${m.buckets[b].accounts.map(a=>`<tr class="click" onclick="open_acc('${a.id}')">
+      <td><b>${esc(a.name)}</b></td><td class="num">${money(a.arr)}</td>
+      <td class="num">${a.days==null?"—":a.days+"d"}</td>
+      <td class="num">${a.probability==null?"—":(a.probability*100).toFixed(0)+"%"}</td>
+      <td><span class="pill ${cls(a.health)}">${esc(a.health)}</span></td></tr>`).join("")}
+    </tbody></table></div>`).join("")}`;
+}
+
+/* ------------------------------------------------------------- expansion */
+function vExpansion(){
+  return `<h2>Expansion, and the things that look like it</h2>
+  <p class="lede">An expansion signal is only an opportunity once it survives qualification.
+  Every trap below shows the exact disqualifier and what would have to change first.</p>
+  <div class="sec">Real opportunities (${(PF.opportunities||[]).length})</div>
+  <div class="card">${(PF.opportunities||[]).length?(PF.opportunities||[]).map(o=>`
+    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
+      <span class="pill b-Healthy">${esc(o.confidence)}</span>
+      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
+      <span class="src"> · ${money(o.arr)} current ARR</span>
+      <div style="margin:5px 0">${esc(o.opportunity)}</div>
+      ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
+      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
+    </div>`).join(""):'<div class="muted small">Nothing currently qualifies.</div>'}</div>
+  <div class="sec">Traps (${(PF.traps||[]).length})</div>
+  <div class="card">${(PF.traps||[]).length?(PF.traps||[]).map(o=>`
+    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
+      <span class="pill b-AtRisk">TRAP</span>
+      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
+      <span class="src"> · ${money(o.arr)} current ARR · usage ${esc(o.usage_trajectory)}</span>
+      <div style="margin:5px 0">${esc(o.opportunity)}</div>
+      <div class="small" style="color:var(--bad)">${esc(o.qualification.verdict)}</div>
+      ${o.trap_reason?`<div class="small muted">${esc(o.trap_reason)}</div>`:""}
+      ${o.unblock_condition?`<div class="small" style="color:var(--accent)">Unblock: ${esc(o.unblock_condition)}</div>`:""}
+      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
+    </div>`).join(""):'<div class="muted small">No traps detected.</div>'}</div>`;
+}
+
+/* ------------------------------------------------------------------ gaps */
+function vGaps(){
+  return `<h2>Reality gap</h2>
+  <p class="lede">Every account in this Book of Business carries a CRM health label.
+  This is where that label is checked against what the account actually does.
+  A red row means the record is more optimistic than the evidence supports.</p>
+  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
+    <th>CRM says</th><th>Evidence says</th><th>Gap</th><th>Usage</th><th>Reading</th>
+  </tr></thead><tbody>
+  ${(PF.reality_gaps||[]).map(g=>`<tr class="click" onclick="open_acc('${g.account_id}')">
+    <td><b>${esc(g.name)}</b></td><td class="num">${money(g.arr)}</td>
+    <td><span class="pill b-none">${esc(g.stated)}</span></td>
+    <td><span class="pill ${cls(g.derived)}">${esc(g.derived)}</span>
+      <span class="src"> ${g.health_score}</span></td>
+    <td>${g.direction==="overstated"?`<span style="color:var(--bad)">overstated by ${Math.abs(g.gap)}</span>`:
+        g.direction==="understated"?`<span style="color:var(--good)">understated</span>`:
+        `<span class="muted">aligned</span>`}</td>
+    <td><span class="tag">${esc(g.usage_trajectory)}</span></td>
+    <td class="small muted">${esc(g.usage_headline)}</td></tr>`).join("")}
+  </tbody></table></div>`;
+}
+
+/* --------------------------------------------------------- contradictions */
+function vContra(){
+  return `<h2>Contradiction ledger</h2>
+  <p class="lede">The brief warned that some of this data does not agree with itself.
+  Rather than silently picking a winner, TOWER records both claims, states which one it
+  believes and why, using a fixed source-authority rule: what the customer said, dated,
+  outranks internal notes, which outrank the CRM record.</p>
+  <div class="card">${(PF.contradictions||[]).length?(PF.contradictions||[]).map(c=>`
+    <div style="margin-bottom:17px;padding-bottom:14px;border-bottom:1px solid #1c2029">
+      <b onclick="open_acc('${c.account_id}')" style="cursor:pointer">${esc(c.account_name)}</b>
+      <span class="src"> · ${esc(c.topic)}</span>
+      <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
+      <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
+      <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
+      ${c.matters_because?`<div class="small muted">Matters because: ${esc(c.matters_because)}</div>`:""}
+    </div>`).join(""):'<div class="muted small">No contradictions detected yet.</div>'}</div>`;
+}
+
+/* --------------------------------------------------------------- winback */
+function vWinback(){
+  return `<h2>Churned accounts and win-back</h2>
+  <p class="lede">Not every lost customer is worth chasing. The score weights whether the
+  cause is something FlytBase can now actually change, whether anything has changed since,
+  and whether a warm contact remains.</p>
+  ${(PF.winbacks||[]).map(w=>`<div class="card" style="margin-bottom:14px">
+    <h2 style="margin:0 0 4px">${esc(w.name)}
+      <span class="pill ${w.verdict==="pursue-now"?"b-Healthy":w.verdict==="pursue-later"?"b-Watch":"b-Critical"}">${esc(w.verdict)}</span>
+      <span class="tag">${money(w.lost_arr)} lost ARR</span>
+      <span class="tag">score ${w.score}</span></h2>
+    <div class="grid k2" style="margin-top:11px">
+      <div><div class="sec" style="margin-top:0">Why they left</div>
+        <div class="small"><span class="tag">${esc(w.cause_category)}</span>
+          ${w.reversible?'<span class="pill b-Healthy">reversible</span>':'<span class="pill b-Critical">not reversible</span>'}</div>
+        <p class="small">${esc(w.root_cause)}</p>
+        ${w.what_changed_since?`<div class="sec">What has changed since</div>
+          <p class="small">${esc(w.what_changed_since)}</p>`:""}</div>
+      <div><div class="sec" style="margin-top:0">The judgment</div>
+        <p class="small">${esc(w.reasoning)}</p>
+        ${w.residual_relationship?`<div class="sec">Who would still take the call</div>
+          <p class="small">${esc(w.residual_relationship)}</p>`:""}
+        ${w.first_move?`<div class="sec">First move</div>
+          <p class="small" style="color:var(--accent)">${esc(w.first_move)}</p>`:""}</div>
+    </div>
+    <div style="margin-top:9px"><a href="#" onclick="open_acc('${w.account_id}');return false">
+      open full account →</a></div>
+  </div>`).join("") || '<div class="card muted small">No churned accounts in state yet.</div>'}`;
+}
+
+/* ---------------------------------------------------------------- flight */
+function vFlight(){
+  return `<h2>Who is actually flying</h2>
+  <p class="lede">Flight hours by month, straight from usage history. The last column
+  answers the question the brief asks directly: does the trend agree with the health label?</p>
+  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
+    <th>Trend</th><th>Trajectory</th><th class="num">3v3</th><th class="num">Latest</th>
+    <th class="num">Peak</th><th>CRM label</th><th>Agrees?</th></tr></thead><tbody>
+  ${(PF.flight_activity||[]).map(f=>`<tr class="click" onclick="open_acc('${f.account_id}')">
+    <td><b>${esc(f.name)}</b></td><td class="num">${money(f.arr)}</td>
+    <td>${spark(f.values)}</td>
+    <td><span class="tag">${esc(f.trajectory)}</span></td>
+    <td class="num" style="color:${(f.pct_3v3||0)<0?'var(--bad)':'var(--good)'}">${pct(f.pct_3v3)}</td>
+    <td class="num">${f.latest}</td><td class="num">${f.peak}</td>
+    <td class="small muted">${esc(f.crm_health||"—")}</td>
+    <td>${f.agrees_with_label?'<span style="color:var(--good)">yes</span>':
+        '<span style="color:var(--bad)">no</span>'}</td></tr>`).join("")}
+  </tbody></table>
+  <div class="small muted" style="margin-top:9px">Accounts with no usage history are
+  omitted here. For pre-sale accounts that is expected.</div></div>`;
+}
+
+/* ------------------------------------------------------------------ feed */
+function vFeed(){
+  const sys=PF.system||{}, wd=sys.withdrawn_objects||[];
+  return `<h2>Change feed</h2>
+  <p class="lede">TOWER takes a complete inventory of the source every cycle and
+  content-hashes every object. That is the only way to notice something that
+  <i>stopped</i> being available. Withdrawn documents are tombstoned, dropped from
+  active reasoning, and kept for audit.</p>
+  <div class="grid k4">
+    <div class="card kpi"><div class="lab">Syncs run</div><div class="val">${(PF.syncs||[]).length}</div>
+      <div class="note">most recent ${esc((sys.last_sync||{}).started_at||"—")}</div></div>
+    <div class="card kpi"><div class="lab">Objects withdrawn</div>
+      <div class="val" style="color:${wd.length?'var(--crit)':'var(--dim)'}">${wd.length}</div>
+      <div class="note">detected by full-inventory reconciliation</div></div>
+    <div class="card kpi"><div class="lab">Belief changes logged</div>
+      <div class="val">${(PF.belief_deltas||[]).length}</div>
+      <div class="note">each traced to the source change that caused it</div></div>
+    <div class="card kpi"><div class="lab">Poll interval</div><div class="val">60s</div>
+      <div class="note">long-lived runner, no human trigger</div></div>
+  </div>
+
+  ${wd.length?`<div class="sec">Withdrawn from source</div>
+  <div class="card feed">${wd.map(w=>`<div class="row">
+    <span class="ct WITHDRAWN">WITHDRAWN</span>
+    <span>${esc(w.obj_key)} <span class="src">· ${esc(w.account_id||"portfolio-wide")}
+    · ${esc((w.withdrawn_at||"").replace("T"," ").replace("+00:00",""))}</span></span>
+  </div>`).join("")}</div>`:""}
+
+  <div class="sec">How our beliefs moved</div>
+  <div class="card feed">${(PF.belief_deltas||[]).length?PF.belief_deltas.map(d=>`<div class="row">
+    <span class="src" style="min-width:150px">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
+    <span><b>${esc(d.account_id)}</b> · ${esc(d.field)}:
+      ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
+      ${d.narrative?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(d.narrative)}</div>`:""}</span>
+  </div>`).join(""):'<div class="muted small">No belief changes yet. The first full pass establishes the baseline.</div>'}</div>
+
+  <div class="sec">Raw source changes detected</div>
+  <div class="card feed">${(PF.change_feed||[]).slice(0,80).map(c=>`<div class="row">
+    <span class="ct ${esc(c.change_type)}">${esc(c.change_type)}</span>
+    <span class="src" style="min-width:150px">${esc((c.detected_at||"").replace("T"," ").replace("+00:00",""))}</span>
+    <span>${esc(c.title||c.source_id)}
+      ${c.diff_summary?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(c.diff_summary)}</div>`:""}</span>
+  </div>`).join("")}</div>
+
+  <div class="sec">Sync history</div>
+  <div class="card"><table><thead><tr><th>#</th><th>Started</th><th>Trigger</th>
+    <th class="num">Objects</th><th class="num">Added</th><th class="num">Modified</th>
+    <th class="num">Withdrawn</th><th class="num">Re-reasoned</th><th>Status</th></tr></thead><tbody>
+  ${(PF.syncs||[]).map(s=>`<tr>
+    <td class="rank">${s.id}</td>
+    <td class="src">${esc((s.started_at||"").replace("T"," ").replace("+00:00",""))}</td>
+    <td><span class="tag">${esc(s.trigger)}</span></td>
+    <td class="num">${s.objects_seen}</td><td class="num">${s.added}</td>
+    <td class="num">${s.modified}</td>
+    <td class="num" style="color:${s.withdrawn?'var(--crit)':'inherit'}">${s.withdrawn}</td>
+    <td class="num">${s.accounts_resynth}</td>
+    <td class="small ${s.status==='ok'?'':'style="color:var(--bad)"'}">${esc(s.status)}</td>
+  </tr>`).join("")}</tbody></table></div>`;
+}
+
+boot();
+</script>
+</body>
+</html>
