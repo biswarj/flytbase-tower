@@ -12,6 +12,7 @@ id. Nothing else.
 from __future__ import annotations
 
 import json
+import threading
 import time
 import httpx
 from typing import Any
@@ -28,7 +29,12 @@ class MCPClient:
         self.timeout = timeout
         self.session_id: str | None = None
         self._id = 0
-        self._client = httpx.Client(timeout=timeout, follow_redirects=True)
+        # The crawl fans out across threads, so request ids must not collide.
+        # httpx.Client is itself thread-safe, so one connection pool is shared.
+        self._lock = threading.Lock()
+        self._client = httpx.Client(
+            timeout=timeout, follow_redirects=True,
+            limits=httpx.Limits(max_connections=12, max_keepalive_connections=12))
         self.server_info: dict = {}
         self._initialized = False
 
@@ -45,8 +51,9 @@ class MCPClient:
         return h
 
     def _next_id(self) -> int:
-        self._id += 1
-        return self._id
+        with self._lock:
+            self._id += 1
+            return self._id
 
     @staticmethod
     def _parse_sse(text: str) -> dict | None:

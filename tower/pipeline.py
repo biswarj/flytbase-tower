@@ -169,6 +169,12 @@ def reason_account(store: Store, brain: Brain, account_id: str, sync_id: int | N
             continue
         doc = json.loads(row["payload"])
         cached = store.get_extraction(row["obj_key"], row["hash"], "doc_v1")
+        # A degraded result is a placeholder, not a reading. If the reading
+        # layer is available now, treat it as a cache miss and read properly.
+        # Without this, one outage would permanently poison the cache: the
+        # content hash never changes, so the document would never be re-read.
+        if cached is not None and cached.get("_degraded") and brain.enabled:
+            cached = None
         if cached is None:
             cached = brain.read_document(
                 account_name=name, lifecycle=lifecycle,

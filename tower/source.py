@@ -12,6 +12,8 @@ question answerable rather than a guess.
 from __future__ import annotations
 
 import re
+import threading
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -157,68 +159,95 @@ class BookOfBusiness:
         return self.mcp.call("se_search_dataset", {"query": query})
 
     # --------------------------------------------------------- full crawl
-    def crawl(self, log=lambda *a: None) -> dict:
+    def crawl(self, log=lambda *a: None, workers: int = 6) -> dict:
         """One complete inventory of the source of truth.
 
         Returns EVERYTHING currently visible. The sentinel diffs this against
         what we hold. Crawling the full inventory each cycle (rather than
         asking for 'what changed') is the only way to notice that a document
         we used to have is gone.
+
+        That completeness costs roughly 170 round trips, which is minutes if
+        done serially and seconds if not. Since the whole promise is a 60
+        second poll, the fan-out is not an optimisation, it is the feature.
         """
         accounts = self.list_accounts()
         log(f"accounts: {len(accounts)}")
-        out = {"accounts": {}, "se": {}, "errors": []}
+        out: dict = {"accounts": {}, "se": {}, "errors": []}
+        lock = threading.Lock()
 
-        for a in accounts:
+        def err(msg: str):
+            with lock:
+                out["errors"].append(msg)
+
+        def fetch_account(a: dict):
             aid = a.get("id")
             if not aid:
-                continue
+                return
             rec: dict = {"meta": a, "detail": {}, "documents": {}, "usage": []}
             try:
                 rec["detail"] = self.get_account(aid)
             except Exception as e:
-                out["errors"].append(f"get_account {aid}: {e}")
+                err(f"get_account {aid}: {e}")
             try:
                 docs = self.list_account_documents(aid)
             except Exception as e:
-                out["errors"].append(f"list_docs {aid}: {e}")
+                err(f"list_docs {aid}: {e}")
                 docs = []
-            for d in docs:
-                fn = d.get("file")
-                if not fn:
-                    continue
-                try:
-                    body = self.get_account_document(aid, fn)
-                except Exception as e:
-                    out["errors"].append(f"doc {aid}/{fn}: {e}")
-                    continue
-                rec["documents"][fn] = {
-                    "file": fn,
-                    "title": d.get("title") or fn,
-                    "declared_type": d.get("type") or "",
-                    "doc_type": d.get("doc_type") or classify_doc(fn),
-                    "content": body,
-                }
             try:
                 rec["usage"] = self.get_account_usage(aid)
             except Exception as e:
-                out["errors"].append(f"usage {aid}: {e}")
-            out["accounts"][aid] = rec
+                err(f"usage {aid}: {e}")
+
+            def fetch_doc(d: dict):
+                fn = d.get("file")
+                if not fn:
+                    return
+                try:
+                    body = self.get_account_document(aid, fn)
+                except Exception as e:
+                    err(f"doc {aid}/{fn}: {e}")
+                    return
+                with lock:
+                    rec["documents"][fn] = {
+                        "file": fn,
+                        "title": d.get("title") or fn,
+                        "declared_type": d.get("type") or "",
+                        "doc_type": d.get("doc_type") or classify_doc(fn),
+                        "content": body,
+                    }
+
+            if docs:
+                with ThreadPoolExecutor(max_workers=min(workers, len(docs))) as ex:
+                    list(ex.map(fetch_doc, docs))
+
+            with lock:
+                out["accounts"][aid] = rec
             log(f"  {aid}: {len(rec['documents'])} docs, {len(rec['usage'])} usage months")
 
+        def fetch_se(f: dict):
+            fn = f.get("file")
+            if not fn:
+                return
+            try:
+                body = self.se_get_file(fn)
+            except Exception as e:
+                err(f"se {fn}: {e}")
+                return
+            with lock:
+                out["se"][fn] = {"file": fn, "title": f.get("title") or fn,
+                                 "content": body}
+
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            list(ex.map(fetch_account, accounts))
+
         try:
-            for f in self.se_list_files():
-                fn = f.get("file")
-                if not fn:
-                    continue
-                out["se"][fn] = {
-                    "file": fn,
-                    "title": f.get("title") or fn,
-                    "content": self.se_get_file(fn),
-                }
+            se_files = self.se_list_files()
+            with ThreadPoolExecutor(max_workers=workers) as ex:
+                list(ex.map(fetch_se, se_files))
             log(f"se dataset: {len(out['se'])} files")
         except Exception as e:
-            out["errors"].append(f"se dataset: {e}")
+            err(f"se dataset: {e}")
 
         return out
 
