@@ -1,0 +1,53 @@
+name: tower daemon
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tower/**'
+      - 'web/**'
+      - '.github/workflows/tower.yml'
+concurrency:
+  group: tower-daemon
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  daemon:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - name: Preflight
+        env:
+          MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
+          MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m tower.preflight
+      - name: Run daemon
+        env:
+          MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
+          MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TOWER_POLL_SECONDS: '60'
+          TOWER_MAX_RUN_SECONDS: '20400'
+        run: python -m tower.run daemon
+      - name: Final state flush
+        if: always()
+        env:
+          MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
+          MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+        run: |
+          python -m tower.run export || true
+          git config user.name 'tower-sentinel'
+          git config user.email 'tower-sentinel@users.noreply.github.com'
+          git add -A public data || true
+          git diff --cached --quiet || git commit -m 'daemon shutdown: final state flush'
+          git pull --rebase --autostash || true
+          git push || true
