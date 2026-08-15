@@ -1,14 +1,7 @@
 name: unpack bootstrap
-
-on:
-  push:
-    paths:
-      - 'bootstrap.tar.gz'
-  workflow_dispatch:
-
+on: [push, workflow_dispatch]
 permissions:
   contents: write
-
 jobs:
   unpack:
     runs-on: ubuntu-latest
@@ -22,7 +15,7 @@ jobs:
             echo unpacked
             find . -name '*.py' -not -path './.git/*'
           else
-            echo 'no bundle present'
+            echo 'no bundle present, nothing to do'
           fi
       - name: Commit extracted source
         run: |
