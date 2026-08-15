@@ -410,19 +410,22 @@ class Brain:
         return None
 
     # ------------------------------------------------------------------
+    #: A document read may use this share of the minute's tokens, so that
+    #: several reads fit inside one minute instead of one read filling it.
+    DOC_SHARE = 0.45
+
     @staticmethod
-    def _fit(want_output: int) -> tuple[int, int]:
+    def _fit(want_output: int, share: float = 1.0) -> tuple[int, int]:
         """Split the tokens-per-minute ceiling between prompt and answer.
 
         Returns (max_prompt_characters, max_output_tokens). The provider counts
         the reserved output against the same ceiling as the prompt, so both
-        halves have to be chosen together. Roughly four characters per token,
-        with 400 tokens held back for the system prompt and the tool schema.
+        halves have to be chosen together.
         """
         # 90% of the stated ceiling. Token counting is an estimate on this side
         # and an exact number on theirs, and being 5% under costs nothing while
         # being 1% over costs the whole request.
-        ceiling = int(max(2000, config.MODEL_TPM_BUDGET) * 0.90)
+        ceiling = int(max(2000, config.MODEL_TPM_BUDGET) * 0.90 * share)
         out = max(400, min(want_output, int(ceiling * 0.35)))
         prompt_tokens = max(500, ceiling - out - 700)
         # 3.6 characters per token, deliberately below the usual 4, because
@@ -434,7 +437,7 @@ class Brain:
                       title: str, content: str) -> dict:
         if not self.enabled:
             return _fallback_doc(content, doc_type)
-        room, out_tokens = self._fit(1600)
+        room, out_tokens = self._fit(900, share=self.DOC_SHARE)
         head = (
             f"ACCOUNT: {account_name}\n"
             f"LIFECYCLE STAGE: {lifecycle}\n"

@@ -56,15 +56,31 @@ OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "") or (
 
 # Free tiers throttle. Pace document reads so a burst of 130 extractions does
 # not trip a rate limit and degrade half the portfolio.
-READ_DELAY_SECONDS = float(os.environ.get("TOWER_READ_DELAY", "0.5"))
+#
+# The pace is derived from the tokens-per-minute ceiling rather than guessed.
+# A document read costs roughly 45% of the ceiling (see Brain._fit), so the
+# number that fit in a minute is about 1 / 0.45, and the gap between reads is
+# sixty seconds divided by that. Guessing instead produces the worst of both:
+# too fast and most reads are rejected, too slow and a cycle never finishes.
+_READS_PER_MINUTE = 1.0 / 0.45
+READ_DELAY_SECONDS = float(
+    os.environ.get("TOWER_READ_DELAY", "")
+    or (60.0 / _READS_PER_MINUTE if MODEL_TPM_BUDGET <= 20000 else 0.5)
+)
 
 # Hard ceiling on any single model call. Never let one slow request own the
 # cycle. See the comment in brain.Brain.__init__ for why this matters.
 MODEL_TIMEOUT_SECONDS = float(os.environ.get("TOWER_MODEL_TIMEOUT", "75"))
 
 # How many documents to read concurrently. Kept low on purpose: the point is
-# to overlap network latency, not to hammer a free-tier rate limit.
-READ_CONCURRENCY = int(os.environ.get("TOWER_READ_CONCURRENCY", "3"))
+# to overlap network latency, not to hammer a free-tier rate limit. Under a
+# tight tokens-per-minute ceiling the right answer is one. Two requests in
+# flight against an 8000-token minute do not go twice as fast, they simply
+# guarantee that one of them is rejected.
+READ_CONCURRENCY = int(
+    os.environ.get("TOWER_READ_CONCURRENCY", "")
+    or (1 if MODEL_TPM_BUDGET <= 20000 else 3)
+)
 
 POLL_SECONDS = int(os.environ.get("TOWER_POLL_SECONDS", "60"))
 MAX_RUN_SECONDS = int(os.environ.get("TOWER_MAX_RUN_SECONDS", str(5 * 3600 + 40 * 60)))
