@@ -26,11 +26,12 @@ def main() -> int:
 
     if not config.MCP_TOKEN:
         problems.append("MCP_TOKEN is empty. The Book of Business is unreachable.")
-    if not config.ANTHROPIC_API_KEY:
+    if not config.ANTHROPIC_API_KEY and not config.OPENAI_API_KEY:
         warnings.append(
-            "ANTHROPIC_API_KEY is empty. TOWER will run in degraded mode: "
-            "ingestion, change detection, usage analytics, health scoring and "
-            "ranking all still work, but documents will not be read.")
+            "No model key (ANTHROPIC_API_KEY or OPENAI_API_KEY). TOWER will run "
+            "in degraded mode: ingestion, change detection, usage analytics, "
+            "health scoring and ranking all still work, but documents will not "
+            "be read.")
 
     tools: list[str] = []
     if config.MCP_TOKEN:
@@ -62,15 +63,30 @@ def main() -> int:
         except Exception as e:
             problems.append(f"cannot reach the MCP endpoint: {e}")
 
-    if config.ANTHROPIC_API_KEY:
+    # A model key that exists but does not work is a WARNING, never a failure.
+    # Billing state must not be able to stop the sentinel from noticing that a
+    # document was withdrawn. Reading degrades; watching does not.
+    from .brain import Brain
+    b = Brain()
+    print(f"reading provider: {b.provider}")
+    if b.enabled:
         try:
-            from anthropic import Anthropic
-            Anthropic(api_key=config.ANTHROPIC_API_KEY).messages.create(
-                model=config.MODEL_EXTRACT, max_tokens=8,
-                messages=[{"role": "user", "content": "reply with the single word ok"}])
-            print(f"model reachable: {config.MODEL_EXTRACT}")
+            ok = b._tool_call(
+                system="You reply with structured output.",
+                user="Return the word ok.",
+                schema={"type": "object", "properties": {"ok": {"type": "string"}},
+                        "required": ["ok"]},
+                tool_name="reply", model=config.MODEL_EXTRACT,
+                max_tokens=32, retries=1)
+            if ok is None:
+                warnings.append(
+                    f"{b.provider} key is present but the call failed "
+                    f"({b.last_error}). Running in degraded mode: change detection "
+                    f"and scoring stay live, document reading does not.")
+            else:
+                print(f"model reachable via {b.provider}")
         except Exception as e:
-            problems.append(f"Anthropic API key present but unusable: {e}")
+            warnings.append(f"{b.provider} key present but unusable: {e}")
 
     for w in warnings:
         print(f"WARN  {w}")

@@ -18,6 +18,11 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 MODEL_EXTRACT = os.environ.get("TOWER_MODEL_EXTRACT", "claude-sonnet-4-5-20250929")
 MODEL_SYNTH = os.environ.get("TOWER_MODEL_SYNTH", "claude-sonnet-4-5-20250929")
 
+# Alternative provider. Used only when no Anthropic key is present, so the
+# system is never tied to one vendor's billing state.
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "gpt-4.1")
+
 POLL_SECONDS = int(os.environ.get("TOWER_POLL_SECONDS", "60"))
 MAX_RUN_SECONDS = int(os.environ.get("TOWER_MAX_RUN_SECONDS", str(5 * 3600 + 40 * 60)))
 

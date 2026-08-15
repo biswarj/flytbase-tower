@@ -30,6 +30,11 @@ try:
 except Exception:  # library absent: system still runs, deterministically
     Anthropic = None  # type: ignore
 
+try:
+    from openai import OpenAI
+except Exception:
+    OpenAI = None  # type: ignore
+
 
 # --------------------------------------------------------------------------
 # Schemas. Enforced as tools so the model cannot free-text its way out.
@@ -276,46 +281,105 @@ Hard rules:
 
 
 class Brain:
+    """The reading layer, provider agnostic.
+
+    Anthropic is preferred. OpenAI is a drop-in alternative. If neither key
+    is present the whole class degrades to keyword heuristics and says so.
+    Both providers are driven through forced tool calling against the same
+    JSON schemas above, so the output shape is identical either way and
+    nothing downstream needs to know which one ran.
+    """
+
     def __init__(self, api_key: str | None = None):
+        self.provider = "none"
+        self.client = None
         self.api_key = api_key or config.ANTHROPIC_API_KEY
-        self.enabled = bool(self.api_key) and Anthropic is not None
-        self.client = Anthropic(api_key=self.api_key) if self.enabled else None
+
+        if self.api_key and Anthropic is not None:
+            self.provider = "anthropic"
+            self.client = Anthropic(api_key=self.api_key)
+        elif config.OPENAI_API_KEY and OpenAI is not None:
+            self.provider = "openai"
+            self.api_key = config.OPENAI_API_KEY
+            self.client = OpenAI(api_key=self.api_key)
+
+        self.enabled = self.provider != "none"
         self.calls = 0
         self.input_tokens = 0
         self.output_tokens = 0
+        self.failures = 0
+        self.last_error = ""
 
     # ------------------------------------------------------------------
     def _tool_call(self, *, system: str, user: str, schema: dict,
                    tool_name: str, model: str, max_tokens: int = 8000,
-                   retries: int = 3) -> dict:
+                   retries: int = 3) -> dict | None:
+        """Returns None on failure rather than raising.
+
+        This matters more than it looks. If the model API is down, out of
+        credit, or rate limited, the reading layer must degrade quietly while
+        ingestion and change detection keep running. A billing problem must
+        never be able to stop the sentinel from noticing that a document
+        disappeared.
+        """
         last = None
         for attempt in range(retries):
             try:
-                resp = self.client.messages.create(
-                    model=model,
-                    max_tokens=max_tokens,
-                    system=system,
-                    tools=[{"name": tool_name,
-                            "description": "Return the structured result.",
-                            "input_schema": schema}],
-                    tool_choice={"type": "tool", "name": tool_name},
-                    messages=[{"role": "user", "content": user}],
-                )
-                self.calls += 1
-                if getattr(resp, "usage", None):
-                    self.input_tokens += resp.usage.input_tokens or 0
-                    self.output_tokens += resp.usage.output_tokens or 0
-                for block in resp.content:
-                    if getattr(block, "type", None) == "tool_use":
-                        return block.input
-                last = RuntimeError("no tool_use block returned")
+                if self.provider == "anthropic":
+                    resp = self.client.messages.create(
+                        model=model,
+                        max_tokens=max_tokens,
+                        system=system,
+                        tools=[{"name": tool_name,
+                                "description": "Return the structured result.",
+                                "input_schema": schema}],
+                        tool_choice={"type": "tool", "name": tool_name},
+                        messages=[{"role": "user", "content": user}],
+                    )
+                    self.calls += 1
+                    if getattr(resp, "usage", None):
+                        self.input_tokens += resp.usage.input_tokens or 0
+                        self.output_tokens += resp.usage.output_tokens or 0
+                    for block in resp.content:
+                        if getattr(block, "type", None) == "tool_use":
+                            return block.input
+                    last = RuntimeError("no tool_use block returned")
+                else:  # openai
+                    resp = self.client.chat.completions.create(
+                        model=config.OPENAI_MODEL,
+                        max_completion_tokens=max_tokens,
+                        messages=[{"role": "system", "content": system},
+                                  {"role": "user", "content": user}],
+                        tools=[{"type": "function",
+                                "function": {"name": tool_name,
+                                             "description": "Return the structured result.",
+                                             "parameters": schema}}],
+                        tool_choice={"type": "function",
+                                     "function": {"name": tool_name}},
+                    )
+                    self.calls += 1
+                    if getattr(resp, "usage", None):
+                        self.input_tokens += resp.usage.prompt_tokens or 0
+                        self.output_tokens += resp.usage.completion_tokens or 0
+                    tc = (resp.choices[0].message.tool_calls or [None])[0]
+                    if tc is not None:
+                        return json.loads(tc.function.arguments)
+                    last = RuntimeError("no tool call returned")
             except Exception as e:
                 last = e
+                msg = str(e).lower()
+                # Do not burn retries on errors that will never succeed.
+                if any(k in msg for k in ("credit balance", "invalid_api_key",
+                                          "authentication", "permission")):
+                    break
                 if attempt == retries - 1:
                     break
                 import time
                 time.sleep(2 * (attempt + 1))
-        raise RuntimeError(f"LLM call failed: {last}")
+        self.failures += 1
+        self.last_error = str(last)[:300]
+        print(f"[brain] call failed, degrading this item: {self.last_error}", flush=True)
+        return None
 
     # ------------------------------------------------------------------
     def read_document(self, *, account_name: str, lifecycle: str, doc_type: str,
@@ -329,16 +393,18 @@ class Brain:
             f"DOCUMENT TITLE: {title}\n"
             f"--- BEGIN DOCUMENT ---\n{content[:60000]}\n--- END DOCUMENT ---"
         )
-        return self._tool_call(system=DOC_SYSTEM, user=user, schema=DOC_SCHEMA,
-                               tool_name="record_document_reading",
-                               model=config.MODEL_EXTRACT, max_tokens=8000)
+        out = self._tool_call(system=DOC_SYSTEM, user=user, schema=DOC_SCHEMA,
+                              tool_name="record_document_reading",
+                              model=config.MODEL_EXTRACT, max_tokens=8000)
+        return out if out is not None else _fallback_doc(content, doc_type)
 
     def synthesise_account(self, *, dossier: str) -> dict:
         if not self.enabled:
             return _fallback_synth()
-        return self._tool_call(system=SYNTH_SYSTEM, user=dossier, schema=SYNTH_SCHEMA,
-                               tool_name="record_account_truth",
-                               model=config.MODEL_SYNTH, max_tokens=12000)
+        out = self._tool_call(system=SYNTH_SYSTEM, user=dossier, schema=SYNTH_SCHEMA,
+                              tool_name="record_account_truth",
+                              model=config.MODEL_SYNTH, max_tokens=12000)
+        return out if out is not None else _fallback_synth()
 
     def narrate_change(self, *, account: str, before: dict, after: dict,
                        changes: list[dict]) -> str:
@@ -359,14 +425,21 @@ class Brain:
             "say explicitly that the evidence was withdrawn and what we can no longer support. "
             "No em dashes. No preamble."
         )
+        sysmsg = "You write terse, factual change notes for a GTM control tower."
         try:
-            resp = self.client.messages.create(
-                model=config.MODEL_SYNTH, max_tokens=350,
-                system="You write terse, factual change notes for a GTM control tower.",
-                messages=[{"role": "user", "content": user}],
-            )
+            if self.provider == "anthropic":
+                resp = self.client.messages.create(
+                    model=config.MODEL_SYNTH, max_tokens=350, system=sysmsg,
+                    messages=[{"role": "user", "content": user}])
+                self.calls += 1
+                return "".join(b.text for b in resp.content
+                               if getattr(b, "type", None) == "text").strip()
+            resp = self.client.chat.completions.create(
+                model=config.OPENAI_MODEL, max_completion_tokens=350,
+                messages=[{"role": "system", "content": sysmsg},
+                          {"role": "user", "content": user}])
             self.calls += 1
-            return "".join(b.text for b in resp.content if getattr(b, "type", None) == "text").strip()
+            return (resp.choices[0].message.content or "").strip()
         except Exception:
             return _fallback_narrative(account, before, after, changes)
 
