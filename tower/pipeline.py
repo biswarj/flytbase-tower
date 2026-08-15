@@ -508,13 +508,29 @@ def run_cycle(store: Store, trigger: str = "manual", force_all: bool = False,
             f"+{len(report['added'])} added, ~{len(report['modified'])} modified, "
             f"-{len(report['withdrawn'])} WITHDRAWN, {report['unchanged']} unchanged")
 
-        targets = ([a["account_id"] for a in store.live_objects("account")]
-                   if force_all or not store.all_current_states()
-                   else report["touched_accounts"])
-
         brain = Brain()
         if not brain.enabled:
-            log("[warn] no ANTHROPIC_API_KEY: running in degraded (deterministic) mode")
+            log("[warn] no model key: running in degraded (deterministic) mode")
+        else:
+            log(f"[brain] reading via {brain.provider}, model {config.MODEL_EXTRACT}"
+                if brain.provider == "anthropic" else
+                f"[brain] reading via {brain.provider}, model {config.OPENAI_MODEL}")
+
+        held = store.all_current_states()
+        targets = ([a["account_id"] for a in store.live_objects("account")]
+                   if force_all or not held
+                   else list(report["touched_accounts"]))
+
+        # Self-healing. If an account's current belief was built while the
+        # reading layer was unavailable, it is a placeholder, not an answer.
+        # The source has not changed, so nothing would ever mark it dirty.
+        # Rebuild it as soon as reading becomes possible again.
+        if brain.enabled:
+            repair = [s["account_id"] for s in held if s["state"].get("degraded")]
+            if repair:
+                log(f"[repair] {len(repair)} account(s) hold degraded beliefs, "
+                    f"rebuilding now that reading is available")
+                targets = sorted(set(targets) | set(repair))
 
         events = store.changes_for_sync(sync_id)
         by_account: dict[str, list[dict]] = {}
