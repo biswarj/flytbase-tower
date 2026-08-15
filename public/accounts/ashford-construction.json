@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": null,
- "computed_at": "2026-08-15T16:14:01+00:00",
+ "computed_at": "2026-08-15T16:28:05+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 61.0,
@@ -121,7 +121,31 @@
   "sla_breaches": 0,
   "recurring_issues": 0
  },
- "people": [],
+ "people": [
+  {
+   "name": "Farhan Qureshi",
+   "title": "",
+   "org_side": "flytbase",
+   "role": "technical-evaluator",
+   "role_all": [
+    "technical-evaluator"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Account Profile"
+   ],
+   "quotes": [
+    {
+     "quote": "SE Owner                 | Farhan Qureshi",
+     "doc": "Account Profile",
+     "date": null,
+     "reason": "SE-led at this stage"
+    }
+   ]
+  }
+ ],
  "days_silent": 14,
  "last_touch": "2026-08-01",
  "renewal": {
@@ -133,7 +157,18 @@
   "bucket": "Not Applicable",
   "basis": "Pre-sale: no renewal to forecast, this is new business."
  },
- "signals": [],
+ "signals": [
+  {
+   "claim": "No champion currently tagged \u2014 deal is SE-led",
+   "dollar_hint": "",
+   "kind": "champion-risk",
+   "quote": "Champion (tagged in CRM) | _None currently tagged \u2014 deal is SE-led_",
+   "severity": "medium",
+   "doc": "Account Profile",
+   "date": null,
+   "doc_type": "profile"
+  }
+ ],
  "open_commitments": [],
  "documents": [
   {
@@ -179,7 +214,7 @@
    "date": null,
    "date_basis": "none",
    "date_text": "",
-   "summary": "[degraded mode: no model key, document not read]"
+   "summary": "Ashford Construction Group is in a pre\u2011sale, active technical evaluation stage with no deployed docks and a proposal for a POC/pilot under negotiation. The SE lead is Farhan Qureshi, and currently no internal champion has been identified."
   },
   {
    "file": "05_deal_and_pricing_notes.md",
@@ -211,8 +246,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 5,
+ "_version": 6,
  "_history": [
+  {
+   "version": 6,
+   "computed_at": "2026-08-15T16:28:05+00:00",
+   "sync_id": 35,
+   "input_hash": "9cc1285ea8d2e1795db4be1750d6df754e8ee3646617c087a9f41e65b9ad534c"
+  },
   {
    "version": 5,
    "computed_at": "2026-08-15T16:14:01+00:00",

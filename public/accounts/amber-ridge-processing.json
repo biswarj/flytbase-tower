@@ -12,20 +12,12 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
- "computed_at": "2026-08-15T16:09:57+00:00",
+ "computed_at": "2026-08-15T16:19:39+00:00",
  "reference_date": "2026-08-15",
  "health": {
-  "score": 79.4,
-  "band": "Healthy",
+  "score": 91.0,
+  "band": "Strong",
   "factors": [
-   {
-    "factor": "relationship",
-    "quality": 0.42,
-    "weight": 20,
-    "contribution": 8.4,
-    "points_lost": 11.6,
-    "reason": "Relationship: champion has left or gone quiet, economic buyer identified, multithreaded across 10 contacts."
-   },
    {
     "factor": "sentiment",
     "quality": 0.6,
@@ -57,17 +49,25 @@
     "contribution": 20.0,
     "points_lost": 0.0,
     "reason": "Clean support record."
+   },
+   {
+    "factor": "relationship",
+    "quality": 1.0,
+    "weight": 20,
+    "contribution": 20.0,
+    "points_lost": 0.0,
+    "reason": "Relationship: active champion identified, economic buyer identified, multithreaded across 10 contacts."
    }
   ],
-  "biggest_drag": "relationship"
+  "biggest_drag": "sentiment"
  },
  "reality_gap": {
-  "gap": 0,
-  "direction": "aligned",
+  "gap": -1,
+  "direction": "understated",
   "stated": "Healthy",
-  "derived": "Healthy",
-  "severity": "aligned",
-  "note": "CRM label and derived health agree at Healthy."
+  "derived": "Strong",
+  "severity": "minor",
+  "note": "CRM says Healthy. Behaviour says Strong. The account is doing better than its record suggests."
  },
  "usage": {
   "flightHours": {
@@ -226,47 +226,10 @@
    ]
   },
   {
-   "name": "Mitch",
-   "title": "",
-   "org_side": "customer",
-   "role": "champion",
-   "role_all": [
-    "champion"
-   ],
-   "sentiment": "neutral",
-   "status": "departed",
-   "mentions": 3,
-   "documents": [
-    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
-    "Email Thread",
-    "Internal Notes"
-   ],
-   "quotes": [
-    {
-     "quote": "Mitch knew this system inside and out, and now it's basically Rob learning from scratch while also flying real missions, which isn't ideal.",
-     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
-     "date": "2026-06-18",
-     "reason": "Former platform expert who previously managed platform configuration and flight operations before departing."
-    },
-    {
-     "quote": "Amber Ridge re-onboarding is underway after Mitch left",
-     "doc": "Internal Notes",
-     "date": "2026-08-08",
-     "reason": "Original departed champion on file."
-    },
-    {
-     "quote": "Also appreciate you fixing the CRM contacts \u2014 Mitch left pretty abruptly and I know that must be a pain on your end too.",
-     "doc": "Email Thread",
-     "date": null,
-     "reason": "Former contact who abruptly departed the customer organization."
-    }
-   ]
-  },
-  {
    "name": "Mack Stockhausen",
    "title": "IT",
    "org_side": "customer",
-   "role": "technical-evaluator",
+   "role": "champion",
    "role_all": [
     "champion",
     "technical-evaluator"
@@ -308,33 +271,10 @@
    ]
   },
   {
-   "name": "Matt Browne",
-   "title": "Finance",
-   "org_side": "customer",
-   "role": "procurement",
-   "role_all": [
-    "procurement"
-   ],
-   "sentiment": "positive",
-   "status": "active",
-   "mentions": 1,
-   "documents": [
-    "Internal Notes"
-   ],
-   "quotes": [
-    {
-     "quote": "Renewal still got processed cleanly through Matt Browne in Finance, so paperwork side was never at risk.",
-     "doc": "Internal Notes",
-     "date": "2026-08-08",
-     "reason": "Processed the renewal cleanly in Finance."
-    }
-   ]
-  },
-  {
    "name": "Rob Thomas",
-   "title": "new Chief Pilot",
+   "title": "Chief Pilot",
    "org_side": "customer",
-   "role": "day-to-day-user",
+   "role": "champion",
    "role_all": [
     "champion",
     "day-to-day-user",
@@ -366,6 +306,97 @@
      "doc": "Email Thread",
      "date": null,
      "reason": "Primary account owner and certified pilot supervising operations."
+    }
+   ]
+  },
+  {
+   "name": "Mitch",
+   "title": "",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion"
+   ],
+   "sentiment": "neutral",
+   "status": "departed",
+   "mentions": 3,
+   "documents": [
+    "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+    "Email Thread",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mitch knew this system inside and out, and now it's basically Rob learning from scratch while also flying real missions, which isn't ideal.",
+     "doc": "Call Transcript \u2014 Team Re-Onboarding & Security Use Case",
+     "date": "2026-06-18",
+     "reason": "Former platform expert who previously managed platform configuration and flight operations before departing."
+    },
+    {
+     "quote": "Amber Ridge re-onboarding is underway after Mitch left",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Original departed champion on file."
+    },
+    {
+     "quote": "Also appreciate you fixing the CRM contacts \u2014 Mitch left pretty abruptly and I know that must be a pain on your end too.",
+     "doc": "Email Thread",
+     "date": null,
+     "reason": "Former contact who abruptly departed the customer organization."
+    }
+   ]
+  },
+  {
+   "name": "Mack",
+   "title": "IT",
+   "org_side": "customer",
+   "role": "champion",
+   "role_all": [
+    "champion",
+    "influencer"
+   ],
+   "sentiment": "neutral",
+   "status": "active",
+   "mentions": 2,
+   "documents": [
+    "Call Transcript \u2014 Flight Ops Check-In",
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
+    },
+    {
+     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
+     "doc": "Call Transcript \u2014 Flight Ops Check-In",
+     "date": "2026-07-09",
+     "reason": "Raised automated triggering integration ideas with FlytBase previously"
+    }
+   ]
+  },
+  {
+   "name": "Matt Browne",
+   "title": "Finance",
+   "org_side": "customer",
+   "role": "procurement",
+   "role_all": [
+    "procurement"
+   ],
+   "sentiment": "positive",
+   "status": "active",
+   "mentions": 1,
+   "documents": [
+    "Internal Notes"
+   ],
+   "quotes": [
+    {
+     "quote": "Renewal still got processed cleanly through Matt Browne in Finance, so paperwork side was never at risk.",
+     "doc": "Internal Notes",
+     "date": "2026-08-08",
+     "reason": "Processed the renewal cleanly in Finance."
     }
    ]
   },
@@ -408,7 +439,7 @@
   },
   {
    "name": "Charlie Dawson",
-   "title": "pilot",
+   "title": "Pilot",
    "org_side": "customer",
    "role": "day-to-day-user",
    "role_all": [
@@ -460,39 +491,8 @@
    ]
   },
   {
-   "name": "Mack",
-   "title": "IT",
-   "org_side": "customer",
-   "role": "influencer",
-   "role_all": [
-    "champion",
-    "influencer"
-   ],
-   "sentiment": "neutral",
-   "status": "active",
-   "mentions": 2,
-   "documents": [
-    "Call Transcript \u2014 Flight Ops Check-In",
-    "Internal Notes"
-   ],
-   "quotes": [
-    {
-     "quote": "Mack (IT) is coordinating, Rob is the new Chief Pilot still learning the system",
-     "doc": "Internal Notes",
-     "date": "2026-08-08",
-     "reason": "IT lead coordinating the onboarding, fronting for the MD, and championing expansion ideas."
-    },
-    {
-     "quote": "Mack mentioned there was some talk with Unnati about triggering flights automatically off our security cameras eventually.",
-     "doc": "Call Transcript \u2014 Flight Ops Check-In",
-     "date": "2026-07-09",
-     "reason": "Raised automated triggering integration ideas with FlytBase previously"
-    }
-   ]
-  },
-  {
    "name": "Unnati Patil",
-   "title": "FlytBase CS",
+   "title": "CS",
    "org_side": "flytbase",
    "role": "champion",
    "role_all": [
@@ -590,7 +590,7 @@
   },
   {
    "name": "Rudrev",
-   "title": "solutions engineer",
+   "title": "SE",
    "org_side": "flytbase",
    "role": "technical-evaluator",
    "role_all": [
@@ -626,9 +626,9 @@
   "days_to_renewal": null,
   "source": null,
   "conflicts": [],
-  "probability": 0.846,
+  "probability": 0.921,
   "bucket": "Secure",
-  "basis": "base 77% from health 79; usage healthy or recovering (+8pp)"
+  "basis": "base 84% from health 91; usage healthy or recovering (+8pp)"
  },
  "signals": [
   {
@@ -1027,8 +1027,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 6,
+ "_version": 7,
  "_history": [
+  {
+   "version": 7,
+   "computed_at": "2026-08-15T16:19:39+00:00",
+   "sync_id": 35,
+   "input_hash": "1f8f97f477d85c589533b74985b5f81231a66b262363d5c5f6bdc8e2ed1d762d"
+  },
   {
    "version": 6,
    "computed_at": "2026-08-15T16:09:57+00:00",
@@ -1067,6 +1073,39 @@
   }
  ],
  "_deltas": [
+  {
+   "id": 40,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 35,
+   "occurred_at": "2026-08-15T16:19:40+00:00",
+   "field": "reality_gap.severity",
+   "old_value": "\"aligned\"",
+   "new_value": "\"minor\"",
+   "caused_by": "[]",
+   "narrative": "Our assessment of Amber Ridge Processing upgraded from Healthy (score\u202f79.4) to Strong (score\u202f91.0). This shift is driven by the revised health factors in the AFTER view, especially the relationship factor now scoring 1.0 and the reality_gap note indicating the CRM label understates performance."
+  },
+  {
+   "id": 39,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 35,
+   "occurred_at": "2026-08-15T16:19:40+00:00",
+   "field": "health.score",
+   "old_value": "79.4",
+   "new_value": "91.0",
+   "caused_by": "[]",
+   "narrative": "Our assessment of Amber Ridge Processing upgraded from Healthy (score\u202f79.4) to Strong (score\u202f91.0). This shift is driven by the revised health factors in the AFTER view, especially the relationship factor now scoring 1.0 and the reality_gap note indicating the CRM label understates performance."
+  },
+  {
+   "id": 38,
+   "account_id": "amber-ridge-processing",
+   "sync_id": 35,
+   "occurred_at": "2026-08-15T16:19:40+00:00",
+   "field": "health.band",
+   "old_value": "\"Healthy\"",
+   "new_value": "\"Strong\"",
+   "caused_by": "[]",
+   "narrative": "Our assessment of Amber Ridge Processing upgraded from Healthy (score\u202f79.4) to Strong (score\u202f91.0). This shift is driven by the revised health factors in the AFTER view, especially the relationship factor now scoring 1.0 and the reality_gap note indicating the CRM label understates performance."
+  },
   {
    "id": 37,
    "account_id": "amber-ridge-processing",
