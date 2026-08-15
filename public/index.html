@@ -3,631 +3,1030 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TOWER · FlytBase GTM Control Tower</title>
+<title>TOWER · FlytBase GTM control tower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
+/* ------------------------------------------------------------------ tokens
+   FlytBase brand system, edition 2026.04.
+   One brand accent (Signal Orange). Green, red, amber and blue are FUNCTIONAL
+   status only. Orange never signals status. Charcoal is the page, not a mode.
+   Border radius is zero by default.                                        */
 :root{
-  --bg:#0c0e12; --panel:#14171d; --panel2:#1a1e26; --line:#252a34;
-  --ink:#e8eaee; --dim:#9aa3b2; --dimmer:#69707d;
-  --accent:#4da3ff; --good:#3fbf7f; --warn:#e0a33c; --bad:#e0603c; --crit:#d6455b;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --dbg:#1A1A1A; --ds:#1E1E1E; --de:#242424;
+  --line:#2A2A2A; --line2:#2E2E2E; --line3:#262626; --lineStrong:#3D3D3D;
+  --dsc:#999999; --dbd:#D6D6D6; --dh:#F0F0F0;
+  --o200:#EC7D42; --o400:#D95B28; --o600:#A33D14; --o100:#F4B896;
+  --euc:#72A899; --eucDim:#2B5A4A;
+  --err:#F43F5E; --warn:#D9A441; --info:#3E6F9E;
+  --ease:cubic-bezier(.22,1,.36,1);
 }
+html,body{margin:0;padding:0}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif}
-a{color:var(--accent);text-decoration:none}
-header{position:sticky;top:0;z-index:20;background:rgba(12,14,18,.94);
-  backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.hwrap{display:flex;align-items:center;gap:18px;padding:10px 20px;flex-wrap:wrap}
-.brand{font-weight:700;letter-spacing:.14em;font-size:15px}
-.brand span{color:var(--accent)}
-.sub{color:var(--dimmer);font-size:12px}
-nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
-nav button{background:transparent;border:1px solid transparent;color:var(--dim);
-  padding:6px 12px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500}
-nav button:hover{color:var(--ink);background:var(--panel)}
-nav button.on{background:var(--panel2);color:var(--ink);border-color:var(--line)}
-.live{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--dim);
-  font-family:var(--mono);padding:5px 10px;background:var(--panel);
-  border:1px solid var(--line);border-radius:7px}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--good);
-  box-shadow:0 0 0 0 rgba(63,191,127,.6);animation:p 2.4s infinite}
-@keyframes p{0%{box-shadow:0 0 0 0 rgba(63,191,127,.55)}70%{box-shadow:0 0 0 9px rgba(63,191,127,0)}100%{box-shadow:0 0 0 0 rgba(63,191,127,0)}}
-main{padding:20px;max-width:1520px;margin:0 auto}
-h2{font-size:16px;margin:0 0 4px}
-.lede{color:var(--dim);font-size:13px;margin:0 0 16px;max-width:900px}
-.grid{display:grid;gap:14px}
-.k4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
-.k2{grid-template-columns:repeat(auto-fit,minmax(420px,1fr))}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:15px}
-.kpi .lab{color:var(--dimmer);font-size:11px;text-transform:uppercase;letter-spacing:.09em}
-.kpi .val{font-size:27px;font-weight:650;margin-top:5px;font-variant-numeric:tabular-nums}
-.kpi .note{color:var(--dim);font-size:12px;margin-top:5px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;color:var(--dimmer);font-weight:600;font-size:10.5px;
-  text-transform:uppercase;letter-spacing:.08em;padding:8px 9px;border-bottom:1px solid var(--line)}
-td{padding:9px;border-bottom:1px solid #1c2029;vertical-align:top}
-tr.click{cursor:pointer}
-tr.click:hover td{background:var(--panel2)}
-.num{font-variant-numeric:tabular-nums;text-align:right;font-family:var(--mono)}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;
-  font-weight:600;border:1px solid}
-.b-Strong,.b-Secure{color:#7ee0aa;border-color:#1f4d36;background:#12241b}
-.b-Healthy,.b-Likely{color:#8fd6b0;border-color:#1d4231;background:#111f18}
-.b-Watch{color:#e9c579;border-color:#4d3d1a;background:#221c10}
-.b-AtRisk,.b-Risk{color:#f0a184;border-color:#54301f;background:#241610}
-.b-Critical,.b-Lost,.b-HighRisk{color:#f08497;border-color:#54202c;background:#240f15}
-.b-none{color:var(--dim);border-color:var(--line);background:var(--panel2)}
-.tag{display:inline-block;padding:1px 7px;border-radius:5px;font-size:10.5px;
-  background:var(--panel2);border:1px solid var(--line);color:var(--dim);margin:1px 3px 1px 0}
-.spark{display:block}
-.bar{height:5px;border-radius:3px;background:#22262f;overflow:hidden;margin-top:5px}
-.bar>i{display:block;height:100%;border-radius:3px}
-.q{border-left:2px solid #2f3542;padding:5px 0 5px 11px;margin:6px 0;color:var(--dim);
-  font-size:12.5px;font-style:italic}
-.q b{color:var(--ink);font-style:normal}
-.src{color:var(--dimmer);font-size:11px;font-family:var(--mono)}
-.warnbox{background:#241610;border:1px solid #54301f;border-radius:9px;padding:11px 13px;
-  color:#f0a184;font-size:12.5px;margin-bottom:12px}
-.okbox{background:#12241b;border:1px solid #1f4d36;border-radius:9px;padding:11px 13px;
-  color:#7ee0aa;font-size:12.5px;margin-bottom:12px}
-.feed{font-family:var(--mono);font-size:12px}
-.feed .row{display:flex;gap:11px;padding:7px 0;border-bottom:1px solid #1c2029}
-.ct{font-weight:700;min-width:88px}
-.ADDED{color:var(--good)} .MODIFIED{color:var(--warn)}
-.WITHDRAWN{color:var(--crit)} .RESTORED{color:var(--accent)}
-.back{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
-  padding:5px 11px;border-radius:7px;cursor:pointer;font-size:12px;margin-bottom:13px}
-.sec{margin:22px 0 9px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;
-  color:var(--dimmer);font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px}
-.fac{display:grid;grid-template-columns:150px 1fr 60px;gap:10px;align-items:center;
-  padding:7px 0;border-bottom:1px solid #1c2029;font-size:12.5px}
-.muted{color:var(--dim)}
-.small{font-size:12px}
-details{margin:5px 0}
-summary{cursor:pointer;color:var(--accent);font-size:12px;outline:none}
-.rank{font-family:var(--mono);color:var(--dimmer);font-size:11px}
-.err{padding:40px;text-align:center;color:var(--dim)}
-code{font-family:var(--mono);font-size:12px;background:var(--panel2);padding:1px 5px;border-radius:4px}
+body{background:var(--dbg);color:var(--dbd);
+  font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--o200);text-decoration:none}
+a:hover{color:var(--o100)}
+button{font-family:inherit}
+::selection{background:var(--o400);color:#fff}
+@keyframes tw-pulse{0%{box-shadow:0 0 0 0 rgba(114,168,153,.55)}70%{box-shadow:0 0 0 7px rgba(114,168,153,0)}100%{box-shadow:0 0 0 0 rgba(114,168,153,0)}}
+@keyframes tw-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.rise{animation:tw-rise .5s var(--ease) both}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ------------------------------------------------------------------ shell */
+.shell{min-height:100vh;display:grid;grid-template-columns:236px minmax(0,1fr);background:var(--dbg)}
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;
+  background:var(--dbg);border-right:1px solid var(--line);z-index:30}
+.railhead{padding:22px 20px 18px;border-bottom:1px solid var(--line)}
+.wordmark{display:flex;align-items:center;gap:9px}
+.dot{width:7px;height:7px;background:var(--o400);display:block}
+.wordmark span.t{font:600 15px/1 Geist,sans-serif;letter-spacing:.24em;color:var(--dh)}
+.railsub{font:400 10px/1.5 'Geist Mono',monospace;letter-spacing:.06em;color:var(--dsc);margin-top:9px}
+.railnav{flex:1;display:flex;flex-direction:column;padding:18px 0;overflow-y:auto}
+.navgroup{margin-bottom:20px}
+.navlabel{font:500 9px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--dsc);padding:0 20px 9px}
+.navitem{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:transparent;
+  border:0;border-left:2px solid transparent;padding:8px 20px 8px 18px;cursor:pointer;
+  font:400 13.5px/1.3 Geist,sans-serif;color:var(--dsc);white-space:nowrap;
+  transition:background 200ms var(--ease),color 200ms var(--ease)}
+.navitem:hover{background:var(--de);color:var(--dh)}
+.navitem .n{font:500 9px/1 'Geist Mono',monospace;letter-spacing:.06em;color:#5C5C5C}
+.navitem.on{background:var(--de);color:var(--dh);border-left-color:var(--o400)}
+.navitem.on .n{color:var(--o400)}
+.railfoot{border-top:1px solid var(--line);padding:14px 20px}
+.livedot{width:6px;height:6px;border-radius:50%;background:var(--euc);display:block;animation:tw-pulse 2.6s infinite}
+.canvas{min-width:0;background-image:
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:32px 32px}
+header.vh{background:var(--dbg);border-bottom:1px solid var(--line);padding:26px 32px 22px}
+.eyebrow{font:500 10px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--o400)}
+h1.vt{font:500 28px/1.15 Lora,Georgia,serif;color:var(--dh);margin:11px 0 0;letter-spacing:-.005em}
+p.vl{font:400 13.5px/1.6 Geist,sans-serif;color:var(--dsc);margin:10px 0 0;max-width:740px;text-wrap:pretty}
+.pad{padding:24px 32px 80px}
+
+/* -------------------------------------------------------------- primitives */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  border:1px solid var(--line2);background:var(--ds)}
+.tile{padding:18px 20px 20px;border-right:1px solid var(--line)}
+.tile:last-child{border-right:0}
+.tlab{font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dsc)}
+.tval{font:500 31px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;margin-top:12px;
+  letter-spacing:-.015em;color:var(--dh)}
+.tnote{font:400 12px/1.5 Geist,sans-serif;color:var(--dsc);margin-top:9px;text-wrap:pretty}
+.banner{padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:flex-start}
+.banner .tag{font:500 9.5px/1.6 'Geist Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.b-err{border:1px solid #6E1E30;border-left:3px solid var(--err);background:#241016}
+.b-err .tag{color:var(--err)}
+.b-warn{border:1px solid #4A3A16;border-left:3px solid var(--warn);background:#211B10}
+.b-warn .tag{color:var(--warn)}
+.b-ok{border:1px solid var(--eucDim);border-left:3px solid var(--euc);background:#12211C}
+.b-ok .tag{color:var(--euc)}
+.bh{font:500 14px/1.5 Geist,sans-serif;color:var(--dh)}
+.bb{font:400 13px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:6px;max-width:900px;text-wrap:pretty}
+.bm{font:400 11px/1.6 'Geist Mono',monospace;color:var(--dsc);margin-top:8px}
+.sec{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:38px 0 0;
+  padding-bottom:10px;border-bottom:1px solid var(--line2)}
+.sec h2{font:500 17px/1.2 Lora,Georgia,serif;color:var(--dh);margin:0}
+.sec .cnt{font:400 10.5px/1 'Geist Mono',monospace;color:var(--dsc);letter-spacing:.08em}
+.card{border:1px solid var(--line2);background:var(--ds)}
+.cardhead{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;
+  align-items:baseline;justify-content:space-between;gap:12px}
+.cardhead .t{font:500 12.5px/1 Geist,sans-serif;color:var(--dh)}
+.cardhead .m{font:400 10px/1 'Geist Mono',monospace;color:var(--dsc);letter-spacing:.08em}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:22px}
+.pill{font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 7px;display:inline-block;white-space:nowrap}
+.q{border-left:1px solid var(--o600);padding:1px 0 1px 13px;margin:9px 0}
+.q .txt{font:400 13px/1.55 Geist,sans-serif;color:var(--dbd);text-wrap:pretty}
+.q .src{font:400 11px/1.5 'Geist Mono',monospace;color:var(--dsc);margin-top:4px;letter-spacing:.03em}
+table{width:100%;border-collapse:collapse;font-family:Geist,sans-serif}
+th{text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--dsc);padding:14px 16px;border-bottom:1px solid var(--lineStrong);white-space:nowrap}
+td{padding:14px 16px;border-bottom:1px solid var(--line3);font:400 13.5px/1.45 Geist,sans-serif;
+  color:var(--dbd);vertical-align:top}
+tr.click{cursor:pointer;transition:background 200ms var(--ease)}
+tr.click:hover td{background:var(--de)}
+.num{text-align:right;font-family:'Geist Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mono{font-family:'Geist Mono',monospace}
+.dim{color:var(--dsc)}
+.sm{font-size:12.5px}
+.xs{font:400 11px/1.5 'Geist Mono',monospace;color:var(--dsc)}
+.back{background:transparent;border:1px solid var(--line2);color:var(--dsc);padding:7px 14px;
+  cursor:pointer;font:400 11px/1 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:20px;transition:all 200ms var(--ease)}
+.back:hover{border-color:var(--o400);color:var(--o200)}
+.empty{padding:22px 18px;font:400 13px/1.6 Geist,sans-serif;color:var(--dsc)}
+.bar{height:3px;background:var(--line);display:block}
+.bar>i{display:block;height:3px}
+.err{padding:80px 32px;text-align:center;color:var(--dsc);font:400 14px/1.7 Geist,sans-serif}
+code{font-family:'Geist Mono',monospace;font-size:12px;color:var(--dbd)}
+
+@media (max-width:920px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  .rail{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);
+    min-width:0;max-width:100%;overflow:hidden}
+  .railnav{flex-direction:row;overflow-x:auto;overflow-y:hidden;gap:0;padding:0;
+    border-top:1px solid var(--line);min-width:0;max-width:100%;-webkit-overflow-scrolling:touch}
+  .navgroup{margin:0;display:flex;align-items:center;border-right:1px solid var(--line);flex:0 0 auto}
+  .navitem{white-space:nowrap;flex:0 0 auto}
+  .navlabel{display:none}
+  .railfoot{display:none}
+  .pad,header.vh{padding-left:16px;padding-right:16px}
+  .tile{border-right:0;border-bottom:1px solid var(--line)}
+  .row2{grid-template-columns:minmax(0,1fr)}
+}
 </style>
 </head>
 <body>
-<header><div class="hwrap">
-  <div><div class="brand">TOWER<span>.</span></div>
-       <div class="sub">FlytBase GTM control tower · book of business</div></div>
-  <nav id="nav"></nav>
-  <div class="live"><span class="dot"></span><span id="livetxt">connecting</span></div>
-</div></header>
-<main id="app"><div class="err">loading portfolio…</div></main>
+<div class="shell">
+  <aside class="rail">
+    <div class="railhead">
+      <div class="wordmark"><span class="dot"></span><span class="t">TOWER</span></div>
+      <div class="railsub">FlytBase GTM control tower</div>
+    </div>
+    <div class="railnav" id="nav"></div>
+    <div class="railfoot">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="livedot"></span>
+        <span class="mono" style="font-size:10.5px;color:var(--dsc);letter-spacing:.04em" id="syncLabel">connecting</span>
+      </div>
+      <div class="mono" style="font-size:10px;line-height:1.5;color:var(--dsc);margin-top:7px" id="syncStamp"></div>
+    </div>
+  </aside>
+  <div class="canvas">
+    <header class="vh">
+      <div class="eyebrow" id="eyebrow">Loading</div>
+      <h1 class="vt" id="vtitle">TOWER</h1>
+      <p class="vl" id="vlede">Reading the latest portfolio state.</p>
+    </header>
+    <div class="pad" id="app"><div class="err">Loading portfolio…</div></div>
+  </div>
+</div>
 
 <script>
-const $ = (s,r=document)=>r.querySelector(s);
-const money = n => n==null ? "—" : "$" + Math.round(n).toLocaleString();
-const pct = n => n==null ? "—" : (n>0?"+":"") + n.toFixed(0) + "%";
-const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const cls = s => "b-" + String(s??"none").replace(/[^A-Za-z]/g,"");
-let PF=null, VIEW="triage", ACC=null, CACHE={};
+/* =====================================================================
+   TOWER dashboard.
+   Contract with the engine, do not change:
+     - fetches ./portfolio.json  and ./accounts/<account_id>.json
+     - re-fetches every 30s and re-renders when generated_at changes
+     - every key read below is produced by tower/portfolio.py
+   ===================================================================== */
+
+const $ = s => document.querySelector(s);
+/* Last line of defence. When the reading layer is off, the pipeline writes a
+   "[degraded mode: ...]" placeholder into fields it could not fill. The banner
+   at the top of the page already says so in plain language, so the placeholder
+   itself must never reach the screen anywhere. */
+const esc = s => String(s ?? "")
+  .replace(/\[degraded mode:[^\]]*\]/g, "not read yet")
+  .replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money = n => n == null ? "—" : "$" + Math.round(n).toLocaleString("en-US");
+const pct = n => n == null ? "—" : (n > 0 ? "+" : "") + n.toFixed(0) + "%";
+/* Belief deltas store old/new as JSON, so a genuinely absent value arrives as
+   the string "null". Show a dash, never the word null. */
+const val = v => {
+  if (v == null) return "—";
+  const s = String(v).trim();
+  return (s === "null" || s === "" || s === '""') ? "—" : s.replace(/^"|"$/g, "");
+};
+
+let PF = null, VIEW = "triage", ACC = null, CACHE = {};
+
+/* Health bands map to functional status colours, never to the brand orange. */
+const BAND = {
+  "Strong":   {fg:"#8FD3BE", bg:"#12211C", bd:"#2B5A4A"},
+  "Healthy":  {fg:"#72A899", bg:"#12211C", bd:"#1B3A30"},
+  "Watch":    {fg:"#D9A441", bg:"#211B10", bd:"#4A3A16"},
+  "At Risk":  {fg:"#F08497", bg:"#241016", bd:"#5A1F2C"},
+  "Critical": {fg:"#F43F5E", bg:"#241016", bd:"#6E1E30"},
+  "Secure":   {fg:"#8FD3BE", bg:"#12211C", bd:"#2B5A4A"},
+  "Likely":   {fg:"#72A899", bg:"#12211C", bd:"#1B3A30"},
+  "High Risk":{fg:"#F43F5E", bg:"#241016", bd:"#6E1E30"},
+  "Lost":     {fg:"#F43F5E", bg:"#241016", bd:"#6E1E30"},
+};
+const band = b => BAND[b] || {fg:"#999999", bg:"#242424", bd:"#2E2E2E"};
+const pillOf = (label) => {
+  if (!label) return "";
+  const c = band(label);
+  return `<span class="pill" style="color:${c.fg};background:${c.bg};border:1px solid ${c.bd}">${esc(label)}</span>`;
+};
+const tagOf = (label) => label ? `<span class="pill" style="color:var(--dsc);background:var(--de);border:1px solid var(--line2)">${esc(label)}</span>` : "";
+
+/* Plain-language labels. The engine's internal words are not user words. */
+const TRAJ = {
+  "collapsing":"collapsing", "declining":"falling", "dormant":"stopped flying",
+  "flat":"flat", "growing":"growing", "scaling":"scaling fast",
+  "recovered":"dipped then recovered", "no-data":"not flying yet",
+  "insufficient-history":"too new to call"
+};
+const traj = t => TRAJ[t] || t || "—";
+const LIFECYCLE = {
+  "pre-sale":"Evaluating", "newly-sold-onboarding":"Onboarding",
+  "established":"Established", "renewal-focused":"Renewal due", "churned":"Churned"
+};
+const stage = l => LIFECYCLE[l] || l || "—";
 
 const VIEWS = [
-  ["triage","Triage"],["accounts","Accounts"],["renewals","Renewals"],
-  ["expansion","Expansion & Traps"],["gaps","Reality Gap"],
-  ["contradictions","Contradictions"],["winback","Win-back"],
-  ["flight","Flight Activity"],["feed","Change Feed"]
+  {group:"Act", items:[
+    {k:"triage",   n:"01", label:"Do first",
+     eyebrow:"Priority queue", title:"What to do first",
+     lede:"Ranked by how much money is at stake against how much effort it takes. Every line names a person and expands to the sentence in the source document that justifies it."},
+    {k:"gaps",     n:"02", label:"Reality Gap",
+     eyebrow:"Label versus behaviour", title:"Where the CRM is wrong",
+     lede:"Every account carries a health label. This checks that label against what the account actually does. A red row means the record is more optimistic than the evidence supports."},
+  ]},
+  {group:"Money", items:[
+    {k:"renewals", n:"03", label:"Renewals",
+     eyebrow:"Revenue at risk", title:"What we actually keep",
+     lede:"Each renewal is weighted by a probability built from computed health and named adjustments. It is deliberately lower than the number you get by trusting the labels."},
+    {k:"expansion",n:"04", label:"Expansion & Traps",
+     eyebrow:"Qualified growth", title:"Where we can sell more",
+     lede:"A customer saying they will grow is not pipeline. Anything that fails qualification is filed as a Trap, with the blocker named and the condition that would unblock it."},
+    {k:"winback",  n:"05", label:"Win-back",
+     eyebrow:"Churned accounts", title:"Who is worth chasing",
+     lede:"Not every lost customer is worth the effort. Scored on whether the reason they left is something FlytBase can now change, and whether anyone there would still take the call."},
+  ]},
+  {group:"Evidence", items:[
+    {k:"accounts", n:"06", label:"All accounts",
+     eyebrow:"Portfolio", title:"Every account",
+     lede:"Health here is worked out from behaviour, not copied from the record. The CRM column sits next to it so you can see where the two disagree."},
+    {k:"flight",   n:"07", label:"Flight activity",
+     eyebrow:"Usage truth", title:"Who is actually flying",
+     lede:"Flight hours by month, straight from usage history. The last column answers the question directly: does the trend agree with the label?"},
+    {k:"contra",   n:"08", label:"Contradictions",
+     eyebrow:"Disagreeing sources", title:"Where the sources disagree",
+     lede:"Some of this data does not agree with itself. Rather than quietly picking a winner, both claims are kept and resolved by a fixed rule: what a customer said, dated, beats an internal note, which beats the CRM."},
+  ]},
+  {group:"System", items:[
+    {k:"feed",     n:"09", label:"Change feed",
+     eyebrow:"Self-update log", title:"What changed, and when",
+     lede:"A complete inventory of the source is taken every cycle and every document is fingerprinted. That is the only way to notice something that stopped being available. Withdrawn documents are kept for the record and dropped from the reasoning."},
+  ]}
 ];
+const flatViews = VIEWS.flatMap(g => g.items);
+const viewMeta = k => flatViews.find(v => v.k === k) || flatViews[0];
 
-function spark(vals, w=104, h=26){
-  if(!vals || vals.length<2) return "";
-  const mx=Math.max(...vals,1), mn=Math.min(...vals,0), rng=(mx-mn)||1;
-  const pts=vals.map((v,i)=>[i/(vals.length-1)*w, h-((v-mn)/rng)*(h-4)-2]);
-  const d=pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  const last=vals[vals.length-1], first=vals[0];
-  const col = last>=first? "var(--good)":"var(--bad)";
-  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
-    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.6"/>
-    <circle cx="${pts[pts.length-1][0].toFixed(1)}" cy="${pts[pts.length-1][1].toFixed(1)}" r="2.4" fill="${col}"/>
-  </svg>`;
-}
-
+/* ------------------------------------------------------------------ boot */
 async function boot(){
-  try{
-    PF = await (await fetch("portfolio.json?t="+Date.now())).json();
-  }catch(e){
-    $("#app").innerHTML = `<div class="err">Could not load <code>portfolio.json</code>.<br>
-      The daemon has not published state yet. This page refreshes itself every 30 seconds.</div>`;
+  try {
+    PF = await (await fetch("portfolio.json?t=" + Date.now())).json();
+  } catch (e) {
+    $("#app").innerHTML = `<div class="err">Could not load <code>portfolio.json</code>.<br><br>
+      The system has not published state yet. This page checks again every 30 seconds.</div>`;
     return;
   }
   renderNav(); render(); tickLive();
 }
-
 function renderNav(){
-  $("#nav").innerHTML = VIEWS.map(([k,l])=>
-    `<button class="${k===VIEW?'on':''}" onclick="go('${k}')">${l}</button>`).join("");
+  $("#nav").innerHTML = VIEWS.map(g => `
+    <div class="navgroup">
+      <div class="navlabel">${esc(g.group)}</div>
+      ${g.items.map(it => `<button class="navitem${it.k===VIEW?" on":""}" onclick="go('${it.k}')">
+        <span class="n">${it.n}</span><span>${esc(it.label)}</span></button>`).join("")}
+    </div>`).join("");
 }
-window.go = k => { VIEW=k; ACC=null; renderNav(); render(); window.scrollTo(0,0); };
-window.open_acc = id => { ACC=id; render(); window.scrollTo(0,0); };
+window.go = k => { VIEW = k; ACC = null; renderNav(); render(); window.scrollTo(0,0); };
+window.open_acc = id => { ACC = id; render(); window.scrollTo(0,0); };
 
 function tickLive(){
   const s = PF?.system?.last_sync;
-  const gen = PF?.generated_at;
-  $("#livetxt").textContent = s
-    ? `sync #${s.id} · ${(gen||"").replace("T"," ").replace("+00:00","")}Z`
-    : "no sync yet";
+  const stamp = (PF?.generated_at || "").replace("T"," ").replace("+00:00","");
+  $("#syncLabel").textContent = s ? `sync ${s.id} · live` : "no sync yet";
+  $("#syncStamp").textContent = stamp ? stamp + " UTC" : "";
 }
-
-setInterval(async ()=>{
-  try{
-    const fresh = await (await fetch("portfolio.json?t="+Date.now())).json();
-    if(JSON.stringify(fresh.generated_at)!==JSON.stringify(PF?.generated_at)){
-      PF = fresh; CACHE={}; render(); tickLive();
-    }
-  }catch(e){}
+setInterval(async () => {
+  try {
+    const fresh = await (await fetch("portfolio.json?t=" + Date.now())).json();
+    if (fresh.generated_at !== PF?.generated_at) { PF = fresh; CACHE = {}; render(); tickLive(); }
+  } catch (e) {}
 }, 30000);
 
+function setHead(eyebrow, title, lede){
+  $("#eyebrow").textContent = eyebrow;
+  $("#vtitle").textContent = title;
+  $("#vlede").textContent = lede;
+}
+
 function render(){
-  if(ACC) return renderAccount(ACC);
-  const fn = {triage:vTriage,accounts:vAccounts,renewals:vRenewals,expansion:vExpansion,
-    gaps:vGaps,contradictions:vContra,winback:vWinback,flight:vFlight,feed:vFeed}[VIEW];
-  $("#app").innerHTML = fn ? fn() : "";
+  if (ACC) return renderAccount(ACC);
+  const m = viewMeta(VIEW);
+  setHead(m.eyebrow, m.title, m.lede);
+  const fn = {triage:vTriage, accounts:vAccounts, renewals:vRenewals, expansion:vExpansion,
+              gaps:vGaps, contra:vContra, winback:vWinback, flight:vFlight, feed:vFeed}[VIEW];
+  $("#app").innerHTML = `<div class="rise">${fn ? fn() : ""}</div>`;
+}
+
+/* --------------------------------------------------------------- helpers */
+function degradedBanner(){
+  const r = PF.reading || {};
+  const anyDeg = (PF.accounts || []).some(a => a.degraded);
+  if (!anyDeg && r.enabled !== false) return "";
+  const why = r.last_error ? `Provider ${esc(r.provider || "none")}. Last error: ${esc(String(r.last_error).slice(0,160))}`
+                           : "No document-reading model is configured.";
+  return `<div class="banner b-err">
+    <span class="tag">DEGRADED</span>
+    <div>
+      <div class="bh">This page is incomplete. The part that reads documents is not running.</div>
+      <div class="bb">Everything shown is still true. Account health, usage, the Reality Gap and the ranking
+        are all calculated directly from the data and do not need a model. What is missing is anything read
+        out of a document: people, risks, opportunities, Traps and recommended actions.</div>
+      <div class="bm">${why}</div>
+    </div></div>`;
+}
+/* -------------------------------------------------------- flight charts */
+/* Numbers are printed on the chart on purpose. A line alone tells you the
+   shape but not the size, and the size is what you say out loud in a review. */
+const MON3 = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const num1 = v => v == null ? "—" : String(Math.round(v * 10) / 10);
+function mlabel(m){                                    /* "2026-01" -> "Jan 26" */
+  const p = String(m ?? "").split("-");
+  if (p.length < 2) return String(m ?? "");
+  return (MON3[parseInt(p[1],10) - 1] || p[1]) + " " + p[0].slice(2);
+}
+function momPct(vals, i){                    /* change against the month before */
+  if (i < 1) return null;
+  const prev = vals[i-1];
+  if (prev == null || prev === 0) return null;
+  return Math.round((vals[i] - prev) / prev * 100);
+}
+const momCol = c => c == null ? "var(--dsc)" : c < 0 ? "var(--err)" : c > 0 ? "var(--euc)" : "var(--dsc)";
+
+/* small line for table cells */
+function spark(vals, w = 108, h = 26){
+  if (!vals || vals.length < 2) return "";
+  const mx = Math.max(...vals, 1), mn = Math.min(...vals, 0), rng = (mx - mn) || 1;
+  const pts = vals.map((v,i) => [i/(vals.length-1)*w, h - ((v-mn)/rng)*(h-4) - 2]);
+  const d = pts.map((p,i) => (i?"L":"M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  const up = vals[vals.length-1] >= vals[0];
+  const col = up ? "#72A899" : "#F43F5E";
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block">
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="1.3"/>
+    ${pts.map((p,i) => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}"
+      r="${i === pts.length-1 ? 2.6 : 1.5}" fill="${col}"/>`).join("")}</svg>`;
+}
+
+/* the actual monthly numbers, under the small line, for reading aloud */
+function sparkNums(vals, months){
+  if (!vals || !vals.length) return "";
+  const cells = vals.map((v,i) => {
+    const c = momPct(vals, i);
+    const last = i === vals.length - 1;
+    return `<span style="color:${last ? "var(--dh)" : momCol(c)};${last ? "font-weight:700" : ""}">${num1(v)}</span>`;
+  }).join(`<span style="color:var(--lineStrong)">›</span>`);
+  const range = (months && months.length)
+    ? `<div style="font:400 9.5px/1.4 Geist,sans-serif;color:var(--dsc);margin-top:3px">
+         ${esc(mlabel(months[0]))} to ${esc(mlabel(months[months.length-1]))} · flight hours</div>` : "";
+  return `<div style="display:flex;gap:4px;align-items:baseline;margin-top:5px;
+    font:500 10.5px/1 'Geist Mono',monospace">${cells}</div>${range}`;
+}
+
+/* big labelled chart for the account page: value above each dot, month and
+   month-on-month change below it */
+let CHART_N = 0;
+function chartBig(vals, months, unitLabel){
+  if (!vals || vals.length < 2) return "";
+  const n = vals.length, step = 78, padX = 56, padTop = 34, plotH = 108, padBot = 68;
+  const W = padX * 2 + step * (n - 1), H = padTop + plotH + padBot;
+  const mx = Math.max(...vals), mn = Math.min(...vals, 0), rng = (mx - mn) || 1;
+  const X = i => padX + step * i;
+  const Y = v => padTop + plotH - ((v - mn) / rng) * plotH;
+  const pts = vals.map((v,i) => [X(i), Y(v)]);
+  const line = pts.map((p,i) => (i?"L":"M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ");
+  const base = padTop + plotH;
+  const area = `${line} L${X(n-1).toFixed(1)},${base} L${padX},${base} Z`;
+  const col = vals[n-1] < vals[0] ? "#F43F5E" : "#72A899";
+  const peak = Math.max(...vals), peakY = Y(peak);
+  const gid = "twgrad" + (++CHART_N);
+  const marks = pts.map((p,i) => {
+    const c = momPct(vals, i), last = i === n - 1;
+    const cc = c == null ? "#999999" : c < 0 ? "#F43F5E" : c > 0 ? "#72A899" : "#999999";
+    const ct = c == null ? "" : (c > 0 ? "+" : "") + c + "%";
+    return `
+      <circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${last ? 4.5 : 3.2}"
+        fill="${last ? col : "#1A1A1A"}" stroke="${col}" stroke-width="1.8"/>
+      <text x="${p[0].toFixed(1)}" y="${(p[1] - 14).toFixed(1)}" text-anchor="middle"
+        fill="${last ? "#F0F0F0" : "#D6D6D6"}"
+        style="font:${last ? 700 : 500} 15px 'Geist Mono',monospace">${num1(vals[i])}</text>
+      <text x="${p[0].toFixed(1)}" y="${base + 22}" text-anchor="middle" fill="#999999"
+        style="font:400 12px Geist,sans-serif">${esc(mlabel(months && months[i]))}</text>
+      <text x="${p[0].toFixed(1)}" y="${base + 39}" text-anchor="middle" fill="${cc}"
+        style="font:500 12px 'Geist Mono',monospace">${ct}</text>`;
+  }).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet"
+      style="display:block;width:100%;height:auto">
+    <defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${col}" stop-opacity=".24"/>
+      <stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <line x1="${padX - 22}" y1="${peakY.toFixed(1)}" x2="${W - padX + 22}" y2="${peakY.toFixed(1)}"
+      stroke="#3D3D3D" stroke-width="1" stroke-dasharray="3 4"/>
+    <text x="${padX - 24}" y="${(peakY + 4).toFixed(1)}" text-anchor="end" fill="#7A7A7A"
+      style="font:400 11px 'Geist Mono',monospace">${num1(peak)}</text>
+    <line x1="${padX - 22}" y1="${base}" x2="${W - padX + 22}" y2="${base}"
+      stroke="#3D3D3D" stroke-width="1"/>
+    <text x="${padX - 24}" y="${base + 4}" text-anchor="end" fill="#7A7A7A"
+      style="font:400 11px 'Geist Mono',monospace">${num1(mn)}</text>
+    <path d="${area}" fill="url(#${gid})"/>
+    <path d="${line}" fill="none" stroke="${col}" stroke-width="2.2"/>
+    ${marks}
+    <text x="${padX - 32}" y="${H - 6}" fill="#7A7A7A"
+      style="font:400 11px Geist,sans-serif">${esc(unitLabel || "flight hours per month")} · the % under each month is the change from the month before</text>
+  </svg>`;
+}
+function quotes(list, srcLabel){
+  if (!list || !list.length) return "";
+  return list.slice(0,3).map(q => `<div class="q"><div class="txt">${esc(q)}</div>${
+    srcLabel ? `<div class="src">${esc(srcLabel)}</div>` : ""}</div>`).join("");
 }
 
 /* ---------------------------------------------------------------- triage */
 function vTriage(){
   const m = PF.money, c = PF.counts;
-  const degraded = (PF.accounts||[]).some(a=>a.degraded);
-  const misread = (PF.reality_gaps||[]).filter(g=>g.direction==="overstated"&&Math.abs(g.gap)>=1);
-  const misARR = misread.reduce((s,g)=>s+(g.arr||0),0);
+  const over = (PF.reality_gaps || []).filter(g => g.direction === "overstated");
+  const overArr = over.reduce((s,g) => s + (g.arr || 0), 0);
+  const q = PF.action_queue || [];
   return `
-  <h2>Portfolio triage</h2>
-  <p class="lede">Ranked by expected dollars moved per unit of human effort, not by
-  who shouted loudest. Every row opens the evidence behind it.</p>
-  ${degraded?`<div class="warnbox"><b>Degraded mode: the reading layer is not running.</b>
-    Provider <code>${esc((PF.reading||{}).provider||"none")}</code>${(PF.reading||{}).last_error
-      ? `, last error: ${esc(PF.reading.last_error)}` : ", no model key configured"}.
-    <br>Everything on this page is still true. Ingestion, full-inventory change detection,
-    usage analytics, health scoring, the reality gap and the ranking are all computed in
-    Python and do not depend on a model. What is missing is document reading: people,
-    risks, opportunities, traps and recommended actions.</div>`:""}
-  ${misARR>0?`<div class="warnbox"><b>${misread.length} of ${c.accounts} accounts carry a CRM
-    health label more optimistic than their own behaviour supports</b>, covering
-    ${money(misARR)} of ARR. See Reality Gap.</div>`:""}
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">Live ARR</div><div class="val">${money(m.live_arr)}</div>
-      <div class="note">${c.live} live accounts · ${c.presale} pre-sale · ${c.churned} churned</div></div>
-    <div class="card kpi"><div class="lab">Honest forecast</div>
-      <div class="val">${money(m.weighted_forecast)}</div>
-      <div class="note">probability weighted, not the ${money(m.naive_forecast)} the CRM implies</div></div>
-    <div class="card kpi"><div class="lab">Forecast gap</div>
-      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
-      <div class="note">the difference between believing the labels and reading the evidence</div></div>
-    <div class="card kpi"><div class="lab">Already lost</div>
-      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
-      <div class="note">${(PF.winbacks||[]).filter(w=>w.verdict!=="do-not-pursue"&&w.verdict!=="not-applicable").length} judged worth a win-back attempt</div></div>
+  ${degradedBanner()}
+  <div class="tiles">
+    <div class="tile"><div class="tlab">Money on the books</div>
+      <div class="tval">${money(m.live_arr)}</div>
+      <div class="tnote">${c.live} live · ${c.presale} evaluating · ${c.churned} churned</div></div>
+    <div class="tile"><div class="tlab">What we actually keep</div>
+      <div class="tval" style="color:var(--euc)">${money(m.weighted_forecast)}</div>
+      <div class="tnote">weighted by evidence, not by the ${money(m.naive_forecast)} the record implies</div></div>
+    <div class="tile"><div class="tlab">What the record overstates</div>
+      <div class="tval" style="color:var(--err)">${money(m.forecast_gap)}</div>
+      <div class="tnote">the cost of believing the labels instead of reading the evidence</div></div>
+    <div class="tile"><div class="tlab">Already gone</div>
+      <div class="tval" style="color:var(--dsc)">${money(m.lost_arr)}</div>
+      <div class="tnote">${(PF.winbacks||[]).filter(w=>w.verdict==="pursue-now"||w.verdict==="pursue-later").length} judged worth chasing</div></div>
   </div>
 
-  <div class="sec">Do these first</div>
-  <div class="card"><table><thead><tr>
-    <th>#</th><th>Account</th><th>Action</th><th>Why now</th><th>Owner</th>
-    <th class="num">ARR</th><th class="num">Renewal</th><th class="num">Value score</th>
-  </tr></thead><tbody>
-  ${(PF.action_queue||[]).slice(0,14).map(a=>`
-    <tr class="click" onclick="open_acc('${a.account_id}')">
-      <td class="rank">${a.rank}</td>
-      <td><b>${esc(a.account_name)}</b><br>
-        <span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span></td>
-      <td>${esc(a.action)}${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}</td>
-      <td class="muted small">${esc(a.why_now)}</td>
-      <td><span class="tag">${esc(a.owner_function)}</span></td>
-      <td class="num">${money(a.arr)}</td>
-      <td class="num">${a.days_to_renewal==null?"—":a.days_to_renewal+"d"}</td>
-      <td class="num"><b>${a.value_score}</b></td>
-    </tr>`).join("")}
-  </tbody></table></div>
+  ${overArr > 0 ? `<div class="banner b-warn" style="margin-top:18px;margin-bottom:0;align-items:baseline;flex-wrap:wrap">
+    <span class="tag">REALITY GAP</span>
+    <span style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd)">
+      ${over.length} of ${c.accounts} accounts are labelled healthier than their own behaviour supports,
+      covering <b style="color:var(--dh)">${money(overArr)}</b> of revenue.
+      <a href="#" onclick="go('gaps');return false">See which ones</a></span></div>` : ""}
 
-  <div class="grid k2" style="margin-top:16px">
-    <div class="card"><div class="sec" style="margin-top:0">Gone quiet</div>
-      ${(PF.stale_accounts||[]).length===0?'<div class="muted small">No account has gone quiet for more than 45 days.</div>':
-      `<table><tbody>${PF.stale_accounts.map(s=>`<tr class="click" onclick="open_acc('${s.account_id}')">
-        <td><b>${esc(s.name)}</b></td><td class="num">${money(s.arr)}</td>
-        <td class="num" style="color:var(--warn)">${s.days_silent}d silent</td>
-        <td><span class="pill ${cls(s.health)}">${esc(s.health)}</span></td></tr>`).join("")}
-      </tbody></table>`}</div>
-    <div class="card"><div class="sec" style="margin-top:0">Promises we made and never closed</div>
-      ${(PF.open_loops||[]).length===0?'<div class="muted small">No open FlytBase-side commitments detected.</div>':
-      `<table><tbody>${PF.open_loops.slice(0,8).map(l=>`<tr class="click" onclick="open_acc('${l.account_id}')">
-        <td><b>${esc(l.account_name)}</b><br><span class="src">${esc(l.doc||"")}</span></td>
-        <td>${esc(l.promise)}${l.due?`<br><span class="src">due: ${esc(l.due)}</span>`:""}</td></tr>`).join("")}
-      </tbody></table>`}</div>
+  <div class="sec"><h2>Do these first</h2><span class="cnt">${q.length} ACTIONS</span></div>
+  ${q.length ? q.slice(0,12).map((a,i) => {
+    const c2 = band(a.health_band);
+    const maxV = Math.max(...q.map(x => x.value_score || 0), 1);
+    const w = Math.max(4, Math.round((a.value_score||0)/maxV*100));
+    const urgent = a.days_to_renewal != null && a.days_to_renewal <= 60;
+    const cut = i === 5 && q.length > 6;
+    return `${cut ? `<div style="display:flex;align-items:center;gap:14px;margin:26px 0 4px">
+        <span class="mono" style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--dsc);white-space:nowrap">Below the line</span>
+        <span style="flex:1;height:1px;background:var(--line2);display:block"></span>
+        <span style="font:400 11px/1 Geist,sans-serif;color:var(--dsc)">worth doing, not worth doing first</span></div>` : ""}
+      <div style="display:grid;grid-template-columns:56px minmax(0,1fr) 210px;border-bottom:1px solid var(--line3);
+        padding:20px 0;align-items:start;opacity:${i>=5?".72":"1"};cursor:pointer"
+        onclick="open_acc('${esc(a.account_id)}')">
+        <div class="mono" style="font-size:26px;line-height:1;color:${i<3?"var(--o400)":"#5C5C5C"};letter-spacing:-.03em;padding-top:1px">${String(i+1).padStart(2,"0")}</div>
+        <div style="min-width:0;padding-right:28px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span style="font:500 15px/1.35 Geist,sans-serif;color:var(--dh)">${esc(a.account_name)}</span>
+            ${pillOf(a.health_band)}
+          </div>
+          <div style="font:400 14.5px/1.5 Geist,sans-serif;color:var(--dbd);margin-top:9px;text-wrap:pretty">${esc(a.action)}</div>
+          ${a.why_now ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--dsc);margin-top:6px;text-wrap:pretty">${esc(a.why_now)}</div>` : ""}
+          ${quotes(a.evidence_quotes, "from the source document")}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;border-left:1px solid var(--line3);padding-left:20px">
+          ${kv("ARR", money(a.arr))}
+          ${kv("Renews", a.days_to_renewal == null ? "—" : a.days_to_renewal + " days", urgent ? "var(--warn)" : "var(--dh)")}
+          ${kv("Owner", esc(a.owner_function || "—"))}
+          ${a.target_person ? kv("Call", esc(a.target_person)) : ""}
+          <div style="margin-top:3px">
+            <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:5px">
+              <span class="mono" style="font-size:10px;color:var(--dsc);letter-spacing:.1em;text-transform:uppercase">Priority</span>
+              <span class="mono" style="font-size:11px;color:var(--dsc)">${Math.round(a.value_score||0).toLocaleString()}</span></div>
+            <span class="bar"><i style="width:${w}%;background:${i<3?"var(--o400)":"#5C5C5C"}"></i></span>
+          </div>
+        </div>
+      </div>`;
+  }).join("") : `<div class="card"><div class="empty">No ranked actions yet. Actions come from reading the
+    documents, and the reading layer is not running. The Reality Gap, renewals and flight activity views are
+    unaffected and are the place to start.</div></div>`}
+
+  <div class="row2" style="margin-top:44px">
+    <div class="card">
+      <div class="cardhead"><span class="t">Gone quiet</span><span class="m">NO CONTACT 45 DAYS+</span></div>
+      ${(PF.stale_accounts||[]).length ? PF.stale_accounts.map(s => `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 18px;
+          border-bottom:1px solid var(--line3);cursor:pointer" onclick="open_acc('${esc(s.account_id)}')">
+          <span style="font:400 13.5px/1.4 Geist,sans-serif;color:var(--dbd)">${esc(s.name)}</span>
+          <span style="display:flex;align-items:center;gap:14px">
+            <span class="mono sm dim">${money(s.arr)}</span>
+            <span class="mono sm" style="color:var(--warn)">${s.days_silent}d</span></span>
+        </div>`).join("") : `<div class="empty">Nobody has gone quiet for more than 45 days.</div>`}
+    </div>
+    <div class="card">
+      <div class="cardhead"><span class="t">Promises we made and never closed</span></div>
+      ${(PF.open_loops||[]).length ? PF.open_loops.slice(0,6).map(l => `
+        <div style="padding:13px 18px;border-bottom:1px solid var(--line3);cursor:pointer"
+          onclick="open_acc('${esc(l.account_id)}')">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px">
+            <span style="font:400 13.5px/1.4 Geist,sans-serif;color:var(--dbd)">${esc(l.promise)}</span>
+            ${l.due ? `<span class="xs" style="color:var(--warn);white-space:nowrap">${esc(l.due)}</span>` : ""}</div>
+          <div class="xs" style="margin-top:5px">${esc(l.account_name)} · ${esc(l.doc || "")}</div>
+        </div>`).join("") : `<div class="empty">No open FlytBase-side promises found. This list is built by
+          reading call transcripts and emails, so it fills up once the reading layer runs.</div>`}
+    </div>
   </div>`;
 }
-
-/* -------------------------------------------------------------- accounts */
-function vAccounts(){
-  return `<h2>All accounts</h2>
-  <p class="lede">Health is computed from behaviour, not copied from the CRM. The
-  <i>CRM says</i> column is shown next to it so you can see where the record lies.</p>
-  <div class="card"><table><thead><tr>
-    <th>Account</th><th>Stage</th><th class="num">ARR</th>
-    <th>Derived health</th><th>CRM says</th><th>Usage</th><th>Renewal</th>
-    <th>Biggest drag</th><th>Read this first</th>
-  </tr></thead><tbody>
-  ${(PF.accounts||[]).map(a=>`
-    <tr class="click" onclick="open_acc('${a.account_id}')">
-      <td><b>${esc(a.name)}</b><br><span class="src">${esc(a.vertical||"")}</span></td>
-      <td><span class="tag">${esc(a.lifecycle)}</span></td>
-      <td class="num">${money(a.arr)}</td>
-      <td><span class="pill ${cls(a.health_band)}">${esc(a.health_band)}</span>
-        <span class="src"> ${a.health_score}</span></td>
-      <td>${a.reality_gap.direction==="overstated"
-            ? `<span style="color:var(--bad)">${esc(a.crm_health||"—")} ⚠</span>`
-            : `<span class="muted">${esc(a.crm_health||"—")}</span>`}</td>
-      <td><span class="tag">${esc(a.usage_trajectory)}</span>
-        ${a.usage_pct!=null?`<span class="src"> ${pct(a.usage_pct)}</span>`:""}</td>
-      <td>${a.renewal.days_to_renewal==null?'<span class="muted">—</span>':
-          `<span class="pill ${cls(a.renewal.bucket)}">${esc(a.renewal.bucket)}</span>
-           <span class="src"> ${a.renewal.days_to_renewal}d</span>`}</td>
-      <td class="muted small">${esc(a.biggest_drag||"")}</td>
-      <td class="small">${esc(a.one_line)}</td>
-    </tr>`).join("")}
-  </tbody></table></div>`;
-}
-
-/* ------------------------------------------------------- account detail */
-async function renderAccount(id){
-  if(!CACHE[id]){
-    try{ CACHE[id] = await (await fetch(`accounts/${id}.json?t=`+Date.now())).json(); }
-    catch(e){ $("#app").innerHTML = `<button class="back" onclick="go('${VIEW}')">← back</button>
-      <div class="err">No detail file for ${esc(id)} yet.</div>`; return; }
-  }
-  const s = CACHE[id], u = s.usage.flightHours, g = s.reality_gap, sy = s.synthesis||{};
-  $("#app").innerHTML = `
-  <button class="back" onclick="go('${VIEW}')">← back</button>
-  <h2>${esc(s.name)} <span class="pill ${cls(s.health.band)}">${esc(s.health.band)} ${s.health.score}</span>
-    <span class="tag">${esc(s.lifecycle)}</span>
-    <span class="tag">${money(s.arr)} ARR</span>
-    ${s.tier?`<span class="tag">${esc(s.tier)}</span>`:""}</h2>
-  <p class="lede"><b>${esc(sy.one_line||"")}</b></p>
-  ${g.direction==="overstated"?`<div class="warnbox"><b>Reality gap (${esc(g.severity)}).</b> ${esc(g.note)}</div>`:
-    g.direction==="aligned"?`<div class="okbox">${esc(g.note)}</div>`:
-    `<div class="card small muted" style="margin-bottom:12px">${esc(g.note)}</div>`}
-
-  <div class="grid k2">
-    <div class="card"><div class="sec" style="margin-top:0">Why this health score</div>
-      ${(s.health.factors||[]).map(f=>`<div class="fac">
-        <div><b>${esc(f.factor.replace(/_/g," "))}</b><br><span class="src">weight ${f.weight}</span></div>
-        <div>${esc(f.reason)}<div class="bar"><i style="width:${(f.quality*100).toFixed(0)}%;
-          background:${f.quality>.7?'var(--good)':f.quality>.45?'var(--warn)':'var(--bad)'}"></i></div></div>
-        <div class="num" style="color:${f.points_lost>8?'var(--bad)':'var(--dim)'}">−${f.points_lost}</div>
-      </div>`).join("")}
-      <div class="small muted" style="margin-top:9px">Weighted sum of five factors.
-      Every point lost is attributable to a named factor and a stated reason.</div>
-    </div>
-
-    <div class="card"><div class="sec" style="margin-top:0">Flight activity</div>
-      ${s.usage.has_usage?`
-        <div style="display:flex;align-items:center;gap:14px">
-          ${spark(u.values,220,54)}
-          <div><div class="kpi"><div class="val">${u.latest}</div>
-            <div class="note">flight hours in ${esc(u.months[u.months.length-1])}</div></div></div>
-        </div>
-        <p class="small" style="margin:9px 0 0">${esc(u.headline)}</p>
-        <div class="small muted" style="margin-top:7px">
-          trajectory <b>${esc(u.trajectory)}</b> ·
-          3v3 ${pct(u.pct_3v3)} · peak ${u.peak} in ${esc(u.peak_month)} ·
-          missions latest ${s.usage.missions.latest}
-        </div>`:'<div class="muted small">No usage telemetry for this account. For a pre-sale or non-flying account that is expected, not a red flag.</div>'}
-      <div class="sec">Renewal</div>
-      ${s.renewal.date?`<div class="small">
-        <b>${esc(s.renewal.date)}</b> · ${s.renewal.days_to_renewal} days away ·
-        <span class="pill ${cls(s.renewal.bucket)}">${esc(s.renewal.bucket)}</span>
-        ${s.renewal.probability!=null?` · renewal probability ${(s.renewal.probability*100).toFixed(0)}%`:""}
-        <div class="src" style="margin-top:6px">${esc(s.renewal.basis)}</div>
-        ${s.renewal.source?`<div class="q">${esc(s.renewal.source.quote||"")}
-          <br><b>${esc(s.renewal.source.doc||"")}</b></div>`:""}
-      </div>`:'<div class="muted small">No renewal or contract date stated anywhere in the source material.</div>'}
-    </div>
-  </div>
-
-  <div class="sec">The situation</div>
-  <div class="card"><p style="margin:0">${esc(sy.situation||"")}</p>
-    <div class="small muted" style="margin-top:9px">
-      sentiment <b>${esc(sy.sentiment_label||"")}</b> and ${esc(sy.sentiment_trend||"")} ·
-      champion <b>${esc(sy.champion_status||"")}</b> ·
-      economic buyer ${sy.economic_buyer_identified?"identified":"<span style='color:var(--bad)'>not identified</span>"}
-      ${sy.competitor_present?` · <span style="color:var(--bad)">competitor present: ${esc((sy.competitor_names||[]).join(", "))}</span>`:""}
-      ${s.days_silent!=null?` · last dated contact ${s.days_silent} days ago`:""}
-    </div></div>
-
-  <div class="sec">Do this next</div>
-  <div class="card"><table><thead><tr><th>#</th><th>Action</th><th>Why now</th>
-    <th>Owner</th><th class="num">Effort</th><th class="num">Value</th></tr></thead><tbody>
-  ${(s.actions||[]).map((a,i)=>`<tr>
-    <td class="rank">${i+1}</td>
-    <td><b>${esc(a.action)}</b>${a.target_person?`<br><span class="src">→ ${esc(a.target_person)}</span>`:""}
-      ${(a.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}</td>
-    <td class="muted small">${esc(a.why_now)}</td>
-    <td><span class="tag">${esc(a.owner_function)}</span></td>
-    <td class="num">${a.effort}</td><td class="num"><b>${a.value_score}</b></td></tr>`).join("")}
-  </tbody></table></div>
-
-  <div class="grid k2">
-    <div class="card"><div class="sec" style="margin-top:0">Risks</div>
-      ${(sy.top_risks||[]).length?(sy.top_risks||[]).map(r=>`<div style="margin-bottom:13px">
-        <span class="pill ${r.severity==="critical"?"b-Critical":r.severity==="high"?"b-AtRisk":"b-Watch"}">${esc(r.severity)}</span>
-        <b> ${esc(r.risk)}</b>
-        <div class="small muted" style="margin:4px 0">${esc(r.why_it_matters)}</div>
-        ${(r.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-      </div>`).join(""):'<div class="muted small">No material risks surfaced in the evidence.</div>'}</div>
-    <div class="card"><div class="sec" style="margin-top:0">Opportunities</div>
-      ${(sy.opportunities||[]).length?(sy.opportunities||[]).map(o=>`<div style="margin-bottom:13px">
-        <span class="pill ${o.is_trap?"b-AtRisk":"b-Healthy"}">${o.is_trap?"TRAP":esc(o.confidence)}</span>
-        <b> ${esc(o.opportunity)}</b>
-        ${o.is_trap?`<div class="small" style="color:var(--bad);margin:4px 0">Disqualified: ${esc(o.trap_reason)}</div>`:""}
-        ${o.unblock_condition?`<div class="small muted">Unblock: ${esc(o.unblock_condition)}</div>`:""}
-        ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
-        ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-      </div>`).join(""):'<div class="muted small">No expansion signals in the evidence.</div>'}</div>
-  </div>
-
-  <div class="sec">Who matters here</div>
-  <div class="card"><table><thead><tr><th>Person</th><th>Title</th><th>Role</th>
-    <th>Side</th><th>Sentiment</th><th>Status</th><th>Seen in</th></tr></thead><tbody>
-  ${(s.people||[]).map(p=>`<tr><td><b>${esc(p.name)}</b>
-      ${(p.quotes||[]).slice(0,1).map(q=>`<div class="q">${esc(q.quote)}</div>`).join("")}</td>
-    <td class="small">${esc(p.title||"—")}</td>
-    <td><span class="tag">${esc(p.role)}</span></td>
-    <td class="small muted">${esc(p.org_side)}</td>
-    <td class="small">${esc(p.sentiment)}</td>
-    <td class="small ${p.status!=="active"?'style="color:var(--bad)"':''}">${esc(p.status)}</td>
-    <td class="src">${esc((p.documents||[]).join(", "))}</td></tr>`).join("")}
-  </tbody></table></div>
-
-  ${(sy.contradictions||[]).length?`<div class="sec">Where the sources disagree</div>
-  <div class="card">${sy.contradictions.map(c=>`<div style="margin-bottom:14px">
-    <b>${esc(c.topic)}</b>
-    <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
-    <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
-    <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
-    ${c.matters_because?`<div class="small muted">${esc(c.matters_because)}</div>`:""}
-  </div>`).join("")}</div>`:""}
-
-  ${(s.open_commitments||[]).length?`<div class="sec">Open commitments</div>
-  <div class="card"><table><tbody>${s.open_commitments.map(c=>`<tr>
-    <td><span class="tag">${esc(c.owner_side)}</span> ${esc(c.owner||"")}</td>
-    <td>${esc(c.promise)}<div class="q">${esc(c.quote||"")}</div></td>
-    <td class="src">${esc(c.doc||"")}${c.due?` · due ${esc(c.due)}`:""}</td></tr>`).join("")}
-  </tbody></table></div>`:""}
-
-  <div class="sec">Source documents (live)</div>
-  <div class="card"><table><thead><tr><th>Document</th><th>Type</th><th>Date</th>
-    <th>How dated</th><th>What it says</th></tr></thead><tbody>
-  ${(s.documents||[]).map(d=>`<tr><td><b>${esc(d.title)}</b><br><span class="src">${esc(d.file)}</span></td>
-    <td><span class="tag">${esc(d.type)}</span></td>
-    <td class="src">${esc(d.date||"undated")}</td>
-    <td class="src">${esc(d.date_basis)}${d.date_text?` · "${esc(d.date_text)}"`:""}</td>
-    <td class="small muted">${esc(d.summary)}</td></tr>`).join("")}
-  </tbody></table>
-  <div class="small muted" style="margin-top:9px">${s._evidence_count||0} citable evidence
-  units indexed for this account. Documents withdrawn from the source are excluded here
-  and shown on the Change Feed.</div></div>
-
-  ${(s._deltas||[]).length?`<div class="sec">How our understanding of this account has changed</div>
-  <div class="card feed">${s._deltas.map(d=>`<div class="row">
-    <span class="src">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span><b>${esc(d.field)}</b> ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
-    ${d.narrative?`<div class="small muted">${esc(d.narrative)}</div>`:""}</span>
-  </div>`).join("")}</div>`:""}`;
-}
-
-/* -------------------------------------------------------------- renewals */
-function vRenewals(){
-  const m=PF.money, order=["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
-  return `<h2>Renewal and revenue picture</h2>
-  <p class="lede">The honest forecast is the sum of ARR times a renewal probability that
-  starts from computed health and is adjusted by named, visible factors. It is deliberately
-  lower than the number you get by trusting the CRM.</p>
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">CRM implies</div><div class="val">${money(m.naive_forecast)}</div>
-      <div class="note">every live account renews in full</div></div>
-    <div class="card kpi"><div class="lab">TOWER forecast</div>
-      <div class="val" style="color:var(--accent)">${money(m.weighted_forecast)}</div>
-      <div class="note">probability weighted from evidence</div></div>
-    <div class="card kpi"><div class="lab">Overstatement</div>
-      <div class="val" style="color:var(--bad)">${money(m.forecast_gap)}</div>
-      <div class="note">${m.naive_forecast?((m.forecast_gap/m.naive_forecast)*100).toFixed(0):0}% of live ARR</div></div>
-    <div class="card kpi"><div class="lab">Already gone</div>
-      <div class="val" style="color:var(--crit)">${money(m.lost_arr)}</div>
-      <div class="note">churned accounts</div></div>
-  </div>
-  ${order.filter(b=>m.buckets[b]&&m.buckets[b].count).map(b=>`
-    <div class="sec">${b} · ${money(m.buckets[b].arr)} across ${m.buckets[b].count}</div>
-    <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-      <th class="num">Renewal in</th><th class="num">Probability</th><th>Health</th></tr></thead><tbody>
-    ${m.buckets[b].accounts.map(a=>`<tr class="click" onclick="open_acc('${a.id}')">
-      <td><b>${esc(a.name)}</b></td><td class="num">${money(a.arr)}</td>
-      <td class="num">${a.days==null?"—":a.days+"d"}</td>
-      <td class="num">${a.probability==null?"—":(a.probability*100).toFixed(0)+"%"}</td>
-      <td><span class="pill ${cls(a.health)}">${esc(a.health)}</span></td></tr>`).join("")}
-    </tbody></table></div>`).join("")}`;
-}
-
-/* ------------------------------------------------------------- expansion */
-function vExpansion(){
-  return `<h2>Expansion, and the things that look like it</h2>
-  <p class="lede">An expansion signal is only an opportunity once it survives qualification.
-  Every trap below shows the exact disqualifier and what would have to change first.</p>
-  <div class="sec">Real opportunities (${(PF.opportunities||[]).length})</div>
-  <div class="card">${(PF.opportunities||[]).length?(PF.opportunities||[]).map(o=>`
-    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
-      <span class="pill b-Healthy">${esc(o.confidence)}</span>
-      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
-      <span class="src"> · ${money(o.arr)} current ARR</span>
-      <div style="margin:5px 0">${esc(o.opportunity)}</div>
-      ${o.estimated_value_basis?`<div class="src">basis: ${esc(o.estimated_value_basis)}</div>`:""}
-      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-    </div>`).join(""):'<div class="muted small">Nothing currently qualifies.</div>'}</div>
-  <div class="sec">Traps (${(PF.traps||[]).length})</div>
-  <div class="card">${(PF.traps||[]).length?(PF.traps||[]).map(o=>`
-    <div style="margin-bottom:15px;padding-bottom:13px;border-bottom:1px solid #1c2029">
-      <span class="pill b-AtRisk">TRAP</span>
-      <b onclick="open_acc('${o.account_id}')" style="cursor:pointer"> ${esc(o.account_name)}</b>
-      <span class="src"> · ${money(o.arr)} current ARR · usage ${esc(o.usage_trajectory)}</span>
-      <div style="margin:5px 0">${esc(o.opportunity)}</div>
-      <div class="small" style="color:var(--bad)">${esc(o.qualification.verdict)}</div>
-      ${o.trap_reason?`<div class="small muted">${esc(o.trap_reason)}</div>`:""}
-      ${o.unblock_condition?`<div class="small" style="color:var(--accent)">Unblock: ${esc(o.unblock_condition)}</div>`:""}
-      ${(o.evidence_quotes||[]).map(q=>`<div class="q">${esc(q)}</div>`).join("")}
-    </div>`).join(""):'<div class="muted small">No traps detected.</div>'}</div>`;
+function kv(k, v, color){
+  return `<div style="display:flex;justify-content:space-between;gap:10px">
+    <span class="mono" style="font-size:10px;line-height:1.4;color:var(--dsc);letter-spacing:.1em;text-transform:uppercase">${k}</span>
+    <span class="mono" style="font-size:13px;line-height:1.4;color:${color||"var(--dh)"};text-align:right">${v}</span></div>`;
 }
 
 /* ------------------------------------------------------------------ gaps */
 function vGaps(){
-  return `<h2>Reality gap</h2>
-  <p class="lede">Every account in this Book of Business carries a CRM health label.
-  This is where that label is checked against what the account actually does.
-  A red row means the record is more optimistic than the evidence supports.</p>
-  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-    <th>CRM says</th><th>Evidence says</th><th>Gap</th><th>Usage</th><th>Reading</th>
-  </tr></thead><tbody>
-  ${(PF.reality_gaps||[]).map(g=>`<tr class="click" onclick="open_acc('${g.account_id}')">
-    <td><b>${esc(g.name)}</b></td><td class="num">${money(g.arr)}</td>
-    <td><span class="pill b-none">${esc(g.stated)}</span></td>
-    <td><span class="pill ${cls(g.derived)}">${esc(g.derived)}</span>
-      <span class="src"> ${g.health_score}</span></td>
-    <td>${g.direction==="overstated"?`<span style="color:var(--bad)">overstated by ${Math.abs(g.gap)}</span>`:
-        g.direction==="understated"?`<span style="color:var(--good)">understated</span>`:
-        `<span class="muted">aligned</span>`}</td>
-    <td><span class="tag">${esc(g.usage_trajectory)}</span></td>
-    <td class="small muted">${esc(g.usage_headline)}</td></tr>`).join("")}
-  </tbody></table></div>`;
+  const rows = PF.reality_gaps || [];
+  const over = rows.filter(r => r.direction === "overstated");
+  const overArr = over.reduce((s,g) => s + (g.arr||0), 0);
+  return `
+  ${over.length ? `<div class="banner b-warn">
+    <span class="tag">${over.length} WRONG</span>
+    <div><div class="bh">${over.length} accounts are labelled healthier than they are, covering ${money(overArr)}.</div>
+    <div class="bb">The label on the left is what the record says. The one on the right is what the account's
+      own flight activity, support load and contact history say. Where they disagree, the behaviour is the
+      one to believe.</div></div></div>` : ""}
+  <div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Account</th><th class="num">ARR</th><th>Record says</th><th>Behaviour says</th>
+      <th>Verdict</th><th>Flying</th><th>What the usage shows</th></tr></thead>
+    <tbody>${rows.map(g => `
+      <tr class="click" onclick="open_acc('${esc(g.account_id)}')">
+        <td><span style="color:var(--dh);font-weight:500">${esc(g.name)}</span></td>
+        <td class="num">${money(g.arr)}</td>
+        <td>${tagOf(g.stated)}</td>
+        <td>${pillOf(g.derived)} <span class="mono xs">${g.health_score}</span></td>
+        <td>${g.direction === "overstated"
+              ? `<span style="color:var(--err)">too optimistic by ${Math.abs(g.gap)}</span>`
+              : g.direction === "understated"
+              ? `<span style="color:var(--euc)">better than recorded</span>`
+              : `<span class="dim">agrees</span>`}</td>
+        <td>${tagOf(traj(g.usage_trajectory))}</td>
+        <td class="dim sm">${esc(g.usage_headline || "")}</td>
+      </tr>`).join("")}</tbody></table></div>`;
+}
+
+/* -------------------------------------------------------------- accounts */
+function vAccounts(){
+  return `<div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Account</th><th>Stage</th><th class="num">ARR</th><th>Health</th><th>Record says</th>
+      <th>Flying</th><th>Renewal</th><th>Biggest problem</th></tr></thead>
+    <tbody>${(PF.accounts||[]).map(a => `
+      <tr class="click" onclick="open_acc('${esc(a.account_id)}')">
+        <td><span style="color:var(--dh);font-weight:500">${esc(a.name)}</span>
+          ${a.vertical ? `<div class="xs">${esc(a.vertical)}</div>` : ""}</td>
+        <td>${tagOf(stage(a.lifecycle))}</td>
+        <td class="num">${money(a.arr)}</td>
+        <td>${pillOf(a.health_band)} <span class="mono xs">${a.health_score}</span></td>
+        <td>${a.reality_gap && a.reality_gap.direction === "overstated"
+              ? `<span style="color:var(--err)">${esc(a.crm_health||"—")}</span>`
+              : `<span class="dim">${esc(a.crm_health||"—")}</span>`}</td>
+        <td>${tagOf(traj(a.usage_trajectory))}${a.usage_pct != null ? ` <span class="mono xs">${pct(a.usage_pct)}</span>` : ""}</td>
+        <td>${a.renewal && a.renewal.days_to_renewal != null
+              ? `${pillOf(a.renewal.bucket)} <span class="mono xs">${a.renewal.days_to_renewal}d</span>`
+              : `<span class="dim">—</span>`}</td>
+        <td class="dim sm">${esc((a.biggest_drag||"").replace(/_/g," "))}</td>
+      </tr>`).join("")}</tbody></table></div>`;
+}
+
+/* -------------------------------------------------------------- renewals */
+function vRenewals(){
+  const m = PF.money, order = ["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
+  return `
+  <div class="tiles">
+    <div class="tile"><div class="tlab">If every renewal lands</div><div class="tval">${money(m.naive_forecast)}</div>
+      <div class="tnote">what the record implies</div></div>
+    <div class="tile"><div class="tlab">What we actually keep</div>
+      <div class="tval" style="color:var(--euc)">${money(m.weighted_forecast)}</div>
+      <div class="tnote">weighted by the evidence on each account</div></div>
+    <div class="tile"><div class="tlab">The difference</div>
+      <div class="tval" style="color:var(--err)">${money(m.forecast_gap)}</div>
+      <div class="tnote">${m.naive_forecast ? ((m.forecast_gap/m.naive_forecast)*100).toFixed(0) : 0}% of live revenue</div></div>
+    <div class="tile"><div class="tlab">Already gone</div><div class="tval" style="color:var(--dsc)">${money(m.lost_arr)}</div>
+      <div class="tnote">churned accounts</div></div>
+  </div>
+  ${order.filter(b => m.buckets[b] && m.buckets[b].count).map(b => `
+    <div class="sec"><h2>${esc(b)}</h2><span class="cnt">${money(m.buckets[b].arr)} · ${m.buckets[b].count} ACCOUNTS</span></div>
+    <div class="card" style="overflow-x:auto"><table>
+      <thead><tr><th>Account</th><th class="num">ARR</th><th class="num">Renews in</th>
+        <th class="num">Chance it lands</th><th>Health</th></tr></thead>
+      <tbody>${m.buckets[b].accounts.map(a => `
+        <tr class="click" onclick="open_acc('${esc(a.id)}')">
+          <td><span style="color:var(--dh)">${esc(a.name)}</span></td>
+          <td class="num">${money(a.arr)}</td>
+          <td class="num">${a.days == null ? "—" : a.days + " days"}</td>
+          <td class="num">${a.probability == null ? "—" : (a.probability*100).toFixed(0) + "%"}</td>
+          <td>${pillOf(a.health)}</td></tr>`).join("")}</tbody></table></div>`).join("")}`;
+}
+
+/* ------------------------------------------------------------- expansion */
+function vExpansion(){
+  const opps = PF.opportunities || [], traps = PF.traps || [];
+  if (!opps.length && !traps.length) {
+    return `${degradedBanner()}<div class="card"><div class="empty">
+      Expansion signals are found by reading call transcripts and emails, so this view fills in once the
+      reading layer runs. The engine is in place: any signal that fails qualification gets filed as a Trap
+      with the blocker named.</div></div>`;
+  }
+  return `
+  <div class="sec" style="margin-top:0"><h2>Worth pursuing</h2><span class="cnt">${opps.length}</span></div>
+  <div class="card">${opps.length ? opps.map(o => `
+    <div style="padding:18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        ${pillOf("Healthy")}
+        <span style="font:500 14.5px/1.4 Geist,sans-serif;color:var(--dh);cursor:pointer"
+          onclick="open_acc('${esc(o.account_id)}')">${esc(o.account_name)}</span>
+        <span class="xs">${money(o.arr)} today · ${esc(o.confidence||"")}</span></div>
+      <div style="font:400 14px/1.55 Geist,sans-serif;color:var(--dbd);margin-top:8px">${esc(o.opportunity)}</div>
+      ${o.estimated_value_basis ? `<div class="xs" style="margin-top:5px">Based on: ${esc(o.estimated_value_basis)}</div>` : ""}
+      ${quotes(o.evidence_quotes, "from the source document")}
+    </div>`).join("") : `<div class="empty">Nothing currently qualifies.</div>`}</div>
+
+  <div class="sec"><h2>Traps</h2><span class="cnt">${traps.length} · LOOK LIKE GROWTH, ARE NOT</span></div>
+  <div class="card">${traps.length ? traps.map(o => `
+    <div style="padding:18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span class="pill" style="color:var(--err);background:#241016;border:1px solid #6E1E30">TRAP</span>
+        <span style="font:500 14.5px/1.4 Geist,sans-serif;color:var(--dh);cursor:pointer"
+          onclick="open_acc('${esc(o.account_id)}')">${esc(o.account_name)}</span>
+        <span class="xs">${money(o.arr)} today · flying ${esc(traj(o.usage_trajectory))}</span></div>
+      <div style="font:400 14px/1.55 Geist,sans-serif;color:var(--dbd);margin-top:8px">${esc(o.opportunity)}</div>
+      ${o.qualification && o.qualification.disqualifiers && o.qualification.disqualifiers.length
+        ? `<div style="margin-top:9px">${o.qualification.disqualifiers.map(d =>
+            `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--err)">· ${esc(d)}</div>`).join("")}</div>`
+        : o.trap_reason ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--err);margin-top:8px">${esc(o.trap_reason)}</div>` : ""}
+      ${o.unblock_condition ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--o200);margin-top:8px">
+        Chase it once: ${esc(o.unblock_condition)}</div>` : ""}
+      ${quotes(o.evidence_quotes, "from the source document")}
+    </div>`).join("") : `<div class="empty">No traps detected.</div>`}</div>`;
 }
 
 /* --------------------------------------------------------- contradictions */
 function vContra(){
-  return `<h2>Contradiction ledger</h2>
-  <p class="lede">The brief warned that some of this data does not agree with itself.
-  Rather than silently picking a winner, TOWER records both claims, states which one it
-  believes and why, using a fixed source-authority rule: what the customer said, dated,
-  outranks internal notes, which outrank the CRM record.</p>
-  <div class="card">${(PF.contradictions||[]).length?(PF.contradictions||[]).map(c=>`
-    <div style="margin-bottom:17px;padding-bottom:14px;border-bottom:1px solid #1c2029">
-      <b onclick="open_acc('${c.account_id}')" style="cursor:pointer">${esc(c.account_name)}</b>
-      <span class="src"> · ${esc(c.topic)}</span>
-      <div class="q"><b>${esc(c.source_a)}:</b> ${esc(c.claim_a)}</div>
-      <div class="q"><b>${esc(c.source_b)}:</b> ${esc(c.claim_b)}</div>
-      <div class="small" style="color:var(--accent)">Resolution: ${esc(c.resolution)}</div>
-      ${c.matters_because?`<div class="small muted">Matters because: ${esc(c.matters_because)}</div>`:""}
-    </div>`).join(""):'<div class="muted small">No contradictions detected yet.</div>'}</div>`;
+  const rows = PF.contradictions || [];
+  if (!rows.length) return `${degradedBanner()}<div class="card"><div class="empty">
+    No contradictions recorded yet. These are found by comparing what a customer said on a dated call against
+    internal notes and the CRM record, which needs the reading layer running.</div></div>`;
+  return `<div class="card">${rows.map(c => `
+    <div style="padding:20px 18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span style="font:500 14.5px/1.4 Geist,sans-serif;color:var(--dh);cursor:pointer"
+          onclick="open_acc('${esc(c.account_id)}')">${esc(c.account_name)}</span>
+        <span class="xs">${esc(c.topic)}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0;margin-top:12px;
+        border:1px solid var(--line2)">
+        <div style="padding:13px 15px;border-right:1px solid var(--line2)">
+          <div class="xs" style="color:var(--o400);letter-spacing:.1em;text-transform:uppercase">${esc(c.source_a)}</div>
+          <div style="font:400 13.5px/1.55 Geist,sans-serif;color:var(--dbd);margin-top:7px">${esc(c.claim_a)}</div></div>
+        <div style="padding:13px 15px">
+          <div class="xs" style="letter-spacing:.1em;text-transform:uppercase">${esc(c.source_b)}</div>
+          <div style="font:400 13.5px/1.55 Geist,sans-serif;color:var(--dbd);margin-top:7px">${esc(c.claim_b)}</div></div>
+      </div>
+      <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dh);margin-top:11px">
+        <b style="font-weight:500">Believe:</b> ${esc(c.resolution)}</div>
+      ${c.matters_because ? `<div class="dim sm" style="margin-top:5px">${esc(c.matters_because)}</div>` : ""}
+    </div>`).join("")}</div>`;
 }
 
 /* --------------------------------------------------------------- winback */
 function vWinback(){
-  return `<h2>Churned accounts and win-back</h2>
-  <p class="lede">Not every lost customer is worth chasing. The score weights whether the
-  cause is something FlytBase can now actually change, whether anything has changed since,
-  and whether a warm contact remains.</p>
-  ${(PF.winbacks||[]).map(w=>`<div class="card" style="margin-bottom:14px">
-    <h2 style="margin:0 0 4px">${esc(w.name)}
-      <span class="pill ${w.verdict==="pursue-now"?"b-Healthy":w.verdict==="pursue-later"?"b-Watch":"b-Critical"}">${esc(w.verdict)}</span>
-      <span class="tag">${money(w.lost_arr)} lost ARR</span>
-      <span class="tag">score ${w.score}</span></h2>
-    <div class="grid k2" style="margin-top:11px">
-      <div><div class="sec" style="margin-top:0">Why they left</div>
-        <div class="small"><span class="tag">${esc(w.cause_category)}</span>
-          ${w.reversible?'<span class="pill b-Healthy">reversible</span>':'<span class="pill b-Critical">not reversible</span>'}</div>
-        <p class="small">${esc(w.root_cause)}</p>
-        ${w.what_changed_since?`<div class="sec">What has changed since</div>
-          <p class="small">${esc(w.what_changed_since)}</p>`:""}</div>
-      <div><div class="sec" style="margin-top:0">The judgment</div>
-        <p class="small">${esc(w.reasoning)}</p>
-        ${w.residual_relationship?`<div class="sec">Who would still take the call</div>
-          <p class="small">${esc(w.residual_relationship)}</p>`:""}
-        ${w.first_move?`<div class="sec">First move</div>
-          <p class="small" style="color:var(--accent)">${esc(w.first_move)}</p>`:""}</div>
-    </div>
-    <div style="margin-top:9px"><a href="#" onclick="open_acc('${w.account_id}');return false">
-      open full account →</a></div>
-  </div>`).join("") || '<div class="card muted small">No churned accounts in state yet.</div>'}`;
+  const w = PF.winbacks || [];
+  if (!w.length) return `<div class="card"><div class="empty">No churned accounts in state yet.</div></div>`;
+  return w.map(x => {
+    const good = x.verdict === "pursue-now", maybe = x.verdict === "pursue-later";
+    const vcol = good ? "var(--euc)" : maybe ? "var(--warn)" : "var(--dsc)";
+    const vlabel = good ? "Chase this one" : maybe ? "Chase it later" : "Let it go";
+    return `<div class="card" style="margin-bottom:18px">
+      <div class="cardhead">
+        <span style="display:flex;align-items:baseline;gap:11px;flex-wrap:wrap">
+          <span style="font:500 16px/1.2 Lora,Georgia,serif;color:var(--dh)">${esc(x.name)}</span>
+          <span class="pill" style="color:${vcol};background:var(--de);border:1px solid var(--line2)">${vlabel}</span>
+        </span>
+        <span class="m">${money(x.lost_arr)} LOST · SCORE ${x.score}</span></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+        <div style="padding:18px;border-right:1px solid var(--line3)">
+          <div class="xs" style="letter-spacing:.14em;text-transform:uppercase">Why they left</div>
+          <div style="margin-top:9px">${tagOf((x.cause_category||"").replace(/-/g," "))}
+            ${x.reversible ? `<span class="pill" style="color:var(--euc);background:#12211C;border:1px solid var(--eucDim)">we can fix this</span>`
+                           : `<span class="pill" style="color:var(--dsc);background:var(--de);border:1px solid var(--line2)">not ours to fix</span>`}</div>
+          ${x.root_cause ? `<div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:11px">${esc(x.root_cause)}</div>` : ""}
+          ${x.what_changed_since ? `<div class="xs" style="letter-spacing:.14em;text-transform:uppercase;margin-top:16px">What has changed since</div>
+            <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:7px">${esc(x.what_changed_since)}</div>` : ""}
+        </div>
+        <div style="padding:18px">
+          <div class="xs" style="letter-spacing:.14em;text-transform:uppercase">The call</div>
+          <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:9px">${esc(x.reasoning||"—")}</div>
+          ${x.residual_relationship ? `<div class="xs" style="letter-spacing:.14em;text-transform:uppercase;margin-top:16px">Who would still pick up</div>
+            <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:7px">${esc(x.residual_relationship)}</div>` : ""}
+          ${x.first_move ? `<div class="xs" style="letter-spacing:.14em;text-transform:uppercase;margin-top:16px">First move</div>
+            <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--o200);margin-top:7px">${esc(x.first_move)}</div>` : ""}
+        </div>
+      </div>
+      <div style="padding:12px 18px;border-top:1px solid var(--line3)">
+        <a href="#" onclick="open_acc('${esc(x.account_id)}');return false">Open the full account →</a></div>
+    </div>`;
+  }).join("");
 }
 
 /* ---------------------------------------------------------------- flight */
 function vFlight(){
-  return `<h2>Who is actually flying</h2>
-  <p class="lede">Flight hours by month, straight from usage history. The last column
-  answers the question the brief asks directly: does the trend agree with the health label?</p>
-  <div class="card"><table><thead><tr><th>Account</th><th class="num">ARR</th>
-    <th>Trend</th><th>Trajectory</th><th class="num">3v3</th><th class="num">Latest</th>
-    <th class="num">Peak</th><th>CRM label</th><th>Agrees?</th></tr></thead><tbody>
-  ${(PF.flight_activity||[]).map(f=>`<tr class="click" onclick="open_acc('${f.account_id}')">
-    <td><b>${esc(f.name)}</b></td><td class="num">${money(f.arr)}</td>
-    <td>${spark(f.values)}</td>
-    <td><span class="tag">${esc(f.trajectory)}</span></td>
-    <td class="num" style="color:${(f.pct_3v3||0)<0?'var(--bad)':'var(--good)'}">${pct(f.pct_3v3)}</td>
-    <td class="num">${f.latest}</td><td class="num">${f.peak}</td>
-    <td class="small muted">${esc(f.crm_health||"—")}</td>
-    <td>${f.agrees_with_label?'<span style="color:var(--good)">yes</span>':
-        '<span style="color:var(--bad)">no</span>'}</td></tr>`).join("")}
-  </tbody></table>
-  <div class="small muted" style="margin-top:9px">Accounts with no usage history are
-  omitted here. For pre-sale accounts that is expected.</div></div>`;
+  const rows = PF.flight_activity || [];
+  const disagree = rows.filter(f => !f.agrees_with_label).length;
+  return `
+  ${disagree ? `<div class="banner b-warn"><span class="tag">${disagree} DISAGREE</span>
+    <div><div class="bh">${disagree} accounts are flying in a way their health label does not reflect.</div>
+    <div class="bb">Flight hours are the least deniable signal in this dataset. A customer can say anything on a
+      call. What they actually fly is what they actually do.</div></div></div>` : ""}
+  <div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Account</th><th class="num">ARR</th><th>Flight hours, month by month</th><th>Trend</th>
+      <th class="num">Last 3 vs prior 3</th><th class="num">Latest</th><th class="num">Best ever</th>
+      <th>Record says</th><th>Agrees?</th></tr></thead>
+    <tbody>${rows.map(f => `
+      <tr class="click" onclick="open_acc('${esc(f.account_id)}')">
+        <td><span style="color:var(--dh)">${esc(f.name)}</span></td>
+        <td class="num">${money(f.arr)}</td>
+        <td style="min-width:190px">${spark(f.values, 168, 30)}${sparkNums(f.values, f.months)}</td>
+        <td>${tagOf(traj(f.trajectory))}</td>
+        <td class="num" style="color:${(f.pct_3v3||0) < 0 ? "var(--err)" : "var(--euc)"}">${pct(f.pct_3v3)}</td>
+        <td class="num">${num1(f.latest)}</td>
+        <td class="num dim">${num1(f.peak)}</td>
+        <td class="dim">${esc(f.crm_health||"—")}</td>
+        <td>${f.agrees_with_label ? `<span style="color:var(--euc)">yes</span>`
+                                  : `<span style="color:var(--err)">no</span>`}</td>
+      </tr>`).join("")}</tbody></table>
+    <div class="empty" style="border-top:1px solid var(--line3)">Accounts with no flight history are left out.
+      For an account still evaluating, that is expected and not a warning sign.</div></div>`;
 }
 
 /* ------------------------------------------------------------------ feed */
 function vFeed(){
-  const sys=PF.system||{}, wd=sys.withdrawn_objects||[];
-  return `<h2>Change feed</h2>
-  <p class="lede">TOWER takes a complete inventory of the source every cycle and
-  content-hashes every object. That is the only way to notice something that
-  <i>stopped</i> being available. Withdrawn documents are tombstoned, dropped from
-  active reasoning, and kept for audit.</p>
-  <div class="grid k4">
-    <div class="card kpi"><div class="lab">Syncs run</div><div class="val">${(PF.syncs||[]).length}</div>
-      <div class="note">most recent ${esc((sys.last_sync||{}).started_at||"—")}</div></div>
-    <div class="card kpi"><div class="lab">Objects withdrawn</div>
-      <div class="val" style="color:${wd.length?'var(--crit)':'var(--dim)'}">${wd.length}</div>
-      <div class="note">detected by full-inventory reconciliation</div></div>
-    <div class="card kpi"><div class="lab">Belief changes logged</div>
-      <div class="val">${(PF.belief_deltas||[]).length}</div>
-      <div class="note">each traced to the source change that caused it</div></div>
-    <div class="card kpi"><div class="lab">Poll interval</div><div class="val">60s</div>
-      <div class="note">long-lived runner, no human trigger</div></div>
+  const sys = PF.system || {}, wd = sys.withdrawn_objects || [];
+  const cf = PF.change_feed || [], syncs = PF.syncs || [];
+  const CT = {ADDED:{c:"var(--euc)",l:"ARRIVED"}, MODIFIED:{c:"var(--warn)",l:"CHANGED"},
+              WITHDRAWN:{c:"var(--err)",l:"TAKEN AWAY"}, RESTORED:{c:"var(--o200)",l:"CAME BACK"}};
+  return `
+  <div class="tiles">
+    <div class="tile"><div class="tlab">Times it checked</div><div class="tval">${syncs.length}</div>
+      <div class="tnote">every 60 seconds, nobody pressing anything</div></div>
+    <div class="tile"><div class="tlab">Documents taken away</div>
+      <div class="tval" style="color:${wd.length ? "var(--err)" : "var(--dsc)"}">${wd.length}</div>
+      <div class="tnote">spotted by re-checking everything, not by asking what is new</div></div>
+    <div class="tile"><div class="tlab">Times it changed its mind</div><div class="tval">${(PF.belief_deltas||[]).length}</div>
+      <div class="tnote">each traced to the document that caused it</div></div>
+    <div class="tile"><div class="tlab">Checking every</div><div class="tval">60s</div>
+      <div class="tnote">runs on GitHub, not on anyone's laptop</div></div>
   </div>
 
-  ${wd.length?`<div class="sec">Withdrawn from source</div>
-  <div class="card feed">${wd.map(w=>`<div class="row">
-    <span class="ct WITHDRAWN">WITHDRAWN</span>
-    <span>${esc(w.obj_key)} <span class="src">· ${esc(w.account_id||"portfolio-wide")}
-    · ${esc((w.withdrawn_at||"").replace("T"," ").replace("+00:00",""))}</span></span>
-  </div>`).join("")}</div>`:""}
+  ${wd.length ? `<div class="sec"><h2>Documents that disappeared</h2><span class="cnt">${wd.length}</span></div>
+  <div class="card">${wd.map(w => `
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line3);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap">
+      <span class="pill" style="color:var(--err);background:#241016;border:1px solid #6E1E30">TAKEN AWAY</span>
+      <span class="mono" style="font-size:12.5px;color:var(--dbd)">${esc(w.obj_key)}</span>
+      <span class="xs">${esc(w.account_id || "portfolio wide")} · ${esc((w.withdrawn_at||"").replace("T"," ").replace("+00:00",""))} UTC</span>
+    </div>`).join("")}
+    <div class="empty" style="border-top:1px solid var(--line3)">These are kept on record but no longer used to
+      draw conclusions. If a claim rested only on one of these, that claim has been withdrawn too.</div></div>` : ""}
 
-  <div class="sec">How our beliefs moved</div>
-  <div class="card feed">${(PF.belief_deltas||[]).length?PF.belief_deltas.map(d=>`<div class="row">
-    <span class="src" style="min-width:150px">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span><b>${esc(d.account_id)}</b> · ${esc(d.field)}:
-      ${esc(d.old_value)} → <b>${esc(d.new_value)}</b>
-      ${d.narrative?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(d.narrative)}</div>`:""}</span>
-  </div>`).join(""):'<div class="muted small">No belief changes yet. The first full pass establishes the baseline.</div>'}</div>
+  ${(PF.belief_deltas||[]).length ? `<div class="sec"><h2>Where it changed its mind</h2></div>
+  <div class="card">${PF.belief_deltas.slice(0,25).map(d => `
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+        <span class="xs">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
+        <span style="font:500 13.5px/1.4 Geist,sans-serif;color:var(--dh)">${esc(d.account_id)}</span>
+        <span class="mono sm dim">${esc(d.field)}</span>
+        <span class="mono sm">${esc(val(d.old_value))} → <b style="color:var(--dh)">${esc(val(d.new_value))}</b></span></div>
+      ${d.narrative ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:6px">${esc(d.narrative)}</div>` : ""}
+    </div>`).join("")}</div>` : ""}
 
-  <div class="sec">Raw source changes detected</div>
-  <div class="card feed">${(PF.change_feed||[]).slice(0,80).map(c=>`<div class="row">
-    <span class="ct ${esc(c.change_type)}">${esc(c.change_type)}</span>
-    <span class="src" style="min-width:150px">${esc((c.detected_at||"").replace("T"," ").replace("+00:00",""))}</span>
-    <span>${esc(c.title||c.source_id)}
-      ${c.diff_summary?`<div class="small muted" style="font-family:-apple-system,sans-serif">${esc(c.diff_summary)}</div>`:""}</span>
-  </div>`).join("")}</div>
+  <div class="sec"><h2>Everything it noticed</h2><span class="cnt">${cf.length} EVENTS</span></div>
+  <div class="card">${cf.slice(0,60).map(c => {
+    const t = CT[c.change_type] || {c:"var(--dsc)", l:c.change_type};
+    return `<div style="padding:12px 18px;border-bottom:1px solid var(--line3);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap">
+      <span class="mono" style="font-size:9.5px;letter-spacing:.14em;color:${t.c};min-width:88px">${t.l}</span>
+      <span class="xs" style="min-width:132px">${esc((c.detected_at||"").replace("T"," ").replace("+00:00",""))}</span>
+      <span style="font:400 13px/1.5 Geist,sans-serif;color:var(--dbd);flex:1;min-width:200px">
+        ${esc(c.title || c.source_id)}${c.account_id ? ` <span class="xs">· ${esc(c.account_id)}</span>` : ""}</span>
+    </div>`;
+  }).join("")}</div>
 
-  <div class="sec">Sync history</div>
-  <div class="card"><table><thead><tr><th>#</th><th>Started</th><th>Trigger</th>
-    <th class="num">Objects</th><th class="num">Added</th><th class="num">Modified</th>
-    <th class="num">Withdrawn</th><th class="num">Re-reasoned</th><th>Status</th></tr></thead><tbody>
-  ${(PF.syncs||[]).map(s=>`<tr>
-    <td class="rank">${s.id}</td>
-    <td class="src">${esc((s.started_at||"").replace("T"," ").replace("+00:00",""))}</td>
-    <td><span class="tag">${esc(s.trigger)}</span></td>
-    <td class="num">${s.objects_seen}</td><td class="num">${s.added}</td>
-    <td class="num">${s.modified}</td>
-    <td class="num" style="color:${s.withdrawn?'var(--crit)':'inherit'}">${s.withdrawn}</td>
-    <td class="num">${s.accounts_resynth}</td>
-    <td class="small ${s.status==='ok'?'':'style="color:var(--bad)"'}">${esc(s.status)}</td>
-  </tr>`).join("")}</tbody></table></div>`;
+  <div class="sec"><h2>Every check it ran</h2></div>
+  <div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Run</th><th>Started</th><th>Started by</th><th class="num">Documents seen</th>
+      <th class="num">New</th><th class="num">Changed</th><th class="num">Taken away</th>
+      <th class="num">Accounts redone</th><th>Result</th></tr></thead>
+    <tbody>${syncs.map(s => `
+      <tr><td class="mono dim">${s.id}</td>
+        <td class="xs">${esc((s.started_at||"").replace("T"," ").replace("+00:00",""))}</td>
+        <td>${tagOf(s.trigger)}</td>
+        <td class="num">${s.objects_seen}</td>
+        <td class="num" style="color:${s.added?"var(--euc)":"inherit"}">${s.added}</td>
+        <td class="num">${s.modified}</td>
+        <td class="num" style="color:${s.withdrawn?"var(--err)":"inherit"}">${s.withdrawn}</td>
+        <td class="num">${s.accounts_resynth}</td>
+        <td>${s.status === "ok" ? `<span style="color:var(--euc)">ok</span>`
+                                : `<span style="color:var(--err)">${esc(s.status)}</span>`}</td></tr>`).join("")}
+    </tbody></table></div>`;
+}
+
+/* -------------------------------------------------------- account detail */
+async function renderAccount(id){
+  if (!CACHE[id]) {
+    try { CACHE[id] = await (await fetch(`accounts/${id}.json?t=` + Date.now())).json(); }
+    catch (e) {
+      setHead("Account", id, "");
+      $("#app").innerHTML = `<button class="back" onclick="go('${VIEW}')">← back</button>
+        <div class="err">No detail published for ${esc(id)} yet.</div>`;
+      return;
+    }
+  }
+  const s = CACHE[id], u = s.usage.flightHours, g = s.reality_gap, sy = s.synthesis || {};
+  /* When the reading layer is down the engine writes an internal placeholder
+     into one_line. Never show engineering text as a headline. */
+  const rawLine = sy.one_line || "";
+  const headline = (!rawLine || rawLine.startsWith("[degraded"))
+    ? `${stage(s.lifecycle)} · ${money(s.arr)} a year · flying ${traj(u.trajectory)}. Everything below is calculated from this account's own behaviour.`
+    : rawLine;
+  setHead(stage(s.lifecycle), s.name, headline);
+
+  const gapBanner = g.direction === "overstated"
+    ? `<div class="banner b-warn"><span class="tag">REALITY GAP</span><div>
+        <div class="bh">The record says ${esc(g.stated)}. The behaviour says ${esc(g.derived)}.</div>
+        <div class="bb">${esc(g.note)}</div></div></div>`
+    : g.direction === "aligned"
+    ? `<div class="banner b-ok"><span class="tag">AGREES</span><div class="bh">${esc(g.note)}</div></div>`
+    : `<div class="banner b-warn" style="opacity:.8"><span class="tag">NO LABEL</span><div class="bh">${esc(g.note)}</div></div>`;
+
+  $("#app").innerHTML = `<div class="rise">
+  <button class="back" onclick="go('${VIEW}')">← back to ${esc(viewMeta(VIEW).label)}</button>
+  <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+    ${pillOf(s.health.band)} <span class="mono" style="color:var(--dsc);font-size:12px">health ${s.health.score}</span>
+    ${tagOf(money(s.arr) + " ARR")} ${s.tier ? tagOf(s.tier) : ""}
+    ${s.cs_owner && s.cs_owner !== "—" ? tagOf("CS " + s.cs_owner) : ""}
+    ${s.se_owner && s.se_owner !== "—" ? tagOf("SE " + s.se_owner) : ""}
+  </div>
+  ${gapBanner}
+
+  <div class="row2">
+    <div class="card">
+      <div class="cardhead"><span class="t">Why this health score</span><span class="m">FIVE FACTORS</span></div>
+      ${(s.health.factors||[]).map(f => `
+        <div style="padding:13px 18px;border-bottom:1px solid var(--line3)">
+          <div style="display:flex;justify-content:space-between;gap:12px;align-items:baseline">
+            <span style="font:500 13px/1.4 Geist,sans-serif;color:var(--dh)">${esc(f.factor.replace(/_/g," "))}</span>
+            <span class="mono sm" style="color:${f.points_lost > 8 ? "var(--err)" : "var(--dsc)"}">−${f.points_lost} of ${f.weight}</span></div>
+          <div style="font:400 12.5px/1.55 Geist,sans-serif;color:var(--dsc);margin-top:5px">${esc(f.reason)}</div>
+          <span class="bar" style="margin-top:8px"><i style="width:${(f.quality*100).toFixed(0)}%;
+            background:${f.quality > .7 ? "var(--euc)" : f.quality > .45 ? "var(--warn)" : "var(--err)"}"></i></span>
+        </div>`).join("")}
+      <div class="empty">Every point lost is attributable to a named factor with a stated reason. Disagree with
+        the weighting and you can argue with it, which is the point.</div>
+    </div>
+
+    <div class="card">
+      <div class="cardhead"><span class="t">Flight activity</span>${s.usage.has_usage
+        ? `<span class="m">${esc(mlabel(u.months[0]))} → ${esc(mlabel(u.months[u.months.length-1]))}</span>` : ""}</div>
+      ${s.usage.has_usage ? `
+        <div style="padding:20px 18px 6px;overflow-x:auto">${chartBig(u.values, u.months, "flight hours per month")}</div>
+        <div style="padding:6px 18px 14px;display:flex;gap:14px;flex-wrap:wrap;align-items:stretch">
+          <div style="flex:1 1 120px;min-width:110px">
+            <div class="tval" style="font-size:24px;margin:0">${num1(u.latest)}</div>
+            <div class="tnote" style="margin-top:4px">flight hours in ${esc(mlabel(u.months[u.months.length-1]))}</div></div>
+          <div style="flex:1 1 120px;min-width:110px">
+            <div class="tval" style="font-size:24px;margin:0;color:${(u.pct_3v3||0) < 0 ? "var(--err)" : "var(--euc)"}">${pct(u.pct_3v3)}</div>
+            <div class="tnote" style="margin-top:4px">last three months against the three before</div></div>
+          <div style="flex:1 1 120px;min-width:110px">
+            <div class="tval" style="font-size:24px;margin:0;color:${(u.pct_last_vs_peak||0) < 0 ? "var(--err)" : "var(--euc)"}">${pct(u.pct_last_vs_peak)}</div>
+            <div class="tnote" style="margin-top:4px">against its best month, ${num1(u.peak)} in ${esc(mlabel(u.peak_month))}</div></div>
+        </div>
+        <div style="padding:0 18px 16px">
+          <div style="font:400 13.5px/1.6 Geist,sans-serif;color:var(--dbd)">${esc(u.headline)}</div>
+          <div class="xs" style="margin-top:8px">${esc(traj(u.trajectory))} · ${num1(s.usage.missions.latest)} missions last month</div>
+        </div>` : `<div class="empty">No flight history. For an account still evaluating, that is expected.</div>`}
+      <div class="cardhead" style="border-top:1px solid var(--line3)"><span class="t">Renewal</span></div>
+      ${s.renewal.date ? `<div style="padding:16px 18px">
+          <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+            <span class="mono" style="font-size:15px;color:var(--dh)">${esc(s.renewal.date)}</span>
+            <span class="xs">${s.renewal.days_to_renewal} days away</span>
+            ${pillOf(s.renewal.bucket)}
+            ${s.renewal.probability != null ? `<span class="xs">${(s.renewal.probability*100).toFixed(0)}% chance it lands</span>` : ""}
+          </div>
+          <div class="xs" style="margin-top:9px">${esc(s.renewal.basis || "")}</div>
+          ${s.renewal.source ? `<div class="q"><div class="txt">${esc(s.renewal.source.quote||"")}</div>
+            <div class="src">${esc(s.renewal.source.doc||"")}</div></div>` : ""}
+        </div>` : `<div class="empty">No renewal or contract date is stated anywhere in the source material.</div>`}
+    </div>
+  </div>
+
+  ${sy.situation && !sy.situation.startsWith("No model key") ? `<div class="sec"><h2>What is going on</h2></div>
+  <div class="card"><div style="padding:18px">
+    <div style="font:400 14.5px/1.65 Geist,sans-serif;color:var(--dbd);text-wrap:pretty">${esc(sy.situation)}</div>
+    <div class="xs" style="margin-top:12px">
+      mood ${esc(sy.sentiment_label||"—")} and ${esc(sy.sentiment_trend||"—")} ·
+      champion ${esc(sy.champion_status||"—")} ·
+      ${sy.economic_buyer_identified ? "we know who signs" : `<span style="color:var(--err)">nobody identified who signs</span>`}
+      ${sy.competitor_present ? ` · <span style="color:var(--err)">competitor in the account</span>` : ""}
+      ${s.days_silent != null ? ` · last contact ${s.days_silent} days ago` : ""}
+    </div></div></div>` : ""}
+
+  ${(s.actions||[]).length ? `<div class="sec"><h2>Do this next</h2><span class="cnt">${s.actions.length}</span></div>
+  <div class="card">${s.actions.map((a,i) => `
+    <div style="padding:18px;border-bottom:1px solid var(--line3);display:grid;grid-template-columns:44px 1fr;gap:0">
+      <div class="mono" style="font-size:20px;color:${i===0?"var(--o400)":"#5C5C5C"}">${String(i+1).padStart(2,"0")}</div>
+      <div><div style="font:500 14.5px/1.5 Geist,sans-serif;color:var(--dh)">${esc(a.action)}</div>
+        ${a.target_person ? `<div class="xs" style="margin-top:4px">Speak to ${esc(a.target_person)} · ${esc(a.owner_function||"")}</div>` : ""}
+        ${a.why_now ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--dsc);margin-top:7px">${esc(a.why_now)}</div>` : ""}
+        ${quotes(a.evidence_quotes, "from the source document")}</div>
+    </div>`).join("")}</div>` : ""}
+
+  ${(sy.top_risks||[]).length || (sy.opportunities||[]).length ? `<div class="row2" style="margin-top:22px">
+    <div class="card"><div class="cardhead"><span class="t">What could go wrong</span></div>
+      ${(sy.top_risks||[]).length ? sy.top_risks.map(r => `
+        <div style="padding:16px 18px;border-bottom:1px solid var(--line3)">
+          <div style="display:flex;gap:9px;align-items:baseline;flex-wrap:wrap">
+            ${pillOf(r.severity === "critical" ? "Critical" : r.severity === "high" ? "At Risk" : "Watch")}
+            <span style="font:500 13.5px/1.45 Geist,sans-serif;color:var(--dh)">${esc(r.risk)}</span></div>
+          <div style="font:400 13px/1.6 Geist,sans-serif;color:var(--dsc);margin-top:6px">${esc(r.why_it_matters||"")}</div>
+          ${quotes(r.evidence_quotes)}
+        </div>`).join("") : `<div class="empty">Nothing material surfaced.</div>`}</div>
+    <div class="card"><div class="cardhead"><span class="t">Where we could grow</span></div>
+      ${(sy.opportunities||[]).length ? sy.opportunities.map(o => `
+        <div style="padding:16px 18px;border-bottom:1px solid var(--line3)">
+          <div style="display:flex;gap:9px;align-items:baseline;flex-wrap:wrap">
+            ${o.is_trap ? `<span class="pill" style="color:var(--err);background:#241016;border:1px solid #6E1E30">TRAP</span>`
+                        : pillOf("Healthy")}
+            <span style="font:500 13.5px/1.45 Geist,sans-serif;color:var(--dh)">${esc(o.opportunity)}</span></div>
+          ${o.is_trap && o.trap_reason ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--err);margin-top:6px">${esc(o.trap_reason)}</div>` : ""}
+          ${o.unblock_condition ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--o200);margin-top:6px">Chase it once: ${esc(o.unblock_condition)}</div>` : ""}
+          ${quotes(o.evidence_quotes)}
+        </div>`).join("") : `<div class="empty">No growth signals in the evidence.</div>`}</div>
+  </div>` : ""}
+
+  ${(s.people||[]).length ? `<div class="sec"><h2>Who matters here</h2><span class="cnt">${s.people.length} PEOPLE</span></div>
+  <div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Person</th><th>Title</th><th>Role</th><th>Side</th><th>Mood</th><th>Status</th></tr></thead>
+    <tbody>${s.people.map(p => `<tr>
+      <td><span style="color:var(--dh)">${esc(p.name)}</span>
+        ${(p.quotes||[]).slice(0,1).map(q => `<div class="q"><div class="txt">${esc(q.quote)}</div></div>`).join("")}</td>
+      <td class="dim sm">${esc(p.title || "—")}</td>
+      <td>${tagOf((p.role||"").replace(/-/g," "))}</td>
+      <td class="dim sm">${esc(p.org_side)}</td>
+      <td class="sm">${esc(p.sentiment)}</td>
+      <td class="sm" style="color:${p.status !== "active" ? "var(--err)" : "var(--dbd)"}">${esc(p.status)}</td>
+    </tr>`).join("")}</tbody></table></div>` : ""}
+
+  ${(sy.contradictions||[]).length ? `<div class="sec"><h2>Where the sources disagree</h2></div>
+  <div class="card">${sy.contradictions.map(c => `
+    <div style="padding:18px;border-bottom:1px solid var(--line3)">
+      <div style="font:500 13.5px/1.4 Geist,sans-serif;color:var(--dh)">${esc(c.topic)}</div>
+      <div class="q"><div class="txt">${esc(c.claim_a)}</div><div class="src">${esc(c.source_a)}</div></div>
+      <div class="q"><div class="txt">${esc(c.claim_b)}</div><div class="src">${esc(c.source_b)}</div></div>
+      <div style="font:400 13px/1.6 Geist,sans-serif;color:var(--o200);margin-top:8px">Believe: ${esc(c.resolution)}</div>
+    </div>`).join("")}</div>` : ""}
+
+  ${(s.open_commitments||[]).length ? `<div class="sec"><h2>Promises nobody closed</h2></div>
+  <div class="card">${s.open_commitments.map(c => `
+    <div style="padding:14px 18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">
+        ${tagOf(c.owner_side === "flytbase" ? "we promised" : "they promised")}
+        <span style="font:400 13.5px/1.5 Geist,sans-serif;color:var(--dbd)">${esc(c.promise)}</span></div>
+      ${c.quote ? `<div class="q"><div class="txt">${esc(c.quote)}</div><div class="src">${esc(c.doc||"")}${c.due ? " · due " + esc(c.due) : ""}</div></div>` : ""}
+    </div>`).join("")}</div>` : ""}
+
+  <div class="sec"><h2>Where all of this came from</h2><span class="cnt">${(s.documents||[]).length} DOCUMENTS</span></div>
+  <div class="card" style="overflow-x:auto"><table>
+    <thead><tr><th>Document</th><th>Type</th><th>Dated</th><th>How we know the date</th><th>What it says</th></tr></thead>
+    <tbody>${(s.documents||[]).map(d => `<tr>
+      <td><span style="color:var(--dh)">${esc(d.title)}</span><div class="xs">${esc(d.file)}</div></td>
+      <td>${tagOf(d.type)}</td>
+      <td class="mono sm dim">${esc(d.date || "undated")}</td>
+      <td class="xs">${esc(d.date_basis)}${d.date_text ? ` · "${esc(d.date_text)}"` : ""}</td>
+      <td class="dim sm">${(!d.summary || d.summary.startsWith("[degraded"))
+        ? `<span style="color:var(--dsc)">Held and fingerprinted. Not summarised, because the reading layer is not running.</span>`
+        : esc(d.summary)}</td></tr>`).join("")}</tbody></table>
+    <div class="empty" style="border-top:1px solid var(--line3)">${s._evidence_count || 0} quotable passages indexed
+      for this account. Anything withdrawn from the source is excluded here and listed on the change feed.</div></div>
+
+  ${(s._deltas||[]).length ? `<div class="sec"><h2>How our view of this account has moved</h2></div>
+  <div class="card">${s._deltas.slice(0,12).map(d => `
+    <div style="padding:13px 18px;border-bottom:1px solid var(--line3)">
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap">
+        <span class="xs">${esc((d.occurred_at||"").replace("T"," ").replace("+00:00",""))}</span>
+        <span class="mono sm dim">${esc(d.field)}</span>
+        <span class="mono sm">${esc(val(d.old_value))} → <b style="color:var(--dh)">${esc(val(d.new_value))}</b></span></div>
+      ${d.narrative ? `<div style="font:400 13px/1.6 Geist,sans-serif;color:var(--dbd);margin-top:6px">${esc(d.narrative)}</div>` : ""}
+    </div>`).join("")}</div>` : ""}
+  </div>`;
 }
 
 boot();
