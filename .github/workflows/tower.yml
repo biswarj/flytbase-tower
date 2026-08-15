@@ -42,13 +42,20 @@ jobs:
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           TOWER_OPENAI_MODEL: ${{ vars.TOWER_OPENAI_MODEL }}
           TOWER_POLL_SECONDS: '60'
-          TOWER_MAX_RUN_SECONDS: '20400'
-        run: python -m tower.run daemon
+          TOWER_MAX_RUN_SECONDS: '18000'
+        run: |
+          git config user.name 'tower-sentinel'
+          git config user.email 'tower-sentinel@users.noreply.github.com'
+          python -m tower.run daemon
       - name: Final state flush
         if: always()
         env:
           MCP_ENDPOINT: ${{ secrets.MCP_ENDPOINT }}
           MCP_TOKEN: ${{ secrets.MCP_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          TOWER_OPENAI_MODEL: ${{ vars.TOWER_OPENAI_MODEL }}
         run: |
           python -m tower.run export || true
           git config user.name 'tower-sentinel'
