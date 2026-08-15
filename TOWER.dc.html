@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0}
+body{background:#1A1A1A;color:#D6D6D6;font-family:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#EC7D42;text-decoration:none}
+a:hover{color:#F4B896}
+button{font-family:inherit}
+::selection{background:#D95B28;color:#fff}
+@keyframes tw-pulse{0%{box-shadow:0 0 0 0 rgba(114,168,153,.55)}70%{box-shadow:0 0 0 7px rgba(114,168,153,0)}100%{box-shadow:0 0 0 0 rgba(114,168,153,0)}}
+@media (max-width:920px){
+[data-shell]{grid-template-columns:1fr !important}
+[data-rail]{position:static !important;height:auto !important;border-right:none !important;border-bottom:1px solid #2A2A2A !important;padding-bottom:0 !important}
+[data-railnav]{flex-direction:row !important;overflow-x:auto;gap:0 !important;padding:0 !important;border-top:1px solid #2A2A2A}
+[data-navgroup]{margin:0 !important;display:flex;align-items:center;border-right:1px solid #2A2A2A}
+[data-navlabel]{display:none !important}
+[data-railfoot]{display:none !important}
+[data-pad]{padding-left:16px !important;padding-right:16px !important}
+}
+</style>
+</helmet>
+
+<div data-shell style="min-height:100vh;display:grid;grid-template-columns:236px minmax(0,1fr);background:#1A1A1A">
+
+<aside data-rail style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#1A1A1A;border-right:1px solid #2A2A2A;z-index:30">
+<div style="padding:22px 20px 18px;border-bottom:1px solid #2A2A2A">
+<div style="display:flex;align-items:center;gap:9px">
+<span style="width:7px;height:7px;background:#D95B28;display:block"></span>
+<span style="font:600 15px/1 Geist,sans-serif;letter-spacing:.24em;color:#F0F0F0">TOWER</span>
+</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;letter-spacing:.06em;color:#999999;margin-top:9px">FlytBase GTM control tower</div>
+</div>
+
+<div data-railnav style="flex:1;display:flex;flex-direction:column;padding:18px 0;overflow-y:auto">
+<sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="4">
+<div data-navgroup style="margin-bottom:20px">
+<div data-navlabel style="font:500 9px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#999999;padding:0 20px 9px">{{ g.label }}</div>
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+<button onClick="{{ it.go }}" style-hover="background:#242424;color:#F0F0F0" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:{{ it.bg }};border:0;border-left:2px solid {{ it.edge }};padding:8px 20px 8px 18px;cursor:pointer;font:400 13.5px/1.3 Geist,sans-serif;color:{{ it.fg }};white-space:nowrap;transition:background 200ms cubic-bezier(.22,1,.36,1),color 200ms cubic-bezier(.22,1,.36,1)">
+<span style="font:500 9px/1 'Geist Mono',monospace;color:{{ it.num }};letter-spacing:.06em">{{ it.n }}</span>
+<span>{{ it.label }}</span>
+</button>
+</sc-for>
+</div>
+</sc-for>
+</div>
+
+<div data-railfoot style="border-top:1px solid #2A2A2A;padding:14px 20px">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="width:6px;height:6px;border-radius:50%;background:#72A899;display:block;animation:tw-pulse 2.6s infinite"></span>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.04em">{{ syncLabel }}</span>
+</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;color:#999999;margin-top:7px">{{ syncStamp }}</div>
+</div>
+</aside>
+
+<div style="min-width:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:32px 32px">
+
+<header data-pad style="background:#1A1A1A;border-bottom:1px solid #2A2A2A;padding:26px 32px 22px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.18em;text-transform:uppercase;color:#D95B28">{{ viewEyebrow }}</div>
+<h1 style="font:500 28px/1.15 Lora,Georgia,serif;color:#F0F0F0;margin:11px 0 0;letter-spacing:-.005em">{{ viewTitle }}</h1>
+<p style="font:400 13.5px/1.6 Geist,sans-serif;color:#999999;margin:10px 0 0;max-width:740px;text-wrap:pretty">{{ viewLede }}</p>
+</header>
+
+<div data-pad style="padding:24px 32px 80px">
+
+<sc-if value="{{ degraded }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #6E1E30;border-left:3px solid #F43F5E;background:#241016;padding:14px 18px;margin-bottom:22px;display:flex;gap:14px;align-items:flex-start">
+<span style="font:500 9.5px/1.6 'Geist Mono',monospace;letter-spacing:.14em;color:#F43F5E;white-space:nowrap">DEGRADED</span>
+<div>
+<div style="font:500 14px/1.5 Geist,sans-serif;color:#F0F0F0">This page is incomplete. The part that reads documents is not running.</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:6px;max-width:900px;text-wrap:pretty">Everything shown is still true. Account health, usage, the Reality Gap and the ranking are all calculated directly from the data and do not need a model. What is missing is anything read out of a document: people, risks, opportunities, Traps and recommended actions.</div>
+<div style="font:400 11px/1.6 'Geist Mono',monospace;color:#999999;margin-top:8px">{{ degradedDetail }}</div>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isTriage }}" hint-placeholder-val="{{ true }}">
+<div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid #2E2E2E;background:#1E1E1E">
+<sc-for list="{{ moneyTiles }}" as="t" hint-placeholder-count="4">
+<div style="padding:18px 20px 20px;border-right:1px solid #2A2A2A">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">{{ t.lab }}</div>
+<div style="font:500 31px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;margin-top:12px;letter-spacing:-.015em;color:{{ t.color }}">{{ t.val }}</div>
+<div style="font:400 12px/1.5 Geist,sans-serif;color:#999999;margin-top:9px;text-wrap:pretty">{{ t.note }}</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasMisread }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #4A3A16;border-left:3px solid #D9A441;background:#211B10;padding:13px 18px;margin-top:18px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap">
+<span style="font:500 9.5px/1.6 'Geist Mono',monospace;letter-spacing:.14em;color:#D9A441;white-space:nowrap">REALITY GAP</span>
+<span style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6">{{ misreadLine }}</span>
+</div>
+</sc-if>
+
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:38px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Do these first</h2>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.08em">{{ queueCount }}</span>
+</div>
+
+<sc-for list="{{ queue }}" as="a" hint-placeholder-count="6">
+<div>
+<sc-if value="{{ a.showCut }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:14px;margin:26px 0 4px">
+<span style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999;white-space:nowrap">Below the line</span>
+<span style="flex:1;height:1px;background:#2E2E2E;display:block"></span>
+<span style="font:400 11px/1 Geist,sans-serif;color:#999999">worth doing, not worth doing first</span>
+</div>
+</sc-if>
+<div style="display:grid;grid-template-columns:56px minmax(0,1fr) 210px;gap:0;border-bottom:1px solid #262626;padding:20px 0;align-items:start;opacity:{{ a.dim }}">
+<div style="font:500 26px/1 'Geist Mono',monospace;color:{{ a.rankColor }};letter-spacing:-.03em;padding-top:1px">{{ a.rankLabel }}</div>
+<div style="min-width:0;padding-right:28px">
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ a.account_name }}</span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;color:{{ a.bandFg }};background:{{ a.bandBg }};border:1px solid {{ a.bandBd }}">{{ a.health_band }}</span>
+</div>
+<div style="font:400 14.5px/1.5 Geist,sans-serif;color:#D6D6D6;margin-top:9px;text-wrap:pretty">{{ a.action }}</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#999999;margin-top:6px;text-wrap:pretty">{{ a.why_now }}</div>
+<sc-if value="{{ a.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:12px;display:flex;flex-direction:column;gap:9px">
+<sc-for list="{{ a.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px;letter-spacing:.03em">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px;border-left:1px solid #262626;padding-left:20px">
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">ARR</span><span style="font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ a.arrLabel }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Renews</span><span style="font:500 13px/1.4 'Geist Mono',monospace;color:{{ a.renewColor }}">{{ a.renewLabel }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Owner</span><span style="font:400 12px/1.4 Geist,sans-serif;color:#D6D6D6">{{ a.owner_function }}</span></div>
+<div style="display:flex;justify-content:space-between;gap:10px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Call</span><span style="font:400 12px/1.4 Geist,sans-serif;color:#D6D6D6;text-align:right">{{ a.target_person }}</span></div>
+<div style="margin-top:3px">
+<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:5px"><span style="font:400 10px/1.4 'Geist Mono',monospace;color:#999999;letter-spacing:.1em;text-transform:uppercase">Priority</span><span style="font:500 11px/1.4 'Geist Mono',monospace;color:#999999">{{ a.value_score }}</span></div>
+<div style="height:3px;background:#2A2A2A"><span style="display:block;height:3px;width:{{ a.scoreW }};background:{{ a.scoreColor }}"></span></div>
+</div>
+</div>
+</div>
+</div>
+</sc-for>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:22px;margin-top:44px">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 18px;border-bottom:1px solid #2A2A2A;display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:500 12.5px/1 Geist,sans-serif;color:#F0F0F0">Gone quiet</span>
+<span style="font:400 10px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.08em">NO CONTACT 45 DAYS+</span>
+</div>
+<sc-for list="{{ stale }}" as="s" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 18px;border-bottom:1px solid #262626">
+<span style="font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ s.name }}</span>
+<span style="display:flex;align-items:center;gap:14px">
+<span style="font:500 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.arrLabel }}</span>
+<span style="font:500 12.5px/1.4 'Geist Mono',monospace;color:#D9A441">{{ s.silentLabel }}</span>
+</span>
+</div>
+</sc-for>
+</div>
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 18px;border-bottom:1px solid #2A2A2A;display:flex;align-items:baseline;justify-content:space-between">
+<span style="font:500 12.5px/1 Geist,sans-serif;color:#F0F0F0">Promises we made and never closed</span>
+</div>
+<sc-for list="{{ loops }}" as="l" hint-placeholder-count="3">
+<div style="padding:13px 18px;border-bottom:1px solid #262626">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px">
+<span style="font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ l.promise }}</span>
+<span style="font:400 11px/1.4 'Geist Mono',monospace;color:{{ l.dueColor }};white-space:nowrap">{{ l.dueLabel }}</span>
+</div>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:5px">{{ l.srcLabel }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isAccounts }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Account</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Stage</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">ARR</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">What the evidence says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;background:#232323;white-space:nowrap">What the CRM says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Flying</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Renewal</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;min-width:280px">Read this first</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ accountRows }}" as="a" hint-placeholder-count="10">
+<tr style-hover="background:#232323">
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0;white-space:nowrap">{{ a.name }}</div>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ a.vertical }}</div>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top"><span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px solid #3D3D3D;padding:2px 7px;white-space:nowrap">{{ a.lifecycle }}</span></td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0;white-space:nowrap">{{ a.arrLabel }}</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;color:{{ a.bandFg }};background:{{ a.bandBg }};border:1px solid {{ a.bandBd }}">{{ a.health_band }}</span>
+<span style="font:400 11px/1.4 'Geist Mono',monospace;color:#999999;margin-left:7px">{{ a.health_score }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;background:#232323;white-space:nowrap">
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:{{ a.crmColor }}">{{ a.crmLabel }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap">
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ a.usage_trajectory }}</span>
+<span style="font:500 11.5px/1.4 'Geist Mono',monospace;color:{{ a.usageColor }};margin-left:7px">{{ a.usageLabel }}</span>
+</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;white-space:nowrap;font:400 12px/1.4 'Geist Mono',monospace;color:#999999">{{ a.renewLabel }}</td>
+<td style="padding:14px 16px;border-bottom:1px solid #262626;vertical-align:top;font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ a.one_line }}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+
+<sc-if value="{{ isGaps }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:0;border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="display:grid;grid-template-columns:minmax(140px,1.1fr) 118px minmax(210px,1.4fr) minmax(0,1.7fr);gap:0;border-bottom:1px solid #3D3D3D">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">Account</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px;text-align:right">ARR</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">CRM label against behaviour</div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 18px">What the flying shows</div>
+</div>
+<sc-for list="{{ gapRows }}" as="g" hint-placeholder-count="8">
+<div style="display:grid;grid-template-columns:minmax(140px,1.1fr) 118px minmax(210px,1.4fr) minmax(0,1.7fr);gap:0;border-bottom:1px solid #262626;border-left:3px solid {{ g.edge }};align-items:center">
+<div style="padding:15px 18px">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0">{{ g.name }}</div>
+<div style="font:400 10px/1.5 'Geist Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:{{ g.edge }};margin-top:5px">{{ g.verdict }}</div>
+</div>
+<div style="padding:15px 18px;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ g.arrLabel }}</div>
+<div style="padding:15px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+<span style="font:400 11.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px dashed #3D3D3D;padding:3px 9px;white-space:nowrap">{{ g.stated }}</span>
+<span style="font:400 13px/1 'Geist Mono',monospace;color:{{ g.edge }}">{{ g.arrow }}</span>
+<span style="font:500 11.5px/1.5 'Geist Mono',monospace;letter-spacing:.06em;padding:3px 9px;white-space:nowrap;color:{{ g.bandFg }};background:{{ g.bandBg }};border:1px solid {{ g.bandBd }}">{{ g.derived }}</span>
+</div>
+<div style="padding:15px 18px;font:400 12.5px/1.55 Geist,sans-serif;color:#999999;text-wrap:pretty">{{ g.usage_headline }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isRenewals }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;padding:26px 28px 28px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px">
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">What the CRM implies</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#999999;margin-top:12px;letter-spacing:-.015em">{{ naiveLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">if every live account renews in full</div>
+</div>
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#D95B28">Honest forecast</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F0F0F0;margin-top:12px;letter-spacing:-.015em">{{ honestLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">each account weighted by how likely it is to renew</div>
+</div>
+<div>
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">The difference</div>
+<div style="font:500 35px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F43F5E;margin-top:12px;letter-spacing:-.015em">{{ gapLabel }}</div>
+<div style="font:400 12.5px/1.5 Geist,sans-serif;color:#999999;margin-top:8px">{{ gapPctLabel }}</div>
+</div>
+</div>
+<div style="margin-top:28px">
+<div style="height:22px;background:#2A2A2A;display:flex">
+<span style="display:block;height:22px;width:{{ honestW }};background:#3A7A65"></span>
+<span style="display:block;height:22px;width:{{ gapW }};background:repeating-linear-gradient(135deg,#4A1420 0 6px,#2C1017 6px 12px)"></span>
+</div>
+<div style="display:flex;justify-content:space-between;margin-top:9px">
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#72A899;letter-spacing:.08em">EXPECTED TO RENEW</span>
+<span style="font:400 10.5px/1 'Geist Mono',monospace;color:#F43F5E;letter-spacing:.08em">AT RISK OF NOT RENEWING</span>
+</div>
+</div>
+</div>
+
+<sc-for list="{{ buckets }}" as="b" hint-placeholder-count="3">
+<div style="margin-top:32px">
+<div style="display:flex;align-items:baseline;gap:12px;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<span style="font:500 11px/1.5 'Geist Mono',monospace;letter-spacing:.12em;text-transform:uppercase;padding:3px 9px;color:{{ b.bandFg }};background:{{ b.bandBg }};border:1px solid {{ b.bandBd }}">{{ b.label }}</span>
+<span style="font:500 14px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ b.arrLabel }}</span>
+<span style="font:400 12.5px/1.4 Geist,sans-serif;color:#999999">{{ b.countLabel }}</span>
+</div>
+<sc-for list="{{ b.accounts }}" as="r" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:minmax(0,1fr) 130px 120px 150px;gap:0;border-bottom:1px solid #262626;align-items:center">
+<div style="padding:12px 0;font:400 13.5px/1.4 Geist,sans-serif;color:#D6D6D6">{{ r.name }}</div>
+<div style="padding:12px 0;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0">{{ r.arrLabel }}</div>
+<div style="padding:12px 0;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ r.daysLabel }}</div>
+<div style="padding:12px 0 12px 22px;display:flex;align-items:center;gap:10px">
+<span style="flex:1;height:3px;background:#2A2A2A;display:block"><span style="display:block;height:3px;width:{{ r.probW }};background:{{ r.probColor }}"></span></span>
+<span style="font:500 11.5px/1.4 'Geist Mono',monospace;color:#999999;width:36px;text-align:right">{{ r.probLabel }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<sc-if value="{{ isExpansion }}" hint-placeholder-val="{{ false }}">
+<div>
+
+<div style="display:flex;align-items:baseline;gap:14px;padding-bottom:12px;border-bottom:1px solid #2E2E2E">
+<span style="width:7px;height:7px;background:#3A7A65;display:block;margin-bottom:2px"></span>
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0;white-space:nowrap">Worth selling</h2>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;letter-spacing:.06em;white-space:nowrap">{{ oppCount }}</span>
+</div>
+
+<sc-for list="{{ oppRows }}" as="o" hint-placeholder-count="3">
+<div style="display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:24px 0;align-items:start">
+<div style="padding-right:28px">
+<div style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ o.account_name }}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<span style="width:6px;height:6px;background:#3A7A65;display:block"></span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:#8FC9B4">{{ o.confidence }} confidence</span>
+</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:9px">{{ o.arrLabel }} today</div>
+</div>
+<div style="min-width:0;border-left:1px solid #2B5A4A;padding-left:26px">
+<div style="font:400 16.5px/1.5 Geist,sans-serif;color:#F0F0F0;letter-spacing:-.005em;max-width:640px;text-wrap:pretty">{{ o.opportunity }}</div>
+<sc-if value="{{ o.hasBasis }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 11.5px/1.6 'Geist Mono',monospace;color:#999999;margin-top:10px;max-width:620px">{{ o.estimated_value_basis }}</div>
+</sc-if>
+<sc-if value="{{ o.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;max-width:640px">
+<sc-for list="{{ o.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noOpps }}" hint-placeholder-val="{{ false }}">
+<div style="padding:34px 0;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+
+<div style="display:flex;align-items:baseline;gap:14px;margin-top:52px;padding-bottom:12px;border-bottom:1px solid #58202F">
+<span style="width:7px;height:7px;background:#F43F5E;display:block;margin-bottom:2px"></span>
+<h2 style="font:500 17px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0;white-space:nowrap">Traps</h2>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;letter-spacing:.06em;white-space:nowrap">{{ trapCount }}</span>
+</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#999999;margin-top:14px;max-width:700px;text-wrap:pretty">Things the customer has asked for that we could sell today and should not. Each one says why, and what would have to be true before it becomes a real deal.</div>
+
+<sc-for list="{{ trapRows }}" as="o" hint-placeholder-count="2">
+<div style="display:grid;grid-template-columns:minmax(180px,220px) minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:24px 0;align-items:start">
+<div style="padding-right:28px">
+<div style="font:500 15px/1.35 Geist,sans-serif;color:#F0F0F0">{{ o.account_name }}</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+<span style="width:6px;height:6px;background:#F43F5E;display:block"></span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.16em;color:#F43F5E">TRAP</span>
+</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:9px">{{ o.arrLabel }} today</div>
+<div style="font:400 12px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">flying {{ o.usage_trajectory }}</div>
+</div>
+<div style="min-width:0;border-left:1px solid #58202F;padding-left:26px">
+<div style="font:400 16.5px/1.5 Geist,sans-serif;color:#999999;letter-spacing:-.005em;max-width:640px;text-wrap:pretty">{{ o.opportunity }}</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#F0768D;margin-top:14px;max-width:640px;text-wrap:pretty">{{ o.trap_reason }}</div>
+<sc-if value="{{ o.hasDisq }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 11.5px/1.6 'Geist Mono',monospace;color:#999999;margin-top:10px;max-width:620px">{{ o.disqLine }}</div>
+</sc-if>
+<sc-if value="{{ o.hasUnblock }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:13px 16px;border-left:2px solid #D95B28;background:#231A15;max-width:640px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D95B28">Sell it once this is true</div>
+<div style="font:400 13.5px/1.55 Geist,sans-serif;color:#D6D6D6;margin-top:8px;text-wrap:pretty">{{ o.unblock_condition }}</div>
+</div>
+</sc-if>
+<sc-if value="{{ o.hasQuotes }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;max-width:640px">
+<sc-for list="{{ o.quotes }}" as="q" hint-placeholder-count="1">
+<div style="border-left:1px solid #A33D14;padding:1px 0 1px 13px">
+<div style="font:400 13px/1.55 Geist,sans-serif;color:#D6D6D6;text-wrap:pretty">{{ q.text }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px">{{ q.src }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noTraps }}" hint-placeholder-val="{{ false }}">
+<div style="padding:34px 0;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+
+</div>
+</sc-if>
+
+<sc-if value="{{ isContra }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ contraRows }}" as="c" hint-placeholder-count="3">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:14px 20px;border-bottom:1px solid #2E2E2E;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<span style="font:500 14px/1.3 Geist,sans-serif;color:#F0F0F0">{{ c.account_name }}</span>
+<span style="font:400 11.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.topic }}</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+<div style="padding:18px 20px;border-right:1px solid #2E2E2E">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px/1 'Geist Mono',monospace;color:#999999">A</span>
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.source_a }}</span>
+</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#999999;margin-top:10px;text-wrap:pretty;text-decoration:{{ c.strikeA }}">{{ c.claim_a }}</div>
+</div>
+<div style="padding:18px 20px">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px/1 'Geist Mono',monospace;color:#D95B28">B</span>
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999">{{ c.source_b }}</span>
+</div>
+<div style="font:400 14px/1.6 Geist,sans-serif;color:#F0F0F0;margin-top:10px;text-wrap:pretty;text-decoration:{{ c.strikeB }}">{{ c.claim_b }}</div>
+</div>
+</div>
+<div style="border-top:1px solid #2E2E2E;padding:15px 20px;border-left:3px solid {{ c.resColor }}">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:{{ c.resColor }}">{{ c.resLabel }}</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:8px;text-wrap:pretty">{{ c.resolution }}</div>
+<sc-if value="{{ c.hasMatters }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#999999;margin-top:8px;text-wrap:pretty">{{ c.matters_because }}</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noContra }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px dashed #3D3D3D;padding:46px;text-align:center;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isWinback }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{ winbackCards }}" as="w" hint-placeholder-count="2">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E">
+<div style="padding:18px 22px;border-bottom:1px solid #2E2E2E;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap">
+<div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+<span style="font:500 17px/1.25 Lora,Georgia,serif;color:#F0F0F0">{{ w.name }}</span>
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;padding:3px 9px;color:{{ w.vFg }};background:{{ w.vBg }};border:1px solid {{ w.vBd }}">{{ w.vLabel }}</span>
+</div>
+<div style="display:flex;align-items:center;gap:22px">
+<div style="text-align:right">
+<div style="font:400 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999">Lost</div>
+<div style="font:500 16px/1.3 Geist,sans-serif;font-variant-numeric:tabular-nums;color:#F0768D;margin-top:5px">{{ w.lostLabel }}</div>
+</div>
+<div style="width:110px">
+<div style="font:400 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999">Worth chasing</div>
+<div style="height:3px;background:#2A2A2A;margin-top:9px"><span style="display:block;height:3px;width:{{ w.scoreW }};background:{{ w.scoreColor }}"></span></div>
+</div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+<div style="padding:20px 22px;border-right:1px solid #2E2E2E">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">Why they left</div>
+<div style="display:flex;align-items:center;gap:9px;margin-top:11px;flex-wrap:wrap">
+<span style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;border:1px solid #3D3D3D;padding:2px 8px">{{ w.cause_category }}</span>
+<span style="font:400 12px/1.5 Geist,sans-serif;color:{{ w.reversibleColor }}">{{ w.reversibleLabel }}</span>
+</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:11px;text-wrap:pretty">{{ w.root_cause }}</div>
+<sc-if value="{{ w.hasChanged }}" hint-placeholder-val="{{ false }}">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999;margin-top:20px">What has changed since</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:9px;text-wrap:pretty">{{ w.what_changed_since }}</div>
+</sc-if>
+</div>
+<div style="padding:20px 22px">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">The verdict</div>
+<div style="font:400 13.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:11px;text-wrap:pretty">{{ w.reasoning }}</div>
+<sc-if value="{{ w.hasResidual }}" hint-placeholder-val="{{ false }}">
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#999999;margin-top:10px;text-wrap:pretty">{{ w.residual_relationship }}</div>
+</sc-if>
+<sc-if value="{{ w.hasFirst }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:16px;padding:11px 14px;border-left:2px solid #D95B28;background:#231A15">
+<div style="font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#D95B28">First move</div>
+<div style="font:400 13.5px/1.55 Geist,sans-serif;color:#F0F0F0;margin-top:7px;text-wrap:pretty">{{ w.first_move }}</div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ noWinbacks }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px dashed #3D3D3D;padding:46px;text-align:center;font:400 13px/1.6 Geist,sans-serif;color:#999999">{{ emptyMsg }}</div>
+</sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFlight }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #2E2E2E;background:#1E1E1E;overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Account</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">ARR</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Flight hours by month</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Last 3 vs prior 3</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Latest</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Peak</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;background:#232323;white-space:nowrap">CRM says</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:14px 16px;border-bottom:1px solid #3D3D3D;white-space:nowrap">Does the flying agree</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ flightRows }}" as="f" hint-placeholder-count="8">
+<tr style-hover="background:#232323">
+<td style="padding:13px 16px;border-bottom:1px solid #262626">
+<div style="font:500 13.5px/1.35 Geist,sans-serif;color:#F0F0F0;white-space:nowrap">{{ f.name }}</div>
+<div style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-top:4px;white-space:nowrap">{{ f.trajectory }}</div>
+</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:#F0F0F0;white-space:nowrap">{{ f.arrLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626">
+<svg width="130" height="32" viewBox="0 0 130 32" style="display:block">
+<path d="{{ f.sparkD }}" fill="none" stroke="{{ f.sparkColor }}" strokeWidth="1.4" strokeLinejoin="round"></path>
+<circle cx="{{ f.sparkCx }}" cy="{{ f.sparkCy }}" r="2.3" fill="{{ f.sparkColor }}"></circle>
+</svg>
+<div style="font:400 10.5px/1.5 'Geist Mono',monospace;color:#999999;margin-top:3px">{{ f.monthsLabel }}</div>
+</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:500 13px/1.4 'Geist Mono',monospace;color:{{ f.pctColor }};white-space:nowrap">{{ f.pctLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:400 13px/1.4 'Geist Mono',monospace;color:#D6D6D6">{{ f.latest }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;text-align:right;font:400 13px/1.4 'Geist Mono',monospace;color:#999999">{{ f.peak }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;background:#232323;font:400 12.5px/1.4 Geist,sans-serif;color:#999999;white-space:nowrap">{{ f.crmLabel }}</td>
+<td style="padding:13px 16px;border-bottom:1px solid #262626;white-space:nowrap">
+<span style="display:inline-flex;align-items:center;gap:8px">
+<span style="width:9px;height:9px;display:block;background:{{ f.agreeColor }}"></span>
+<span style="font:500 12.5px/1.4 Geist,sans-serif;color:{{ f.agreeColor }}">{{ f.agreeLabel }}</span>
+</span>
+</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</sc-if>
+
+<sc-if value="{{ isFeed }}" hint-placeholder-val="{{ false }}">
+<div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border:1px solid #2E2E2E;background:#1E1E1E">
+<sc-for list="{{ feedTiles }}" as="t" hint-placeholder-count="4">
+<div style="padding:18px 20px 20px;border-right:1px solid #2A2A2A">
+<div style="font:500 10px/1.4 'Geist Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#999999">{{ t.lab }}</div>
+<div style="font:500 31px/1.1 Geist,sans-serif;font-variant-numeric:tabular-nums;margin-top:12px;letter-spacing:-.015em;color:{{ t.color }}">{{ t.val }}</div>
+<div style="font:400 12px/1.5 Geist,sans-serif;color:#999999;margin-top:9px;text-wrap:pretty">{{ t.note }}</div>
+</div>
+</sc-for>
+</div>
+
+<sc-if value="{{ hasWithdrawn }}" hint-placeholder-val="{{ false }}">
+<div style="border:1px solid #6E1E30;border-left:3px solid #F43F5E;background:#221016;margin-top:26px">
+<div style="padding:15px 20px;border-bottom:1px solid #4A1420">
+<div style="font:500 13px/1.3 Geist,sans-serif;color:#F43F5E">Withdrawn from the source</div>
+<div style="font:400 12.5px/1.6 Geist,sans-serif;color:#D6D6D6;margin-top:6px;max-width:780px;text-wrap:pretty">These documents existed at the last check and are gone now. They have been dropped from everything on this page and kept only for the record. If a claim rested on one of them, it no longer stands.</div>
+</div>
+<sc-for list="{{ withdrawn }}" as="w" hint-placeholder-count="2">
+<div style="display:flex;align-items:baseline;gap:16px;padding:12px 20px;border-bottom:1px solid #3A141C;flex-wrap:wrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;color:#F43F5E">WITHDRAWN</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#D6D6D6;text-decoration:line-through">{{ w.obj_key }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999">{{ w.scope }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;margin-left:auto">{{ w.stamp }}</span>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">What we changed our mind about</h2>
+</div>
+<sc-for list="{{ beliefs }}" as="b" hint-placeholder-count="4">
+<div style="display:grid;grid-template-columns:170px minmax(0,1fr);gap:0;border-bottom:1px solid #262626;padding:14px 0;align-items:start">
+<div style="font:400 11px/1.6 'Geist Mono',monospace;color:#999999">{{ b.stamp }}</div>
+<div>
+<div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+<span style="font:500 13px/1.4 Geist,sans-serif;color:#F0F0F0">{{ b.account_id }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999">{{ b.field }}</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#999999;text-decoration:line-through">{{ b.old_value }}</span>
+<span style="font:400 12.5px/1.5 'Geist Mono',monospace;color:#D95B28">{{ b.new_value }}</span>
+</div>
+<div style="font:400 13px/1.6 Geist,sans-serif;color:#999999;margin-top:6px;text-wrap:pretty">{{ b.narrative }}</div>
+</div>
+</div>
+</sc-for>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E;display:flex;align-items:baseline;justify-content:space-between">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Source changes picked up</h2>
+<span style="font:400 10px/1 'Geist Mono',monospace;color:#999999;letter-spacing:.1em">{{ changeCount }}</span>
+</div>
+<div style="max-height:420px;overflow-y:auto">
+<sc-for list="{{ changes }}" as="c" hint-placeholder-count="8">
+<div style="display:flex;align-items:baseline;gap:16px;padding:9px 0;border-bottom:1px solid #232323;flex-wrap:wrap">
+<span style="font:500 10px/1.5 'Geist Mono',monospace;letter-spacing:.14em;color:{{ c.ctColor }};min-width:82px">{{ c.change_type }}</span>
+<span style="font:400 11px/1.5 'Geist Mono',monospace;color:#999999;min-width:150px">{{ c.stamp }}</span>
+<span style="font:400 12.5px/1.5 Geist,sans-serif;color:#D6D6D6">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="margin:34px 0 0;padding-bottom:10px;border-bottom:1px solid #2E2E2E">
+<h2 style="font:500 16px/1.2 Lora,Georgia,serif;color:#F0F0F0;margin:0">Every check it has run</h2>
+</div>
+<div style="overflow-x:auto">
+<table style="width:100%;border-collapse:collapse;font-family:Geist,sans-serif">
+<thead>
+<tr>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px 13px 0;border-bottom:1px solid #2E2E2E">Run</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Started</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Trigger</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Files checked</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">New</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Changed</th>
+<th style="text-align:right;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Withdrawn</th>
+<th style="text-align:left;font:500 10px/1 'Geist Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#999999;padding:13px 14px;border-bottom:1px solid #2E2E2E">Result</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{ syncRows }}" as="s" hint-placeholder-count="5">
+<tr>
+<td style="padding:12px 14px 12px 0;border-bottom:1px solid #262626;font:400 12px/1.4 'Geist Mono',monospace;color:#999999">{{ s.id }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12px/1.4 'Geist Mono',monospace;color:#999999;white-space:nowrap">{{ s.stamp }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12px/1.4 Geist,sans-serif;color:#999999">{{ s.trigger }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#D6D6D6">{{ s.objects_seen }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.added }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:400 12.5px/1.4 'Geist Mono',monospace;color:#999999">{{ s.modified }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;text-align:right;font:500 12.5px/1.4 'Geist Mono',monospace;color:{{ s.wdColor }}">{{ s.withdrawn }}</td>
+<td style="padding:12px 14px;border-bottom:1px solid #262626;font:400 12.5px/1.4 Geist,sans-serif;color:{{ s.statusColor }}">{{ s.status }}</td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;previewDegraded&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;showEvidence&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;States&quot;},&quot;triageRows&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:8,&quot;min&quot;:3,&quot;max&quot;:8,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Triage&quot;},&quot;railGroups&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Navigation&quot;}}">
+const GROUPS = [
+  {label:"Act", items:[["triage","Triage","01"],["expansion","Expansion & Traps","02"]]},
+  {label:"Money", items:[["renewals","Renewals","03"],["winback","Win-back","04"]]},
+  {label:"Check", items:[["accounts","Accounts","05"],["gaps","Reality Gap","06"],["contradictions","Contradictions","07"],["flight","Flight Activity","08"]]},
+  {label:"System", items:[["feed","Change Feed","09"]]}
+];
+
+const META = {
+  triage:["01 / Act","Triage","What to do first this morning, ranked by how much money moves for the effort it takes. Every line shows the evidence behind it."],
+  accounts:["05 / Check","Accounts","Health here is calculated from what the account actually does. The CRM label sits beside it so a wrong record is visible at a glance."],
+  renewals:["03 / Money","Renewals","One number assumes every account renews. The other weighs each one by how likely it is. The difference is what this screen is for."],
+  expansion:["02 / Act","Expansion & Traps","What is genuinely worth selling, and what only looks like it. A Trap is something the customer has asked for that would make the account worse if we sold it."],
+  gaps:["06 / Check","Reality Gap","Where the CRM label disagrees with how the account behaves. Red means the record is more optimistic than the evidence supports."],
+  contradictions:["07 / Check","Contradictions","Two sources say different things. Both claims are kept, and the one we believe is stated with the reason."],
+  winback:["04 / Money","Win-back","One card per lost account, with a verdict on whether it is worth chasing."],
+  flight:["08 / Check","Flight Activity","Monthly flight hours per account, and whether that trend agrees with the health label on the record."],
+  feed:["09 / System","Change Feed","Proof the page updates itself. Every source document is checked each cycle, including the ones that disappear."]
+};
+
+const BANDS = {
+  Healthy:["#8FC9B4","#16211D","#2B5A4A"], Strong:["#8FC9B4","#16211D","#2B5A4A"],
+  Secure:["#8FC9B4","#16211D","#2B5A4A"], Likely:["#72A899","#141E1B","#25443A"],
+  Watch:["#E0B45C","#231E11","#4A3A16"], "At Risk":["#F0768D","#271219","#58202F"],
+  "High Risk":["#F43F5E","#2C1017","#6E1E30"], Critical:["#F43F5E","#2C1017","#6E1E30"],
+  Lost:["#F43F5E","#2C1017","#6E1E30"], "Not Applicable":["#999999","#242424","#3D3D3D"]
+};
+
+const VERD = {
+  "pursue-now":["#8FC9B4","#16211D","#2B5A4A","Pursue now"],
+  "pursue-later":["#E0B45C","#231E11","#4A3A16","Pursue later"],
+  "do-not-pursue":["#F0768D","#271219","#58202F","Do not pursue"],
+  "not-applicable":["#999999","#242424","#3D3D3D","Nothing to chase"]
+};
+
+class Component extends DCLogic {
+  state = {view:"triage", data:null};
+
+  componentDidMount(){
+    import("./tower-sample-data.js").then(m => this.setState({data:m.SAMPLE})).catch(()=>{});
+  }
+
+  money(n){ return n == null ? "\u2014" : "$" + Math.round(n).toLocaleString(); }
+  pct(n){ return n == null ? "\u2014" : (n > 0 ? "+" : "") + Math.round(n) + "%"; }
+  band(b){ 
+    if (BANDS[b]) return BANDS[b];
+    const k = Object.keys(BANDS).find(x => String(b||"").indexOf(x) === 0);
+    return BANDS[k] || BANDS["Not Applicable"];
+  }
+  spark(values, w, h){
+    const v = values || [];
+    if (v.length < 2) return {d:"", cx:"0", cy:"0", color:"#999999"};
+    const mx = Math.max(...v, 1), mn = Math.min(...v, 0), rng = (mx - mn) || 1;
+    const pts = v.map((x,i) => [i/(v.length-1)*w, h - ((x-mn)/rng)*(h-5) - 2.5]);
+    return {
+      d:pts.map((p,i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" "),
+      cx:pts[pts.length-1][0].toFixed(1), cy:pts[pts.length-1][1].toFixed(1),
+      color:v[v.length-1] >= v[0] ? "#72A899" : "#F0768D"
+    };
+  }
+  quotes(list){
+    return (list||[]).map(q => {
+      const i = String(q).lastIndexOf("|");
+      return i < 0 ? {text:"\u201c" + q + "\u201d", src:""} : {text:"\u201c" + q.slice(0,i) + "\u201d", src:q.slice(i+1)};
+    });
+  }
+
+  renderVals(){
+    const d = this.state.data;
+    const view = this.state.view;
+    const degradedPreview = this.props.previewDegraded ?? false;
+    const showEvidence = this.props.showEvidence ?? true;
+    const rowLimit = this.props.triageRows ?? 8;
+    const grouped = this.props.railGroups ?? true;
+    const meta = META[view] || ["",""," "];
+
+    const navGroups = (grouped ? GROUPS : [{label:"Views", items:GROUPS.flatMap(g=>g.items)}]).map(g => ({
+      label:g.label,
+      items:g.items.map(([key,label,n]) => {
+        const on = key === view;
+        return {key, label, n, go:() => this.setState({view:key}),
+          fg:on ? "#F0F0F0" : "#999999", bg:on ? "#242424" : "transparent",
+          edge:on ? "#D95B28" : "transparent", num:on ? "#D95B28" : "#999999"};
+      })
+    }));
+
+    const base = {
+      navGroups, viewEyebrow:meta[0], viewTitle:meta[1], viewLede:meta[2],
+      isTriage:view==="triage", isAccounts:view==="accounts", isGaps:view==="gaps",
+      isRenewals:view==="renewals",
+      isExpansion:view==="expansion", isContra:view==="contradictions",
+      isWinback:view==="winback", isFlight:view==="flight", isFeed:view==="feed",
+      syncLabel:"connecting", syncStamp:"", degraded:false, degradedDetail:"",
+      moneyTiles:[], queue:[], queueCount:"", stale:[], loops:[], accountRows:[], gapRows:[],
+      hasMisread:false, misreadLine:"", buckets:[],
+      oppRows:[], trapRows:[], contraRows:[], winbackCards:[], flightRows:[],
+      feedTiles:[], withdrawn:[], hasWithdrawn:false, beliefs:[], changes:[], syncRows:[],
+      oppCount:"", trapCount:"", changeCount:"", emptyMsg:"",
+      noOpps:false, noTraps:false, noContra:false, noWinbacks:false,
+      naiveLabel:"\u2014", honestLabel:"\u2014", gapLabel:"\u2014", gapPctLabel:"",
+      honestW:"0%", gapW:"0%"
+    };
+    if (!d) return base;
+
+    const m = d.money, c = d.counts;
+    const degraded = degradedPreview || d.reading?.enabled === false || (d.accounts||[]).some(a => a.degraded);
+
+    const misread = (d.reality_gaps||[]).filter(g => g.direction === "overstated" && Math.abs(g.gap) >= 1);
+    const misARR = misread.reduce((s,g) => s + (g.arr||0), 0);
+
+    const queue = (degradedPreview ? [] : (d.action_queue||[])).slice(0, rowLimit).map((a,i,arr) => {
+      const bd = this.band(a.health_band);
+      const below = a.value_score < 70;
+      const prevAbove = i > 0 && arr[i-1].value_score >= 70;
+      const qs = showEvidence ? this.quotes(a.evidence_quotes) : [];
+      return {...a,
+        rankLabel:String(a.rank).padStart(2,"0"),
+        rankColor:below ? "#999999" : (i === 0 ? "#D95B28" : "#999999"),
+        dim:below ? "0.85" : "1",
+        showCut:prevAbove && below,
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        arrLabel:this.money(a.arr),
+        renewLabel:a.days_to_renewal == null ? "not set" : a.days_to_renewal + " days",
+        renewColor:a.days_to_renewal != null && a.days_to_renewal < 90 ? "#F0768D" : "#D6D6D6",
+        target_person:a.target_person || "\u2014",
+        scoreW:a.value_score + "%",
+        scoreColor:a.value_score >= 80 ? "#F43F5E" : a.value_score >= 60 ? "#D9A441" : "#999999",
+        quotes:qs, hasQuotes:qs.length > 0};
+    });
+
+    const accountRows = (d.accounts||[]).map(a => {
+      const bd = this.band(a.health_band);
+      const over = a.reality_gap?.direction === "overstated";
+      return {...a,
+        vertical:a.vertical || "",
+        arrLabel:a.arr ? this.money(a.arr) : "\u2014",
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        crmLabel:(a.crm_health || "\u2014") + (over ? "  \u2716 wrong" : ""),
+        crmColor:over ? "#F43F5E" : "#999999",
+        usageLabel:a.usage_pct == null ? "" : this.pct(a.usage_pct),
+        usageColor:(a.usage_pct||0) < 0 ? "#F0768D" : "#72A899",
+        renewLabel:a.renewal?.days_to_renewal == null ? "not set" : a.renewal.days_to_renewal + "d \u00b7 " + a.renewal.bucket,
+        one_line:degradedPreview ? "not available while the reading layer is off" : a.one_line};
+    });
+
+    const gapRows = (d.reality_gaps||[]).slice().sort((x,y) => (y.gap||0) - (x.gap||0) || (y.arr||0) - (x.arr||0)).map(g => {
+      const bd = this.band(g.derived);
+      const over = g.direction === "overstated";
+      return {...g,
+        arrLabel:g.arr ? this.money(g.arr) : "\u2014",
+        edge:over ? (g.gap >= 2 ? "#F43F5E" : "#D9A441") : g.direction === "understated" ? "#3A7A65" : "#3D3D3D",
+        verdict:over ? "overstated by " + Math.abs(g.gap) : g.direction === "understated" ? "understated" : "agrees",
+        arrow:over ? "\u2192" : "=",
+        bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        stated:g.stated || "no label"};
+    });
+
+    const order = ["Secure","Likely","At Risk","High Risk","Lost","Not Applicable"];
+    const buckets = order.filter(b => m.buckets?.[b]?.count).map(b => {
+      const bd = this.band(b);
+      return {label:b, bandFg:bd[0], bandBg:bd[1], bandBd:bd[2],
+        arrLabel:this.money(m.buckets[b].arr),
+        countLabel:m.buckets[b].count + (m.buckets[b].count === 1 ? " account" : " accounts"),
+        accounts:m.buckets[b].accounts.map(r => ({...r,
+          arrLabel:this.money(r.arr),
+          daysLabel:r.days == null ? "date not set" : r.days + " days",
+          probLabel:r.probability == null ? "\u2014" : Math.round(r.probability*100) + "%",
+          probW:Math.round((r.probability||0)*100) + "%",
+          probColor:(r.probability||0) >= 0.75 ? "#3A7A65" : (r.probability||0) >= 0.5 ? "#D9A441" : "#F43F5E"}))};
+    });
+
+    const mkOpp = o => {
+      const qs = showEvidence ? this.quotes(o.evidence_quotes) : [];
+      const dq = o.qualification?.disqualifiers || [];
+      return {...o, arrLabel:this.money(o.arr), quotes:qs, hasQuotes:qs.length > 0,
+        hasBasis:!!o.estimated_value_basis, hasUnblock:!!o.unblock_condition,
+        disq:dq, hasDisq:dq.length > 0, disqLine:dq.join("   \u00b7   ")};
+    };
+    const oppRows = (degradedPreview ? [] : (d.opportunities||[])).map(mkOpp);
+    const trapRows = (degradedPreview ? [] : (d.traps||[])).map(mkOpp);
+
+    const contraRows = (degradedPreview ? [] : (d.contradictions||[])).map(c => {
+      const open = /^unresolved/i.test(c.resolution||"");
+      return {...c, hasMatters:!!c.matters_because,
+        resColor:open ? "#D9A441" : "#D95B28",
+        resLabel:open ? "Not resolved" : "What we believe",
+        strikeA:open ? "none" : "line-through", strikeB:"none"};
+    });
+
+    const winbackCards = (degradedPreview ? [] : (d.winbacks||[])).map(w => {
+      const v = VERD[w.verdict] || VERD["not-applicable"];
+      return {...w, vFg:v[0], vBg:v[1], vBd:v[2], vLabel:v[3],
+        lostLabel:this.money(w.lost_arr), scoreW:w.score + "%",
+        scoreColor:w.score >= 60 ? "#3A7A65" : w.score >= 30 ? "#D9A441" : "#999999",
+        reversibleLabel:w.reversible ? "the cause can be fixed" : "the cause cannot be fixed",
+        reversibleColor:w.reversible ? "#72A899" : "#F0768D",
+        hasChanged:!!w.what_changed_since, hasFirst:!!w.first_move, hasResidual:!!w.residual_relationship};
+    });
+
+    const flightRows = (d.flight_activity||[]).map(f => {
+      const s = this.spark(f.values, 130, 32);
+      const mo = f.months || [];
+      return {...f, arrLabel:this.money(f.arr), pctLabel:this.pct(f.pct_3v3),
+        pctColor:(f.pct_3v3||0) < 0 ? "#F0768D" : "#72A899",
+        sparkD:s.d, sparkCx:s.cx, sparkCy:s.cy, sparkColor:s.color,
+        crmLabel:f.crm_health || "\u2014",
+        agreeLabel:f.agrees_with_label ? "yes" : "no",
+        agreeColor:f.agrees_with_label ? "#72A899" : "#F43F5E",
+        monthsLabel:mo.length ? mo[0] + " to " + mo[mo.length-1] : ""};
+    });
+
+    const sys = d.system || {}, wd = sys.withdrawn_objects || [];
+    const CT = {ADDED:"#72A899", MODIFIED:"#D9A441", WITHDRAWN:"#F43F5E", RESTORED:"#3E6F9E"};
+    const stamp = t => String(t||"").replace("T"," ").replace("+00:00","");
+    const feedTiles = [
+      {lab:"Checks run", val:String((d.syncs||[]).length), color:"#F0F0F0", note:"most recent " + stamp(sys.last_sync?.started_at)},
+      {lab:"Documents withdrawn", val:String(wd.length), color:wd.length ? "#F43F5E" : "#999999", note:"source files that were there last time and are gone now"},
+      {lab:"Things we changed our mind about", val:String((d.belief_deltas||[]).length), color:"#F0F0F0", note:"each one traced to the change that caused it"},
+      {lab:"Checks every", val:"60s", color:"#F0F0F0", note:"runs on its own, nobody presses a button"}
+    ];
+
+    const hw = m.naive_forecast ? (m.weighted_forecast/m.naive_forecast)*100 : 0;
+
+    return {...base,
+      syncLabel:"live \u00b7 sync #" + (d.system?.last_sync?.id ?? "\u2014"),
+      syncStamp:String(d.generated_at||"").replace("T"," ").replace("+00:00"," UTC"),
+      degraded,
+      degradedDetail:"reading provider " + (d.reading?.provider || "none") + (d.reading?.last_error ? " \u00b7 last error: " + d.reading.last_error : " \u00b7 no model key configured"),
+      moneyTiles:[
+        {lab:"Live ARR", val:this.money(m.live_arr), color:"#F0F0F0", note:c.live + " live, " + c.presale + " in pre-sale, " + c.churned + " churned"},
+        {lab:"Honest forecast", val:this.money(m.weighted_forecast), color:"#F0F0F0", note:"the CRM implies " + this.money(m.naive_forecast)},
+        {lab:"At risk of not renewing", val:this.money(m.forecast_gap), color:"#F43F5E", note:"the gap between the labels and the evidence"},
+        {lab:"Already lost", val:this.money(m.lost_arr), color:"#F0768D", note:(d.winbacks||[]).filter(w => w.verdict !== "do-not-pursue" && w.verdict !== "not-applicable").length + " judged worth chasing"}
+      ],
+      queue, queueCount:queue.length + " of " + (d.action_queue||[]).length + " shown",
+      hasMisread:misARR > 0,
+      misreadLine:misread.length + " of " + c.accounts + " accounts are labelled healthier than their own behaviour supports, covering " + this.money(misARR) + " of ARR.",
+      stale:(d.stale_accounts||[]).map(s => ({...s, arrLabel:this.money(s.arr), silentLabel:s.days_silent + " days quiet"})),
+      loops:(d.open_loops||[]).map(l => ({...l,
+        dueLabel:l.due ? "due " + l.due : "no date",
+        dueColor:l.due && l.due < "2026-08-15" ? "#F43F5E" : "#999999",
+        srcLabel:l.account_name + " \u00b7 " + (l.doc||"")})),
+      accountRows, gapRows, buckets,
+      oppRows, trapRows, contraRows, winbackCards, flightRows, feedTiles,
+      oppCount:oppRows.length + " open", trapCount:trapRows.length + " flagged",
+      noOpps:oppRows.length === 0, noTraps:trapRows.length === 0,
+      noContra:contraRows.length === 0, noWinbacks:winbackCards.length === 0,
+      emptyMsg:degraded ? "Not available while the part that reads documents is off." : "Nothing here right now.",
+      withdrawn:wd.map(w => ({...w, stamp:stamp(w.withdrawn_at), scope:w.account_id || "portfolio-wide"})),
+      hasWithdrawn:wd.length > 0,
+      beliefs:(d.belief_deltas||[]).map(b => ({...b, stamp:stamp(b.occurred_at)})),
+      changes:(d.change_feed||[]).slice(0,30).map(c => ({...c, stamp:stamp(c.detected_at),
+        ctColor:CT[c.change_type] || "#999999", label:c.title || c.source_id})),
+      changeCount:Math.min(30,(d.change_feed||[]).length) + " of " + (d.change_feed||[]).length + " shown",
+      syncRows:(d.syncs||[]).map(s => ({...s, stamp:stamp(s.started_at),
+        wdColor:s.withdrawn ? "#F43F5E" : "#999999",
+        statusColor:s.status === "ok" ? "#72A899" : "#F43F5E"})),
+      naiveLabel:this.money(m.naive_forecast), honestLabel:this.money(m.weighted_forecast),
+      gapLabel:this.money(m.forecast_gap),
+      gapPctLabel:Math.round((m.forecast_gap/(m.naive_forecast||1))*100) + "% of live ARR",
+      honestW:hw.toFixed(1) + "%", gapW:(100-hw).toFixed(1) + "%"};
+  }
+}
+</script>
+</body>
+</html>
