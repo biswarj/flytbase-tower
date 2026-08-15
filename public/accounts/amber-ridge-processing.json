@@ -12,7 +12,7 @@
  "crm_health": "Healthy",
  "crm_sentiment": "Neutral",
  "crm_champion_tagged": "Mack Stockhausen (new, 6 months in)",
- "computed_at": "2026-08-15T16:19:39+00:00",
+ "computed_at": "2026-08-15T16:34:30+00:00",
  "reference_date": "2026-08-15",
  "health": {
   "score": 91.0,
@@ -272,7 +272,7 @@
   },
   {
    "name": "Rob Thomas",
-   "title": "Chief Pilot",
+   "title": "new Chief Pilot",
    "org_side": "customer",
    "role": "champion",
    "role_all": [
@@ -439,7 +439,7 @@
   },
   {
    "name": "Charlie Dawson",
-   "title": "Pilot",
+   "title": "pilot",
    "org_side": "customer",
    "role": "day-to-day-user",
    "role_all": [
@@ -492,7 +492,7 @@
   },
   {
    "name": "Unnati Patil",
-   "title": "CS",
+   "title": "CS Owner",
    "org_side": "flytbase",
    "role": "champion",
    "role_all": [
@@ -590,7 +590,7 @@
   },
   {
    "name": "Rudrev",
-   "title": "SE",
+   "title": "solutions engineer",
    "org_side": "flytbase",
    "role": "technical-evaluator",
    "role_all": [
@@ -1027,8 +1027,14 @@
  },
  "actions": [],
  "degraded": true,
- "_version": 7,
+ "_version": 8,
  "_history": [
+  {
+   "version": 8,
+   "computed_at": "2026-08-15T16:34:30+00:00",
+   "sync_id": 36,
+   "input_hash": "1f8f97f477d85c589533b74985b5f81231a66b262363d5c5f6bdc8e2ed1d762d"
+  },
   {
    "version": 7,
    "computed_at": "2026-08-15T16:19:39+00:00",
