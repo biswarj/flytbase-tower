@@ -1,0 +1,33 @@
+name: unpack bootstrap
+
+on:
+  push:
+    paths:
+      - 'bootstrap.tar.gz'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract source bundle
+        run: |
+          if [ -f bootstrap.tar.gz ]; then
+            tar xzf bootstrap.tar.gz
+            rm -f bootstrap.tar.gz
+            echo unpacked
+            find . -name '*.py' -not -path './.git/*'
+          else
+            echo 'no bundle present'
+          fi
+      - name: Commit extracted source
+        run: |
+          git config user.name 'tower-bootstrap'
+          git config user.email 'tower-bootstrap@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'unpack source bundle'
+          git push
