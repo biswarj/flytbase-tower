@@ -423,10 +423,6 @@ class Brain:
         return None
 
     # ------------------------------------------------------------------
-    #: A document read may use this share of the minute's tokens, so that
-    #: several reads fit inside one minute instead of one read filling it.
-    DOC_SHARE = 0.45
-
     @staticmethod
     def _fit(want_output: int, share: float = 1.0) -> tuple[int, int]:
         """Split the tokens-per-minute ceiling between prompt and answer.
@@ -450,7 +446,7 @@ class Brain:
                       title: str, content: str) -> dict:
         if not self.enabled:
             return _fallback_doc(content, doc_type)
-        room, out_tokens = self._fit(900, share=self.DOC_SHARE)
+        room, out_tokens = self._fit(1400, share=config.READ_TOKEN_SHARE)
         head = (
             f"ACCOUNT: {account_name}\n"
             f"LIFECYCLE STAGE: {lifecycle}\n"

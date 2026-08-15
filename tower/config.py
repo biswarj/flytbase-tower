@@ -58,14 +58,19 @@ OPENAI_MODEL = os.environ.get("TOWER_OPENAI_MODEL", "") or (
 # not trip a rate limit and degrade half the portfolio.
 #
 # The pace is derived from the tokens-per-minute ceiling rather than guessed.
-# A document read costs roughly 45% of the ceiling (see Brain._fit), so the
-# number that fit in a minute is about 1 / 0.45, and the gap between reads is
-# sixty seconds divided by that. Guessing instead produces the worst of both:
-# too fast and most reads are rejected, too slow and a cycle never finishes.
-_READS_PER_MINUTE = 1.0 / 0.45
+# A document read is allowed this share of the ceiling, so the number that fit
+# in a minute is 1 / share and the gap between reads is sixty seconds divided
+# by that. Guessing instead produces the worst of both: too fast and most reads
+# are rejected, too slow and a cycle never finishes.
+#
+# The share cannot be squeezed indefinitely. Below roughly half the ceiling
+# there is not enough room left for the answer, and a truncated answer is not
+# a short answer, it is invalid JSON that fails every time the same document
+# is read. A permanent hole is worse than a slow cycle.
+READ_TOKEN_SHARE = float(os.environ.get("TOWER_READ_SHARE", "0.55"))
 READ_DELAY_SECONDS = float(
     os.environ.get("TOWER_READ_DELAY", "")
-    or (60.0 / _READS_PER_MINUTE if MODEL_TPM_BUDGET <= 20000 else 0.5)
+    or (60.0 * READ_TOKEN_SHARE if MODEL_TPM_BUDGET <= 20000 else 0.5)
 )
 
 # Hard ceiling on any single model call. Never let one slow request own the
